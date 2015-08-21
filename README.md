@@ -7,3 +7,8 @@ contributing to the IETF draft.
 Latest published version:
 https://tools.ietf.org/html/draft-dolson-sfc-hierarchical-02
 
+Only work on the .xml file. The .txt file is a rendering of the .xml
+for convenience.
+
+Use this service to convert .xml to .txt: http://xml2rfc.ietf.org/
+
