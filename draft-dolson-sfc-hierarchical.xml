@@ -812,7 +812,7 @@
      . . . . . . . . . . . . . . .     . . . . . . . . . . . . . . .
      .     Security Domain       .     .   Optimization Domain     .
      .                           .     .                           .
-[CF]---->[ DPI(Sub-domain GW)]------[CF]->[   Sub-domain GW     ]---->
+[CF]---->[  [CF]    IBN      ]----------->[  [CF]   IBN         ]---->
      .    |                  ^   .     .  |                     ^  .
      .    +----->[ WAF ]-----+   .     .  +-->[ Cache ]---------+  .
      .    |                  |   .     .  |                     |  .
