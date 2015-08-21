@@ -39,7 +39,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-00" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-01" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -97,7 +97,7 @@
     </author>
 
 
-    <date month="May" year="2015" />
+    <date month="June" year="2015" />
 
     <!-- Meta-data Declarations -->
 
@@ -110,15 +110,14 @@
 
     <abstract>
       <t>
-        This document describes a network architecture for deploying service 
-        function chaining with multiple levels of administration within an 
-        organization.
+        Hierarchical Service Function Chaining (hSFC) is a network architecture
+        allowing an organization to compartmentalize a large-scale network into
+        multiple domains of administration.
       </t>
       <t>
-        The multiple levels of administration allow operators to
-        compartmentalize a large network into multiple domains of 
-        responsibility, with each domain being independently managed and 
-        consequently easier to reason about.
+        The goals of hSFC are to make a large-scale network easier to reason 
+        about, simpler to control and to support independent functional groups 
+        within large operators.
       </t>
     </abstract>
   </front>
@@ -126,8 +125,9 @@
   <middle>
     <section title="Introduction">
       <t>
-        Service Function Chaining (SFC) allows an operator to prescribe packet 
-        paths taken through their network. SFC is described in detail in the
+        Service Function Chaining (SFC) is a technique for prescribing 
+        differentiated traffic forwarding policies within the SFC domain.
+        SFC is described in detail in the
         <xref target="I-D.ietf-sfc-architecture">
          SFC architecture document
         </xref>,
@@ -136,26 +136,40 @@
       <t>
         In this document we consider the difficult problem of implementing SFC
         across a large, geographically dispersed network comprised of millions 
-        of hosts and thousands of network forwarding elements. 
+        of hosts and thousands of network forwarding elements, involving 
+        multiple operational teams (with varying functional responsibilities). 
         We expect asymmetrical routing is inherent in the network, while 
-        recognizing that some Service Functions require bidirectional traffic 
-        for transport-layer sessions. We expect some paths need to be selected 
-        on the basis of application metadata accessible to the network, with 
-        5-tuple stickiness to specific Service Function instances.
+        recognizing that some Service Functions (SFs) require bidirectional 
+        traffic for transport-layer sessions (e.g., NATs, firewalls). We assume  
+        that some paths need to be selected on the basis of application-specific 
+        data visible to the network, with 5-tuple stickiness to specific Service
+        Function instances.
+      </t>
+      <t>
+        Note: in this document, the notion of the "path" of a packet is the
+        series of SF instances traversed by a packet. The means of delivering 
+        packets between SFs (the forwarding mechanisms of the underlay network)
+        is not relevant to the current discussion.
       </t>
       <t>
         Difficult problems are often made easier by decomposing them in a 
         hierarchical (nested) manner. So instead of considering an omniscient 
-        controller that can create complete paths from one end of the network to 
-        the other, we break the network into smaller pieces. Each piece may
-        support a subset of the network applications or a subset of the users.
+        SFC Control Plane that can manage (create, withdraw, supervise, etc.) 
+        complete paths from one end of the network to the other, we decompose 
+        the network into smaller sub-domains. Each sub-domain may support a 
+        subset of the network applications or a subset of the users. The 
+        criteria for determining decomposition into SFC-enabled sub-domains are 
+        beyond the scope of this document.
       </t>
       <t>
-        A previous example of simplifying a network by using multiple SF domains
-        can be seen in 
-        <xref target="I-D.ietf-sfc-dc-use-cases">
-          draft-ietf-sfc-dc-use-cases
-        </xref>.
+        Note that decomposing a network into multiple SFC-enabled domains should 
+        permit end-to-end visibility of Service Functions and Service Function 
+        Paths. Decomposition should also be implemented with special care to 
+        ease monitoring and troubleshooting of the network as a whole.
+      </t>
+      <t>
+        An example of simplifying a network by using multiple SF domains is
+        further discussed in <xref target="I-D.ietf-sfc-dc-use-cases"/>.
       </t>
       <t>
         We assume the SF technology uses 
@@ -178,52 +192,70 @@
       </section>
     </section>
 
-    <section title="Hierarchical Service Chaining">
+    <section title="Hierarchical Service Function Chaining (hSFC)">
       <t>
-        A hierarchy has multiple conceptual levels. In Hierarchical Service 
-        Chaining, the top-most level encompasses the entire network domain to be
-        managed. Lower levels encompass smaller portions of the network.
+        A hierarchy has multiple levels. The top-most level encompasses the 
+        entire network domain to be managed, and lower levels encompass
+        portions of the network.
       </t>
       
       <section title="Top Level">
         <t>
-          Considering example <xref target="fig_hierarchical_top"/>, a top-level 
-          network domain includes SFC components distributed over a wide area, 
-          including 
+          Considering the example in <xref target="fig_hierarchical_top"/>, a 
+          top-level network domain includes SFC components distributed over a 
+          wide area, including:
           <list style="symbols">
             <t>classifiers (CFs),</t>
             <t>Service Function Forwarders (SFFs) and</t>
-            <t>Sub-Domains.</t>
+            <t>Sub-domains.</t>
           </list>
           For the sake of clarity, components of the underlay network are not 
           shown; an underlay network is assumed to provide connectivity between 
-          service function components.
+          SFC components.
         </t>
         <t>
-          Top-level service function paths carry packets from classifiers to 
-          egress via SFFs and sub-domains, with the operations within 
+          Top-level service function paths carry packets from classifiers 
+          through a series of SFFs and sub-domains, with the operations within
           sub-domains being opaque to the higher levels.
         </t>
         <t>
-           Network-wide Service Chaining orchestration is only concerned
-           with creating service paths from network edge points to 
-           sub-domains within data centers and configuring classifiers
-           at a coarse level (e.g., based on source or destination host) to get 
-           traffic onto paths that will arrive at appropriate sub-domains. The
-           figure shows one possible service chain passing from edge, through
-           two sub-domains, to network egress.
+          We expect the system to include a top-level control-plane having
+          responsibility for configuring forwarding and classification.
+          The top-level Service Chaining control-plane manages end-to-end 
+          service chains and associated service function paths from network edge
+          points to sub-domains and configuring top-level classifiers at a
+          coarse level (e.g., based on source or destination host) to forward
+          traffic along paths that will transit appropriate sub-domains. The
+          figure shows one possible service chain passing from edge, through two
+          sub-domains, to network egress. The top-level control plane does NOT
+          configure classification or forwarding within the sub-domains.
         </t>
         <t>
-          At this high level, the number of SF Paths required is on the order of 
-          the number of ways in which a packet needs to traverse different 
-          sub-domains and egress the network.
+          At this network-wide level, the number of SFPs required is a linear 
+          function of the number of ways in which a packet is required to 
+          traverse different sub-domains and egress the network. Note that the 
+          various paths which may be taken within a sub-domain are not 
+          represented by distinct network-wide SFPs; specific policies at the 
+          ingress nodes of each sub-domain bind flows to sub-domain paths.
+        </t>
+        <t>
+          Packets are classified at the edge of the network to select the paths 
+          by which sub-domains are to be traversed. At the ingress of each 
+          sub-domain, paths are reclassified to select the paths by which SFs in 
+          the sub-domain are to be traversed. At the egress of each sub-domain, 
+          packets are returned to the top-level paths. Contrast this with an 
+          approach requiring the top-level classifier to select paths to specify 
+          all of the SFs in each sub-domains.
         </t>
         <t>
           It should be assumed that some service functions in the network 
-          require bidirectional symmetry of paths (see more in section
+          require bidirectional symmetry of paths (see more in 
           <xref target="section_classifier"/>). Therefore the classifiers at the 
-          top level need to ensure server-to-client packets take the reverse 
-          path of client-to-server packet through sub-domains.
+          top level must be configured with policies ensuring server-to-client
+          packets take the reverse path of client-to-server packet through
+          sub-domains. (Recall the "path" denotes the series of service 
+          functions; the precise physical network path within the underlay 
+          network is not relevant here.)
         </t>
         <figure anchor="fig_hierarchical_top"
                 title="Network-wide view of Top Level of Hierarchy">
@@ -251,8 +283,9 @@
                  +------------+
         ]]> </artwork>
           <postamble>
-            One path is shown from edge classifier to SFF1 to Sub-domain#1 to 
-            SFF1 to SFF2 to Sub-domain#2 to SFF2 to network egress.
+            One path is shown from edge classifier to SFF1 to Sub-domain#1 
+            (residing in data-center1) to SFF1 to SFF2 (residing in data-center 
+            2) to Sub-domain#2 to SFF2 to network egress.
           </postamble>
        </figure>
 
@@ -261,33 +294,39 @@
       <section title="Lower Levels">
         <t>
           Each of the sub-domains in <xref target="fig_hierarchical_top"/> is an 
-          SFC system unto itself. 
+          SFC domain.
         </t>
         <t>
           Unlike the top level, however, data packets entering the sub-domain 
           are already encapsulated within SFC transport.
           <xref target="fig_hierarchical_lower"/> shows a sub-domain interfaced
-          to a higher-level domain by means of an SF-Domain Gateway.
-          It is the purpose of the SF Domain Gateway to remove packets from the 
-          SFC transport, apply Classification, and direct the packets to the
-          selected local service function paths ending back at the SF Domain
-          Gateway. The SF Domain Gateway finally restores packets to the
+          with a higher-level domain by means of an Internal Boundary Node 
+          (IBN). It is the purpose of the IBN to remove packets from the SFC
+          encapsulation, apply Classification rules, and direct the packets to
+          the selected local service function paths terminating at an egress 
+          IBN. The egress SFC Domain Gateway finally restores packets to the
           original SFC transport and hands them off to SFFs.
         </t>
         <t>
           Each sub-domain intersects a subset of the total paths that are 
-          possible in the higher-level domain. An SF Domain Gateway is concerned 
-          with higher-level paths, but only those traversing the sub-domain.
-          The top-level controller configures top-level paths at the SF Domain 
-          Gateway, but the top-level paths are otherwise unknown within the 
-          sub-domain. The SF Domain Gateway provides adaptation between the 
-          levels.
+          possible in the higher-level domain. An IBN is concerned with
+          higher-level paths, but only those traversing the sub-domain. A
+          top-level controller may configure the IBN as an SF (the IBN plays the
+          SF role in the top-level domain).
+        </t>
+        <t>
+          We expect each sub-domain to have a control-plane that can operate 
+          independently of the top-level control-plane. The sub-domain 
+          control-plane configures the classification and forwarding rules in 
+          the sub-domain. The classification rules reside in the IBN, where 
+          packets are moved from SFC encapsulation of the top-level domain to 
+          and from SFC encapsulation of the lower-level domain.
         </t>
         <figure anchor="fig_hierarchical_lower"
                 title="Sub-domain within a higher-level domain">
           <artwork><![CDATA[
   +----+    +-----+  +----------------------+   +-----+
-  |    |SC#1| SFF |  | SF Domain Gateway 1  |   | SFF |
+  |    |SC#1| SFF |  |       IBN 1          |   | SFF |
 ->|    |================*                *===============>
   |    |    +-----+  |  # (in DC 1)      #  |   +-----+
   | CF |             |  V                #  |
@@ -322,41 +361,45 @@
       </section>
     </section>
 
-    <section title="SF Domain Gateway">
+    <section title="Internal Boundary Node (IBN)">
       <t>
-        A network element termed "SF Domain Gateway" bridges packets between 
-        domains. It looks like an SF to the higher level, and looks like a 
-        classifier and end-of-chain to the lower level.
+        A network element termed "Internal Boundary Node" (IBN) bridges packets 
+        between domains. It looks like an SF to the higher level, and looks like 
+        a classifier and end-of-chain to the lower level.
       </t>
       <t>
-        To achieve the benefits of hierarchy, the SF Domain Gateway should be 
-        making more granular traffic classifications at the lower level than the 
-        traffic passed to it. This means that the number of SF Paths within the 
-        lower level is larger than the number of SF Paths arriving to the 
-        gateway.
+        To achieve the benefits of hierarchy, the IBN should be applying more
+        granular traffic classification rules at the lower level than the
+        traffic passed to it. This means that the number of SF Paths within the
+        lower level is greater than the number of SF Paths arriving to the
+        IBN.
       </t>
       <t>
-        The SF Domain Gateway is also the termination of lower-level SF paths. 
-        This is because the packets exiting lower-level SF paths must be 
-        returned to the higher-level SF paths and forwarded to the next hop 
-        in the higher-level domain.
+        The IBN is also the termination of lower-level SF paths. This is because
+        the packets exiting lower-level SF paths must be returned to the
+        higher-level SF paths and forwarded to the next hop in the higher-level
+        domain.
       </t>
 
-      <section title="SF Domain Gateway Path Configuration">
+      <section title="IBN Path Configuration">
         <t>
           An operator of a lower-level SF Domain may be aware of which 
           high-level paths transit their domain, or they may wish to accept any
           paths. 
         </t>
         <t>
+          When packets enter the sub-domain, the Path Identifier and Path Index 
+          are re-marked according to the path selected by the classifier.
+        </t>
+        <t>
           After exiting a path in the sub-domain, packets can be restored to an 
           upper-level SF path by these methods:
         <list style="numbers">
           <t>
-            Statefully per flow,
+            Stateful per flow,
           </t>
           <t>
-            Pushing path identifier into meta-data,
+            Pushing path identifier into metadata,
           </t>
           <t>
             Using unique lower-level paths per upper-level path.
@@ -364,80 +407,104 @@
         </list>
         </t>
 
-        <section title="Flow-Stateful SF Domain Gateway">
+        <section title="Flow-Stateful IBN">
           <t>
-            An SF Domain Gateway can be flow-aware, returning 
-            packets to the correct higher-level SF path on the basis of 5-tuple 
-            of packets exiting the lower-level SF paths.
+            An IBN can be flow-aware, returning packets to the correct
+            higher-level SF path on the basis of 5-tuple of packets exiting the
+            lower-level SF paths.
           </t>
           <t>
-            When packets are received by the SF Domain Gateway on a higher-level
-            path, the encapsulated packets are parsed for IP and transport-layer
-            (TCP or UDP) coordinates. State is created, indexed by the 5-tuple
-            of {source-ip, destination-ip, source-port, destination-port and
-            transport protocol}. The state contains critical fields of the 
+            When packets are received by the IBN on a higher-level path, the
+            encapsulated packets are parsed for IP and transport-layer (TCP or
+            UDP) coordinates. State is created, indexed by the 5-tuple of
+            {source-IP, destination-IP, source-port, destination-port and
+            transport protocol}. The state contains critical fields of the
             encapsulating SFC header (or perhaps the entire header).
           </t>
           <t>
-            When a packet returns to the SF Domain Gateway at the end of a 
-            chain, the SFC header is removed, the packet is parsed for IP and 
-            transport-layer coordinates, and state is retrieved by the 5-tuple 
-            of the packet. The state contains the information required to 
-            forward the packet within the higher-level service chain.
+            The simplest approach has the packets return to the same IBN at the
+            end of the chain that classified the packet at the start of the
+            chain. This is because the required 5-tuple state is rapidly
+            changing and most efficiently kept locally. If the packet is 
+            returned to a different IBN for egress, 5-tuple state must be
+            synchronized between the IBNs.
+          </t>
+          <t>
+            When a packet returns to the IBN at the end of a chain, the SFC
+            header is removed, the packet is parsed for IP and transport-layer
+            coordinates, and state is retrieved by the 5-tuple of the packet.
+            The state contains the information required to forward the packet
+            within the higher-level service chain.
+          </t>
+          <t>
+            State cannot be created by packets arriving from the lower-level 
+            chain; when state cannot be found for such packets, they MUST be 
+            dropped.
+          </t>
+          <t>
+            This stateful approach is limited to use with SFs that retain the 
+            5-tuple of the packet. This approach cannot be used with SFs that
+            modify the 5-tuple (e.g., as done by a NAT) or otherwise create
+            packets for new 5-tuples other than those received (e.g., as an HTTP
+            cache might do to retrieve content on behalf of the original flow).
+            In both cases, the fundamental problem is the inability to forward
+            packets when state cannot be found for the packet 5-tuples.
           </t>
           <t>
             In the stateful approach, there are issues caused by the state, such 
-            as how long the state should be retained, as well as whether the 
-            state needs to be replicated to other devices to create a highly 
-            available network.
+            as how long the state should be maintained (it MUST time out 
+            eventually), as well as whether the state needs to be replicated to 
+            other devices to create a highly available network.
           </t>
           <t>
-            It is valid to consider the state disposable, since it can be
-            re-created by each new packet arriving from the higher-level domain. 
-            For example, if an SF-Domain Gateway loses all flow state, the state 
-            is re-created by an end-point retransmitting a TCP packet.
+            It is valid to consider the state disposable after failure, since it
+            can be re-created by each new packet arriving from the higher-level
+            domain. For example, if an IBN loses all flow state, the state is
+            re-created by an end-point retransmitting a TCP packet.
           </t>
           <t>
-            If a network handles multiple routing domains, the 5-tuple may be 
-            augmented with a 6th parameter, perhaps using some meta-data to 
-            identify the routing domain.
+            If an SFC domain handles multiple network regions (e.g., multiple 
+            private networks), the 5-tuple may be augmented with a 6th 
+            parameter, perhaps using some metadata to identify the network 
+            region.
           </t>
           <t>
             In this stateful approach, it is not necessary for the sub-domain's 
-            controller to modify paths when higher-level paths are changed.
+            control-plane to modify paths when higher-level paths are changed.
             The complexity of the higher-level domain does not cause complexity
             in the lower-level domain.
           </t>
         </section>
 
-        <section title="Saving Upper-Level Path in Meta-Data">
+        <section title="Encoding Upper-Level Paths in Metadata">
           <t>
-            An SF Domain Gateway can push the upper-level service path 
-            identifier (SPI) and service index (SI) into a meta-data field of 
-            the lower-level NSH encapsulation. When packets exit the lower-level 
-            path, the upper-level SPI and SI can be restored from the meta-data 
-            retrieved from the packet.
+            An IBN can push the upper-level service path identifier (SPI) and
+            service index (SI) (or encoding thereof) into a metadata field of
+            the lower-level encapsulation (e.g., placing upper-level path
+            information into a metadata field of NSH). When packets exit the
+            lower-level path, the upper-level SPI and SI can be restored from
+            the metadata retrieved from the packet.
           </t>
           <t>
             This approach requires the SFs in the path to be capable of 
-            forwarding the meta-data and to appropriately apply meta-data to any 
+            forwarding the metadata and appropriately attaching metadata to any 
             packets injected for a flow.
           </t>
           <t>
-            Using new meta-data may inflate packet size when variable-length
-            meta-data (type 2 from <xref target="I-D.ietf-sfc-nsh">NSH</xref>)
+            Using new metadata may inflate packet size when variable-length
+            metadata (type 2 from <xref target="I-D.ietf-sfc-nsh">NSH</xref>)
             is used.
           </t>
           <t>
             It is conceivable that the MD-type 1 Mandatory Context Header fields 
             of
             <xref target="I-D.ietf-sfc-nsh">NSH</xref> are not all relevant to
-            the lower-level domain. In this case, one of the meta-data slots of
+            the lower-level domain. In this case, one of the metadata slots of
             the Mandatory Context Header could be repurposed within the 
-            lower-level domain. (And restored when leaving.)
+            lower-level domain, and restored when leaving.
           </t>
           <t>
-            In this meta-data approach, it is not necessary for the sub-domain's 
+            In this metadata approach, it is not necessary for the sub-domain's 
             controller to modify paths when higher-level paths are changed.
             The complexity of the higher-level domain does not cause complexity
             in the lower-level domain.
@@ -448,7 +515,9 @@
           <t>
             In this approach, paths within the sub-domain are constrained so 
             that a path identifier (of the sub-domain) unambiguously indicates 
-            the egress path (of the upper domain).
+            the egress path (of the upper domain). This allows the original path 
+            information to be restored at sub-domain egress from a look-up table 
+            using the sub-domain path identifier.
           </t>
           <t>
             Whenever the upper-level domain provisions a path via the 
@@ -459,8 +528,8 @@
             A down-side of this approach is that the number of paths in the 
             lower-level domain is multiplied by the number of paths in the 
             higher-level domain that traverse the lower-level domain.
-            (I.e., a sub-path for each combination of upper Path identifier and
-            lower path.)
+            I.e., a sub-path must be created for each combination of upper Path 
+            identifier and lower path.
           </t>
         </section>
 
@@ -468,22 +537,22 @@
       
       <section title="Gluing Levels Together">
         <t>
-          The path identifier or metadata on a packet received by the SF Domain
-          Gateway may be used as input to reclassification and path selection
-          within the lower-level domain.
+          The path identifier or metadata on a packet received by the IBN may be
+          used as input to reclassification and path selection within the
+          lower-level domain.
         </t>
         <t>
           In some cases the meanings of the various path IDs and metadata must 
           be coordinated between domains.
         </t>
         <t>
-          One approach is to use well-known identifier values in meta-data, 
+          One approach is to use well-known identifier values in metadata, 
           communicated by some organizational registry.
         </t>
         <t>
           Another approach is to use well-known labels for path identifiers or 
-          meta-data, as an indirection to the actual identifiers. The actual 
-          identifiers can be assigned by control systems. For example, a 
+          metadata, as an indirection to the actual identifiers. The actual 
+          identifiers can be assigned by control-plane systems. For example, a 
           sub-domain classifier could have a policy, "if pathID=classA then 
           chain packet to path 1234"; the higher-level controller would be 
           expected to configure the concrete higher-level pathID for classA.
@@ -495,26 +564,26 @@
     <section title="Sub-domain Classifier" anchor="section_classifier">
       <t>
         Within the sub-domain (referring to <xref target="fig_hierarchical_lower"/>),
-        after the SF Domain Gateway removes incoming packets from the 
-        higher-level encapsulation, it sends the packets to the classifier, 
-        which selects the encapsulation for the packet within the sub-domain.
+        after the IBN removes higher-level encapsulation from incoming packets,
+        it sends the packets to the classifier, which selects the encapsulation
+        for the packet within the sub-domain.
       </t>
       <t>
-        One of the goals of the hierarchical approach is to make it tractable to 
+        One of the goals of the hierarchical approach is to make it easy to 
         have transport-flow-aware service chaining with bidirectional paths. For
         example, it is desired that for each TCP flow, the client-to-server 
         packets traverse the same SFs as the server-to-client packets, but in 
         the opposite sequence. We call this bidirectional symmetry. If 
         bidirectional symmetry is required, it is the responsibility of the 
-        classifier to be aware of symmetric paths and chain the traffic in a 
-        symmetric manner.
+        control-plane to be aware of symmetric paths and configure the
+        classifier to chain the traffic in a symmetric manner.
       </t>
       <t>
         Another goal of the hierarchical approach is to simplify the mechanisms 
         of scaling in and scaling out service functions.
-        All of the complexities of load-balancing to multiple SFs can be handled 
-        within a sub-domain, under control of the classifier, allowing the 
-        higher-level domain to be oblivious to the existence of multiple SF 
+        All of the complexities of load-balancing among multiple SFs can be 
+        handled within a sub-domain, under control of the classifier, allowing 
+        the higher-level domain to be oblivious to the existence of multiple SF 
         instances.
       </t>
       <t>
@@ -526,45 +595,64 @@
       </t>
     </section>
 
-    <section title="Controllers">
+    <section title="Control Plane Elements">
       <t>
-        Controllers have been mentioned in this document without being 
-        explained. Although controllers have not yet been standardized, from the 
-        point of view of hierarchical service chaining we have these 
+        Controllers have been mentioned in this document without much
+        explanation. Although control protocols have not yet been standardized, 
+        from the point of view of hierarchical service chaining we have these 
         expectations:
-        <list style="symbol">
+        <list style="symbols">
           <t>
-            Each controller manages a single level of hierarchy.
+            Each control-plane instance manages a single level of hierarchy of a
+            single domain.
           </t>
           <t>
-            Each controller is agnostic about other levels of hierarchy.
+            Each control-plane is agnostic about other levels of hierarchy. This 
+            aspect allows humans to reason about the system within a single 
+            domain and allows control-plane algorithms to use only domain-local 
+            inputs. Top-level control does not need visibility to sub-domain 
+            policies, nor does sub-domain control need visibility to 
+            higher-level policies.
           </t>
           <t>
-            Sub-domain controllers are agnostic about controllers of other 
-            sub-domains.
+            Sub-domain control-planes are agnostic about control-planes of other
+            sub-domains. This allows both humans and machines to manipulate 
+            sub-domain policy without considering policies of other domains.
           </t>
         </list>
       </t>
-
-    </section>
-
-    <section title="Summary">
       <t>
-        The goals of the hierarchical SFC architecture are to make a large-scale
-        network easier to reason about, simpler to control and allow 
-        independent domains of administration. This document has outlined an 
-        approach that serves those goals, with some suggested approaches to 
-        implementing the SF Domain Gateway.
+        Recall that the IBN acts as an SF in the higher-level domain (receiving
+        SF instructions from the higher-level control-plane) and as a classifier
+        in the lower-level domain (receiving classification rules from the
+        sub-domain control-plane). In this view, it is the IBN that glues the
+        layers together.
       </t>
-      
-    </section>
+      <t>
+        The above expectations are not intended to prohibit network-wide 
+        control. A control hierarchy can be envisaged to distribute information 
+        and instructions to multiple domains and sub-domains. Control hierarchy 
+        is outside the scope of this document.
+      </t>
 
+    </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The concept of Hierarchical Service Path Domains was introduced in
       <xref target="I-D.homma-sfc-forwarding-methods-analysis">
       draft-homma-sfc-forwarding-methods-analysis-01</xref>
       as a means to improve scalability of service chaining in large networks. 
+      </t>
+      <t>
+        The authors would like to thank the following individuals for taking the
+        time to read and provide valuable feedback:
+      </t>
+      <t>
+        <list style="hanging">
+          <t> Ron Parker </t>
+          <t> Mohamed Boucadair </t>
+          <t> Christian Jacquenet </t>
+        </list>
       </t>
     </section>
 
