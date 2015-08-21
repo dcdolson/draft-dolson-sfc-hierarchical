@@ -5,14 +5,16 @@
 Service Function Chaining                                      D. Dolson
 Internet-Draft                                                  Sandvine
 Intended status: Informational                                  S. Homma
-Expires: December 21, 2015                                           NTT
+Expires: January 7, 2016                                             NTT
                                                                 D. Lopez
                                                           Telefonica I+D
-                                                           June 19, 2015
+                                                            M. Boucadair
+                                                            Orange Group
+                                                            July 6, 2015
 
 
                      Hierarchical Service Chaining
-                    draft-dolson-sfc-hierarchical-01
+                    draft-dolson-sfc-hierarchical-02
 
 Abstract
 
@@ -39,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 21, 2015.
+   This Internet-Draft will expire on January 7, 2016.
 
 Copyright Notice
 
@@ -48,16 +50,16 @@ Copyright Notice
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
+
+
+
+Dolson, et al.           Expires January 7, 2016                [Page 1]
+
+Internet-Draft        Hierarchical Service Chaining            July 2015
+
+
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
-
-
-
-Dolson, et al.          Expires December 21, 2015               [Page 1]
-
-Internet-Draft        Hierarchical Service Chaining            June 2015
-
-
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
@@ -85,7 +87,9 @@ Table of Contents
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
+   Appendix A.  Examples of Hierarchical Service Function Chaining .  13
+     A.1.  Simplify SFC management . . . . . . . . . . . . . . . . .  13
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
 
 1.  Introduction
 
@@ -102,17 +106,16 @@ Table of Contents
    network, while recognizing that some Service Functions (SFs) require
    bidirectional traffic for transport-layer sessions (e.g., NATs,
    firewalls).  We assume that some paths need to be selected on the
+
+
+
+Dolson, et al.           Expires January 7, 2016                [Page 2]
+
+Internet-Draft        Hierarchical Service Chaining            July 2015
+
+
    basis of application-specific data visible to the network, with
    5-tuple stickiness to specific Service Function instances.
-
-
-
-
-
-Dolson, et al.          Expires December 21, 2015               [Page 2]
-
-Internet-Draft        Hierarchical Service Chaining            June 2015
-
 
    Note: in this document, the notion of the "path" of a packet is the
    series of SF instances traversed by a packet.  The means of
@@ -162,12 +165,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-
-
-
-Dolson, et al.          Expires December 21, 2015               [Page 3]
+Dolson, et al.           Expires January 7, 2016                [Page 3]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
 2.1.  Top Level
@@ -221,9 +221,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015               [Page 4]
+Dolson, et al.           Expires January 7, 2016                [Page 4]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    policies ensuring server-to-client packets take the reverse path of
@@ -277,9 +277,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015               [Page 5]
+Dolson, et al.           Expires January 7, 2016                [Page 5]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    higher-level paths, but only those traversing the sub-domain.  A top-
@@ -333,9 +333,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015               [Page 6]
+Dolson, et al.           Expires January 7, 2016                [Page 6]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    traffic passed to it.  This means that the number of SF Paths within
@@ -389,9 +389,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015               [Page 7]
+Dolson, et al.           Expires January 7, 2016                [Page 7]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    When a packet returns to the IBN at the end of a chain, the SFC
@@ -445,9 +445,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015               [Page 8]
+Dolson, et al.           Expires January 7, 2016                [Page 8]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    This approach requires the SFs in the path to be capable of
@@ -501,9 +501,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015               [Page 9]
+Dolson, et al.           Expires January 7, 2016                [Page 9]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    Another approach is to use well-known labels for path identifiers or
@@ -557,9 +557,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015              [Page 10]
+Dolson, et al.           Expires January 7, 2016               [Page 10]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
       single domain and allows control-plane algorithms to use only
@@ -595,9 +595,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
       Ron Parker
 
-      Mohamed Boucadair
-
       Christian Jacquenet
+
+      Dapeng Liu
 
 7.  IANA Considerations
 
@@ -613,9 +613,9 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015              [Page 11]
+Dolson, et al.           Expires January 7, 2016               [Page 11]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
 
    Furthermore, hierarchical service chaining inherits security
@@ -669,10 +669,141 @@ Internet-Draft        Hierarchical Service Chaining            June 2015
 
 
 
-Dolson, et al.          Expires December 21, 2015              [Page 12]
+Dolson, et al.           Expires January 7, 2016               [Page 12]
 
-Internet-Draft        Hierarchical Service Chaining            June 2015
+Internet-Draft        Hierarchical Service Chaining            July 2015
 
+
+Appendix A.  Examples of Hierarchical Service Function Chaining
+
+   The advantage of hierarchical service function chaining compared with
+   normal or flat service function chaining is that it can reduce the
+   management complexity significantly.  This section discusses examples
+   that show the advantage of hierarchical service chaining.
+
+A.1.  Simplify SFC management
+
+   In this use case, hierarchical service chaining is used to simplify
+   service function chaining management by reducing the number of
+   Service Function Paths.
+
+   As shown in Figure 3, there are two domains each with different
+   concerns: a Security Domain that selects Service Functions based on
+   network conditions and an Optimization Domain that selects Service
+   Functions based on traffic protocol.
+
+   There are five security functions deployed in the Security Domain.
+   The Security Domain operator wants to enforce the five different
+   security policies, and the Optimization Domain operator wants to
+   apply different optimization (either cache or video optimization to
+   each of these two types of traffic.  If we use flat SFC (normal
+   branching), 10 SFPs are needed in each domain.  In contrast, if we
+   use hierarchical SFC, only 5 SFPs in Security Domain and 2 SFPs in
+   Optimization Domain will be required, as shown in Figure 4.
+
+   In the flat model, the number of SFPs is the product of the number of
+   functions in all of the domains.  In the hSFC model, the number of
+   SFPs is the sum of the number of functions.  For example, adding a
+   "bypass" path in the Optimization Domain would cause the flat model
+   to require 15 paths (5 more), but cause the hSFC model to require one
+   more path in the Optimization Domain.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dolson, et al.           Expires January 7, 2016               [Page 13]
+
+Internet-Draft        Hierarchical Service Chaining            July 2015
+
+
+              . . . . . . . . . . . .   . . . . . . . . . . . . .
+              . Security Domain     .   .  Optimization Domain  .
+              .                     .   .                       .
+              .    +-1---[     ]----------------->[Cache  ]------->
+              .    |     [ WAF ]    .   .                       .
+              .    +-2-->[     ]----------------->[Video Opt.]---->
+              .    |                .   .                       .
+              .    +-3---[Anti ]----------------->[Cache  ]------->
+              .    |     [Virus]    .   .                       .
+              .    +-4-->[     ]----------------->[Video Opt.]---->
+              .    |                .   .                       .
+              .    +-5-->[     ]----------------->[Cache  ]------->
+   [DPI]--->[CF]---|     [ IPS ]    .   .                       .
+              .    +-6-->[     ]----------------->[Video Opt.]---->
+              .    |                .   .                       .
+              .    +-7-->[     ]----------------->[Cache  ]------->
+              .    |     [ IDS ]    .   .                       .
+              .    +-8-->[     ]----------------->[Video Opt.]---->
+              .    |                .   .                       .
+              .    +-9-->[Traffic]--------------->[Cache  ]------->
+              .    |     [Monitor]  .   .                       .
+              .    +-10->[       ]--------------->[Video Opt.]---->
+              . . . . . . . . . . . .   . . . . . . . . . . . . .
+
+   The classifier must select paths that determine the combination of
+   Security and Optimization concerns. 1:WAF+Cache, 2:WAF+VideoOpt,
+   3:AntiVirus+Cache, 4:AntiVirus+VideoOpt, 5: IPS+Cache,
+   6:IPS+VideoOpt, 7:IDS+Cache, 8:IDS+VideoOpt, 9:TrafficMonitor+Cache,
+   10:TrafficMonitor+VideoOpt
+
+                   Figure 3: Flat SFC (Normal Branching)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dolson, et al.           Expires January 7, 2016               [Page 14]
+
+Internet-Draft        Hierarchical Service Chaining            July 2015
+
+
+       . . . . . . . . . . . . . . .     . . . . . . . . . . . . . . .
+       .     Security Domain       .     .   Optimization Domain     .
+       .                           .     .                           .
+  [CF]---->[ DPI(Sub-domain GW)]------[CF]->[   Sub-domain GW     ]---->
+       .    |                  ^   .     .  |                     ^  .
+       .    +----->[ WAF ]-----+   .     .  +-->[ Cache ]---------+  .
+       .    |                  |   .     .  |                     |  .
+       .    +-->[Anti-Virus]---+   .     .  +-->[Video Opt]-------+  .
+       .    |                  |   .     .                           .
+       .    +----->[ IPS ]-----+   .     . . . . . . . . . . . . . . .
+       .    |                  |   .
+       .    +----->[ IDS ]-----+   .
+       .    |                  |   .
+       .    +-->[ Traffic ]----+   .
+       .        [ Monitor ]        .
+       . . . . . . . . . . . . . . .
+
+        Figure 4: Simplified Path Management with Hierarchical SFC
 
 Authors' Addresses
 
@@ -706,6 +837,17 @@ Authors' Addresses
 
 
 
+Dolson, et al.           Expires January 7, 2016               [Page 15]
+
+Internet-Draft        Hierarchical Service Chaining            July 2015
+
+
+   Mohamed Boucadair
+   Orange Group
+   Rennes  35000
+   France
+
+   Email: mohamed.boucadair@orange.com
 
 
 
@@ -725,4 +867,30 @@ Authors' Addresses
 
 
 
-Dolson, et al.          Expires December 21, 2015              [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dolson, et al.           Expires January 7, 2016               [Page 16]

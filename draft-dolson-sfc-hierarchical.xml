@@ -39,7 +39,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-01" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-02" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -96,8 +96,22 @@
       </address>
     </author>
 
+    <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
+      <organization>Orange Group</organization>
+      <address>
+        <postal>
+          <street></street>
+          <city>Rennes</city>
+          <code>35000</code>
+          <country>France</country>
+        </postal>
+        <email> mohamed.boucadair@orange.com </email>
+      </address>
+    </author>
 
-    <date month="June" year="2015" />
+
+
+    <date month="July" year="2015" />
 
     <!-- Meta-data Declarations -->
 
@@ -650,8 +664,8 @@
       <t>
         <list style="hanging">
           <t> Ron Parker </t>
-          <t> Mohamed Boucadair </t>
           <t> Christian Jacquenet </t>
+          <t> Dapeng Liu </t>
         </list>
       </t>
     </section>
@@ -713,6 +727,109 @@
       &I-D.draft-ietf-sfc-dc-use-cases;
 
     </references>
+
+    <!-- Appendix -->
+    <section title="Examples of Hierarchical Service Function Chaining">
+      <t>
+        The advantage of hierarchical service function chaining compared with
+        normal or flat service function chaining is that it can reduce the
+        management complexity significantly. This section discusses examples
+        that show the advantage of hierarchical service chaining. 
+      </t>
+
+      <section title="Simplify SFC management">
+        <t>
+          In this use case, hierarchical service chaining is used to simplify
+          service function chaining management by reducing the number of Service 
+          Function Paths.
+        </t>
+
+        <t>
+          As shown in <xref target="fig_example_flat"/>,
+          there are two domains each with different concerns: a Security Domain 
+          that selects Service Functions based on network conditions and an 
+          Optimization Domain that selects Service Functions based on traffic 
+          protocol.
+        </t>
+        <t>
+          There are five security functions deployed in the Security Domain. The
+          Security Domain operator wants to enforce the five different security
+          policies, and the Optimization Domain operator wants to apply
+          different optimization (either cache or video optimization to each of 
+          these two types of traffic. If we use flat SFC (normal branching), 10 
+          SFPs are needed in each domain. In contrast, if we use hierarchical 
+          SFC, only 5 SFPs in Security Domain and 2 SFPs in Optimization 
+          Domain will be required, as shown in
+          <xref target="fig_example_hsfc"/>.
+        </t>
+        <t>
+          In the flat model, the number of SFPs is the product of the number of 
+          functions in all of the domains. In the hSFC model, the number of SFPs 
+          is the sum of the number of functions. For example, adding a "bypass" 
+          path in the Optimization Domain would cause the flat model to require 
+          15 paths (5 more), but cause the hSFC model to require one more path 
+          in the Optimization Domain.
+        </t>
+        <figure anchor="fig_example_flat"
+                title="Flat SFC (Normal Branching)">
+          <artwork><![CDATA[
+           . . . . . . . . . . . .   . . . . . . . . . . . . .
+           . Security Domain     .   .  Optimization Domain  .
+           .                     .   .                       .
+           .    +-1---[     ]----------------->[Cache  ]------->
+           .    |     [ WAF ]    .   .                       .
+           .    +-2-->[     ]----------------->[Video Opt.]---->
+           .    |                .   .                       .    
+           .    +-3---[Anti ]----------------->[Cache  ]------->
+           .    |     [Virus]    .   .                       .
+           .    +-4-->[     ]----------------->[Video Opt.]---->
+           .    |                .   .                       .
+           .    +-5-->[     ]----------------->[Cache  ]------->
+[DPI]--->[CF]---|     [ IPS ]    .   .                       .
+           .    +-6-->[     ]----------------->[Video Opt.]---->
+           .    |                .   .                       .
+           .    +-7-->[     ]----------------->[Cache  ]------->
+           .    |     [ IDS ]    .   .                       .
+           .    +-8-->[     ]----------------->[Video Opt.]---->
+           .    |                .   .                       .
+           .    +-9-->[Traffic]--------------->[Cache  ]------->
+           .    |     [Monitor]  .   .                       .
+           .    +-10->[       ]--------------->[Video Opt.]---->
+           . . . . . . . . . . . .   . . . . . . . . . . . . .
+       ]]> </artwork>
+       <postamble>
+         The classifier must select paths that determine the combination of 
+         Security and Optimization concerns. 1:WAF+Cache, 2:WAF+VideoOpt, 
+         3:AntiVirus+Cache, 4:AntiVirus+VideoOpt, 5: IPS+Cache, 6:IPS+VideoOpt,
+         7:IDS+Cache, 8:IDS+VideoOpt, 9:TrafficMonitor+Cache, 
+         10:TrafficMonitor+VideoOpt
+       </postamble>
+        </figure>
+
+        <figure anchor="fig_example_hsfc"
+                title="Simplified Path Management with Hierarchical SFC">
+          <artwork><![CDATA[
+     . . . . . . . . . . . . . . .     . . . . . . . . . . . . . . .
+     .     Security Domain       .     .   Optimization Domain     .
+     .                           .     .                           .
+[CF]---->[ DPI(Sub-domain GW)]------[CF]->[   Sub-domain GW     ]---->
+     .    |                  ^   .     .  |                     ^  .
+     .    +----->[ WAF ]-----+   .     .  +-->[ Cache ]---------+  .
+     .    |                  |   .     .  |                     |  .
+     .    +-->[Anti-Virus]---+   .     .  +-->[Video Opt]-------+  .
+     .    |                  |   .     .                           .
+     .    +----->[ IPS ]-----+   .     . . . . . . . . . . . . . . .
+     .    |                  |   .
+     .    +----->[ IDS ]-----+   .
+     .    |                  |   .
+     .    +-->[ Traffic ]----+   .
+     .        [ Monitor ]        .
+     . . . . . . . . . . . . . . .
+       ]]> </artwork>
+        </figure>
+      </section>
+      
+    </section>
 
   </back>
 </rfc>
