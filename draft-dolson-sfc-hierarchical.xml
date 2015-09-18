@@ -39,7 +39,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-02" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-03" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -109,9 +109,21 @@
       </address>
     </author>
 
+    <author fullname="Dapeng Liu" initials="D." surname="Liu">
+      <organization>Alibaba Group</organization>
+      <address>
+        <postal>
+          <street></street>
+          <city>Beijing</city>
+          <code>100022</code>
+          <country>China</country>
+        </postal>
+        <email> max.ldp@alibaba-inc.com </email>
+      </address>
+    </author>
 
 
-    <date month="July" year="2015" />
+    <date month="Sep" year="2015" />
 
     <!-- Meta-data Declarations -->
 
@@ -665,7 +677,7 @@
         <list style="hanging">
           <t> Ron Parker </t>
           <t> Christian Jacquenet </t>
-          <t> Dapeng Liu </t>
+          <t> Jie Cao </t>
         </list>
       </t>
     </section>
@@ -827,6 +839,65 @@
      . . . . . . . . . . . . . . .
        ]]> </artwork>
         </figure>
+      </section>
+
+      <section title="Simplify Inter-DC SFC Management">
+        <t>
+          Hierarchical service chaining could be used to simplify inter-data center
+          SFC management. As shown in the below figure, there is a central data center
+          and multiple local data centers which are deployed in a geographically distributed
+          manner. All the DCs are under a single administrative domain. 
+          The central DC may has some resources that the local DC needs and the traffic that 
+          from the local DC need to go to the central DC. 
+        </t>
+
+        <figure anchor="fig_example_hsfc_inter_dc"
+                title="Simplify Inter-DC SFC Management">
+          <artwork><![CDATA[
+                 
+                +-----------+
+                |Central DC |
+                +-----------+
+                   ^  ^   ^
+                   |  |   |
+               .---|--|---|----.    
+              /   /   |   |      \
+             /   /    |    \      \ 
+  +-----+   /   /     |     \      \    +-----+
+  |Local|  |   /      |      \     |    |Local|
+  |DC#1 |--|--.       |       .----|----|DC#3 |
+  +-----+  |          |            |    +-----+
+            \         |            /
+             \        |           /  
+              \       |          /   
+               '----------------'    
+                      |      
+                   +-----+
+                   |Local|
+                   |DC#2 |
+                   +-----+                          
+
+                   
+                   ]]> 
+          </artwork>
+        </figure>
+        
+        <t>
+          For large data center operators, one local DC may have tens of thousands of servers
+          and hundred of thousands of virtual machines. SFC could be used to manage user traffic. 
+          For example, SFC could be used to classify user traffic based on service type, DDoS state etc.
+        </t>
+
+        <t>
+          In such large scale data center, using flat SFC
+          could be very complex. For example, any changes of SF/SFP (e.g deploy a new SF) in 
+          the central data center will require all the local DC to update their SFP configuration accordingly.
+          Furthermore, requirement for symmetric path will make it harder to use flat sfc in this scenario.
+          Conversely, if using hierarchical SFC, each data center could be managed independently
+          and the management complexity could be reduced significantly. 
+        </t>
+
+
       </section>
       
     </section>
