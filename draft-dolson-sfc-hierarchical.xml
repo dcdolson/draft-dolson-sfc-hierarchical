@@ -821,16 +821,16 @@
         <figure anchor="fig_example_hsfc"
                 title="Simplified Path Management with Hierarchical SFC">
           <artwork><![CDATA[
-     . . . . . . . . . . . . . . .     . . . . . . . . . . . . . . .
-     .     Security Domain       .     .   Optimization Domain     .
-     .                           .     .                           .
-[CF]---->[  [CF]    IBN      ]----------->[  [CF]   IBN         ]---->
-     .    |                  ^   .     .  |                     ^  .
-     .    +----->[ WAF ]-----+   .     .  +-->[ Cache ]---------+  .
-     .    |                  |   .     .  |                     |  .
-     .    +-->[Anti-Virus]---+   .     .  +-->[Video Opt]-------+  .
-     .    |                  |   .     .                           .
-     .    +----->[ IPS ]-----+   .     . . . . . . . . . . . . . . .
+     . . . . . . . . . . . . . . .    . . . . . . . . . . . . . . .
+     .     Security Domain       .    .   Optimization Domain     .
+     .                           .    .                           .
+[CF]---->[  [CF]    IBN      ]---------->[  [CF]   IBN         ]---->
+     .    |                  ^   .    .  |                     ^  .
+     .    +----->[ WAF ]-----+   .    .  +-->[ Cache ]---------+  .
+     .    |                  |   .    .  |                     |  .
+     .    +-->[Anti-Virus]---+   .    .  +-->[Video Opt]-------+  .
+     .    |                  |   .    .                           .
+     .    +----->[ IPS ]-----+   .    . . . . . . . . . . . . . . .
      .    |                  |   .
      .    +----->[ IDS ]-----+   .
      .    |                  |   .
@@ -843,18 +843,19 @@
 
       <section title="Simplify Inter-DC SFC Management">
         <t>
-          Hierarchical service chaining could be used to simplify inter-data center
-          SFC management. As shown in the below figure, there is a central data center
-          and multiple local data centers which are deployed in a geographically distributed
-          manner. All the DCs are under a single administrative domain. 
-          The central DC may has some resources that the local DC needs and the traffic that 
-          from the local DC need to go to the central DC. 
+          Hierarchical service chaining can be used to simplify inter-data-center
+          SFC management. In the example of <xref target="fig_example_hsfc_inter_dc"/>,
+          shown below, there is a central data center (Central DC)
+          and multiple local data centers (Local DC#1, #2, #3)
+          that are deployed in a geographically distributed manner.
+          All of the data centers are under a single administrative domain. 
+          The central DC may have some service functions that the local DC needs,
+          such that the local DC needs to chain traffic via the central DC.
         </t>
 
         <figure anchor="fig_example_hsfc_inter_dc"
                 title="Simplify Inter-DC SFC Management">
           <artwork><![CDATA[
-                 
                 +-----------+
                 |Central DC |
                 +-----------+
@@ -876,25 +877,31 @@
                    |Local|
                    |DC#2 |
                    +-----+                          
-
-                   
                    ]]> 
           </artwork>
         </figure>
         
         <t>
           For large data center operators, one local DC may have tens of thousands of servers
-          and hundred of thousands of virtual machines. SFC could be used to manage user traffic. 
-          For example, SFC could be used to classify user traffic based on service type, DDoS state etc.
+          and hundred of thousands of virtual machines. SFC can be used to manage user traffic. 
+          For example, SFC can be used to classify user traffic based on service type, DDoS state etc.
         </t>
 
         <t>
           In such large scale data center, using flat SFC
-          could be very complex. For example, any changes of SF/SFP (e.g deploy a new SF) in 
-          the central data center will require all the local DC to update their SFP configuration accordingly.
-          Furthermore, requirement for symmetric path will make it harder to use flat sfc in this scenario.
-          Conversely, if using hierarchical SFC, each data center could be managed independently
-          and the management complexity could be reduced significantly. 
+          is very complex, requiring a super-controller to configure all data centers.
+          For example, any changes 
+          to Service Functions or Service Function Paths in the central DC (e.g., deploying a new SF) would
+          require updates to all of the Service Function Paths in the local DCs accordingly.
+          Furthermore, requirements for symmetric paths add additional complexity when
+          flat SFC is used in this scenario.
+        </t>
+        <t>
+          Conversely, if using hierarchical SFC, each data center can be managed independently
+          and the management complexity could be reduced significantly. Service Function Paths between 
+          data centers can represent abstract notions without regard to details within data centers.
+          Independent controllers can be used for the top level (getting packets to pass the correct
+          data centers) and local levels (getting packets to specific SF instances).
         </t>
 
 
