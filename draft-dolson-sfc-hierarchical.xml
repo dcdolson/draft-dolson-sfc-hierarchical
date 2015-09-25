@@ -45,7 +45,7 @@
 
   <front>
 
-    <title>Hierarchical Service Chaining</title>
+    <title>Hierarchical Service Function Chaining</title>
 
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -625,8 +625,8 @@
       <t>
         Controllers have been mentioned in this document without much
         explanation. Although control protocols have not yet been standardized, 
-        from the point of view of hierarchical service chaining we have these 
-        expectations:
+        from the point of view of hierarchical service function chaining we have 
+        these expectations:
         <list style="symbols">
           <t>
             Each control-plane instance manages a single level of hierarchy of a
@@ -690,12 +690,12 @@
 
     <section anchor="Security" title="Security Considerations">
       <t>
-        Hierarchical service chaining makes use of service chaining 
+        Hierarchical service function chaining makes use of service chaining 
         architecture, and hence inherits the security considerations described 
         in the architecture document.
       </t>
       <t>
-        Furthermore, hierarchical service chaining inherits security 
+        Furthermore, hierarchical service function chaining inherits security 
         considerations of the data-plane protocols (e.g., NSH) and control-plane 
         protocols used to realize the solution.
       </t>
@@ -746,14 +746,14 @@
         The advantage of hierarchical service function chaining compared with
         normal or flat service function chaining is that it can reduce the
         management complexity significantly. This section discusses examples
-        that show the advantage of hierarchical service chaining. 
+        that show the advantage of hierarchical service function chaining. 
       </t>
 
-      <section title="Simplify SFC management">
+      <section title="Reducing the Number of Service Function Paths">
         <t>
-          In this use case, hierarchical service chaining is used to simplify
-          service function chaining management by reducing the number of Service 
-          Function Paths.
+          In this use case, hierarchical service function chaining is used to 
+          simplify service function chaining management by reducing the number 
+          of Service Function Paths.
         </t>
 
         <t>
@@ -841,16 +841,36 @@
         </figure>
       </section>
 
-      <section title="Simplify Inter-DC SFC Management">
+      <section title="Managing a Distributed Data-Center Network">
         <t>
-          Hierarchical service chaining can be used to simplify inter-data-center
-          SFC management. In the example of <xref target="fig_example_hsfc_inter_dc"/>,
+          Hierarchical service function chaining can be used to simplify 
+          inter-data-center SFC management. In the example of 
+          <xref target="fig_example_hsfc_inter_dc"/>,
           shown below, there is a central data center (Central DC)
           and multiple local data centers (Local DC#1, #2, #3)
           that are deployed in a geographically distributed manner.
           All of the data centers are under a single administrative domain. 
+        </t>
+        <t>
           The central DC may have some service functions that the local DC needs,
           such that the local DC needs to chain traffic via the central DC.
+          This could be because:
+          <list style="symbols">
+            <t>
+              Some service functions are deployed as dedicated hardware 
+              appliances, and there is a desire to avoid the capital and 
+              operation expenses (CAPEX and OPEX respectively) of deploying such 
+              service functions in all data centers.
+            </t>
+            <t>
+              Consider the case when service functions are being trialed,
+              introduced or otherwise handle a relatively small amount of 
+              traffic. It may be cheaper to manage these service functions in a 
+              single central data center and steer packets to the central data 
+              center than to manage these service functions in all data centers.
+            </t>
+            
+          </list>
         </t>
 
         <figure anchor="fig_example_hsfc_inter_dc"

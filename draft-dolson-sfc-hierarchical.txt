@@ -5,17 +5,17 @@
 Service Function Chaining                                      D. Dolson
 Internet-Draft                                                  Sandvine
 Intended status: Informational                                  S. Homma
-Expires: March 21, 2016                                              NTT
+Expires: March 28, 2016                                              NTT
                                                                 D. Lopez
                                                           Telefonica I+D
                                                             M. Boucadair
                                                             Orange Group
                                                                   D. Liu
                                                            Alibaba Group
-                                                      September 18, 2015
+                                                      September 25, 2015
 
 
-                     Hierarchical Service Chaining
+                 Hierarchical Service Function Chaining
                     draft-dolson-sfc-hierarchical-03
 
 Abstract
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 21, 2016.
+   This Internet-Draft will expire on March 28, 2016.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 1]
+Dolson, et al.           Expires March 28, 2016                 [Page 1]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -90,8 +90,8 @@ Table of Contents
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
    Appendix A.  Examples of Hierarchical Service Function Chaining .  13
-     A.1.  Simplify SFC management . . . . . . . . . . . . . . . . .  13
-     A.2.  Simplify Inter-DC SFC Management  . . . . . . . . . . . .  15
+     A.1.  Reducing the Number of Service Function Paths . . . . . .  13
+     A.2.  Managing a Distributed Data-Center Network  . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
 
 1.  Introduction
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 2]
+Dolson, et al.           Expires March 28, 2016                 [Page 2]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
    network, while recognizing that some Service Functions (SFs) require
@@ -165,9 +165,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 3]
+Dolson, et al.           Expires March 28, 2016                 [Page 3]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 2.  Hierarchical Service Function Chaining (hSFC)
@@ -221,9 +221,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 4]
+Dolson, et al.           Expires March 28, 2016                 [Page 4]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
    with an approach requiring the top-level classifier to select paths
@@ -277,9 +277,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 5]
+Dolson, et al.           Expires March 28, 2016                 [Page 5]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
    the packets to the selected local service function paths terminating
@@ -333,9 +333,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 6]
+Dolson, et al.           Expires March 28, 2016                 [Page 6]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 3.  Internal Boundary Node (IBN)
@@ -389,9 +389,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 7]
+Dolson, et al.           Expires March 28, 2016                 [Page 7]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
    The simplest approach has the packets return to the same IBN at the
@@ -445,9 +445,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 8]
+Dolson, et al.           Expires March 28, 2016                 [Page 8]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 3.1.2.  Encoding Upper-Level Paths in Metadata
@@ -501,9 +501,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                 [Page 9]
+Dolson, et al.           Expires March 28, 2016                 [Page 9]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 3.2.  Gluing Levels Together
@@ -557,17 +557,17 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 10]
+Dolson, et al.           Expires March 28, 2016                [Page 10]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 5.  Control Plane Elements
 
    Controllers have been mentioned in this document without much
    explanation.  Although control protocols have not yet been
-   standardized, from the point of view of hierarchical service chaining
-   we have these expectations:
+   standardized, from the point of view of hierarchical service function
+   chaining we have these expectations:
 
    o  Each control-plane instance manages a single level of hierarchy of
       a single domain.
@@ -613,9 +613,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 11]
+Dolson, et al.           Expires March 28, 2016                [Page 11]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 7.  IANA Considerations
@@ -624,11 +624,11 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 8.  Security Considerations
 
-   Hierarchical service chaining makes use of service chaining
+   Hierarchical service function chaining makes use of service chaining
    architecture, and hence inherits the security considerations
    described in the architecture document.
 
-   Furthermore, hierarchical service chaining inherits security
+   Furthermore, hierarchical service function chaining inherits security
    considerations of the data-plane protocols (e.g., NSH) and control-
    plane protocols used to realize the solution.
 
@@ -669,9 +669,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 12]
+Dolson, et al.           Expires March 28, 2016                [Page 12]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
    [I-D.ietf-sfc-architecture]
@@ -694,13 +694,13 @@ Appendix A.  Examples of Hierarchical Service Function Chaining
    The advantage of hierarchical service function chaining compared with
    normal or flat service function chaining is that it can reduce the
    management complexity significantly.  This section discusses examples
-   that show the advantage of hierarchical service chaining.
+   that show the advantage of hierarchical service function chaining.
 
-A.1.  Simplify SFC management
+A.1.  Reducing the Number of Service Function Paths
 
-   In this use case, hierarchical service chaining is used to simplify
-   service function chaining management by reducing the number of
-   Service Function Paths.
+   In this use case, hierarchical service function chaining is used to
+   simplify service function chaining management by reducing the number
+   of Service Function Paths.
 
    As shown in Figure 3, there are two domains each with different
    concerns: a Security Domain that selects Service Functions based on
@@ -725,9 +725,9 @@ A.1.  Simplify SFC management
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 13]
+Dolson, et al.           Expires March 28, 2016                [Page 13]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
               . . . . . . . . . . . .   . . . . . . . . . . . . .
@@ -781,9 +781,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 14]
+Dolson, et al.           Expires March 28, 2016                [Page 14]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
         . . . . . . . . . . . . . . .    . . . . . . . . . . . . . . .
@@ -805,16 +805,29 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
         Figure 4: Simplified Path Management with Hierarchical SFC
 
-A.2.  Simplify Inter-DC SFC Management
+A.2.  Managing a Distributed Data-Center Network
 
-   Hierarchical service chaining can be used to simplify inter-data-
-   center SFC management.  In the example of Figure 5, shown below,
+   Hierarchical service function chaining can be used to simplify inter-
+   data-center SFC management.  In the example of Figure 5, shown below,
    there is a central data center (Central DC) and multiple local data
    centers (Local DC#1, #2, #3) that are deployed in a geographically
    distributed manner.  All of the data centers are under a single
-   administrative domain.  The central DC may have some service
-   functions that the local DC needs, such that the local DC needs to
-   chain traffic via the central DC.
+   administrative domain.
+
+   The central DC may have some service functions that the local DC
+   needs, such that the local DC needs to chain traffic via the central
+   DC.  This could be because:
+
+   o  Some service functions are deployed as dedicated hardware
+      appliances, and there is a desire to avoid the capital and
+      operation expenses (CAPEX and OPEX respectively) of deploying such
+      service functions in all data centers.
+
+   o  Consider the case when service functions are being trialed,
+      introduced or otherwise handle a relatively small amount of
+      traffic.  It may be cheaper to manage these service functions in a
+      single central data center and steer packets to the central data
+      center than to manage these service functions in all data centers.
 
 
 
@@ -824,22 +837,9 @@ A.2.  Simplify Inter-DC SFC Management
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Dolson, et al.           Expires March 21, 2016                [Page 15]
+Dolson, et al.           Expires March 28, 2016                [Page 15]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
                    +-----------+
@@ -893,9 +893,9 @@ Internet-Draft        Hierarchical Service Chaining       September 2015
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 16]
+Dolson, et al.           Expires March 28, 2016                [Page 16]
 
-Internet-Draft        Hierarchical Service Chaining       September 2015
+Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 Authors' Addresses
@@ -949,4 +949,4 @@ Authors' Addresses
 
 
 
-Dolson, et al.           Expires March 21, 2016                [Page 17]
+Dolson, et al.           Expires March 28, 2016                [Page 17]
