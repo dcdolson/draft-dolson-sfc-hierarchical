@@ -5,14 +5,14 @@
 Service Function Chaining                                      D. Dolson
 Internet-Draft                                                  Sandvine
 Intended status: Informational                                  S. Homma
-Expires: March 28, 2016                                              NTT
+Expires: April 4, 2016                                               NTT
                                                                 D. Lopez
                                                           Telefonica I+D
                                                             M. Boucadair
                                                             Orange Group
                                                                   D. Liu
                                                            Alibaba Group
-                                                      September 25, 2015
+                                                         October 2, 2015
 
 
                  Hierarchical Service Function Chaining
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 28, 2016.
+   This Internet-Draft will expire on April 4, 2016.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Dolson, et al.           Expires March 28, 2016                 [Page 1]
+Dolson, et al.            Expires April 4, 2016                 [Page 1]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,16 +109,17 @@ Table of Contents
 
 
 
-Dolson, et al.           Expires March 28, 2016                 [Page 2]
+Dolson, et al.            Expires April 4, 2016                 [Page 2]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
    network, while recognizing that some Service Functions (SFs) require
    bidirectional traffic for transport-layer sessions (e.g., NATs,
    firewalls).  We assume that some paths need to be selected on the
    basis of application-specific data visible to the network, with
-   5-tuple stickiness to specific Service Function instances.
+   transport-layer coordinate (typically, 5-tuple) stickiness to
+   specific Service Function instances.
 
    Note: in this document, the notion of the "path" of a packet is the
    series of SF instances traversed by a packet.  The means of
@@ -164,10 +165,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-
-Dolson, et al.           Expires March 28, 2016                 [Page 3]
+Dolson, et al.            Expires April 4, 2016                 [Page 3]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 2.  Hierarchical Service Function Chaining (hSFC)
@@ -221,13 +221,13 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                 [Page 4]
+Dolson, et al.            Expires April 4, 2016                 [Page 4]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
    with an approach requiring the top-level classifier to select paths
-   to specify all of the SFs in each sub-domains.
+   to specify all of the SFs in each sub-domain.
 
    It should be assumed that some service functions in the network
    require bidirectional symmetry of paths (see more in Section 4).
@@ -277,9 +277,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                 [Page 5]
+Dolson, et al.            Expires April 4, 2016                 [Page 5]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
    the packets to the selected local service function paths terminating
@@ -333,9 +333,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                 [Page 6]
+Dolson, et al.            Expires April 4, 2016                 [Page 6]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 3.  Internal Boundary Node (IBN)
@@ -376,48 +376,49 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 3.1.1.  Flow-Stateful IBN
 
    An IBN can be flow-aware, returning packets to the correct higher-
-   level SF path on the basis of 5-tuple of packets exiting the lower-
-   level SF paths.
+   level SF path on the basis of the transport-layer coordinates
+   (typically, a 5-tuple) of packets exiting the lower-level SF paths.
 
    When packets are received by the IBN on a higher-level path, the
-   encapsulated packets are parsed for IP and transport-layer (TCP or
-   UDP) coordinates.  State is created, indexed by the 5-tuple of
-   {source-IP, destination-IP, source-port, destination-port and
-   transport protocol}. The state contains critical fields of the
-   encapsulating SFC header (or perhaps the entire header).
+   encapsulated packets are parsed for IP and transport-layer (TCP,
+   UDP...) coordinates.  State is created, indexed by these coordinates
+   (a 5-tuple of {source-IP, destination-IP, source-port, destination-
+   port and transport protocol} in a typical case).  The state contains
+   critical fields of the encapsulating SFC header (or perhaps the
+   entire header).
 
 
 
-
-Dolson, et al.           Expires March 28, 2016                 [Page 7]
+Dolson, et al.            Expires April 4, 2016                 [Page 7]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
    The simplest approach has the packets return to the same IBN at the
    end of the chain that classified the packet at the start of the
-   chain.  This is because the required 5-tuple state is rapidly
-   changing and most efficiently kept locally.  If the packet is
-   returned to a different IBN for egress, 5-tuple state must be
-   synchronized between the IBNs.
+   chain.  This is because the required transport-coordinates state is
+   rapidly changing and most efficiently kept locally.  If the packet is
+   returned to a different IBN for egress, transport-coordinates state
+   must be synchronized between the IBNs.
 
    When a packet returns to the IBN at the end of a chain, the SFC
    header is removed, the packet is parsed for IP and transport-layer
-   coordinates, and state is retrieved by the 5-tuple of the packet.
-   The state contains the information required to forward the packet
-   within the higher-level service chain.
+   coordinates, and state is retrieved from them.  The state contains
+   the information required to forward the packet within the higher-
+   level service chain.
 
    State cannot be created by packets arriving from the lower-level
    chain; when state cannot be found for such packets, they MUST be
    dropped.
 
    This stateful approach is limited to use with SFs that retain the
-   5-tuple of the packet.  This approach cannot be used with SFs that
-   modify the 5-tuple (e.g., as done by a NAT) or otherwise create
-   packets for new 5-tuples other than those received (e.g., as an HTTP
-   cache might do to retrieve content on behalf of the original flow).
-   In both cases, the fundamental problem is the inability to forward
-   packets when state cannot be found for the packet 5-tuples.
+   transport coordinates of the packet.  This approach cannot be used
+   with SFs that modify those coordinates (e.g., as done by a NAT) or
+   otherwise create packets for new coordinates other than those
+   received (e.g., as an HTTP cache might do to retrieve content on
+   behalf of the original flow).  In both cases, the fundamental problem
+   is the inability to forward packets when state cannot be found for
+   the packet transport-layer coordinates.
 
    In the stateful approach, there are issues caused by the state, such
    as how long the state should be maintained (it MUST time out
@@ -430,8 +431,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
    re-created by an end-point retransmitting a TCP packet.
 
    If an SFC domain handles multiple network regions (e.g., multiple
-   private networks), the 5-tuple may be augmented with a 6th parameter,
-   perhaps using some metadata to identify the network region.
+   private networks), the coordinates may be augmented with additional
+   parameters, perhaps using some metadata to identify the network
+   region.
 
    In this stateful approach, it is not necessary for the sub-domain's
    control-plane to modify paths when higher-level paths are changed.
@@ -443,11 +445,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-
-
-Dolson, et al.           Expires March 28, 2016                 [Page 8]
+Dolson, et al.            Expires April 4, 2016                 [Page 8]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 3.1.2.  Encoding Upper-Level Paths in Metadata
@@ -501,9 +501,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                 [Page 9]
+Dolson, et al.            Expires April 4, 2016                 [Page 9]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 3.2.  Gluing Levels Together
@@ -557,9 +557,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 10]
+Dolson, et al.            Expires April 4, 2016                [Page 10]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 5.  Control Plane Elements
@@ -613,9 +613,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 11]
+Dolson, et al.            Expires April 4, 2016                [Page 11]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 7.  IANA Considerations
@@ -669,9 +669,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 12]
+Dolson, et al.            Expires April 4, 2016                [Page 12]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
    [I-D.ietf-sfc-architecture]
@@ -698,7 +698,7 @@ Appendix A.  Examples of Hierarchical Service Function Chaining
 
 A.1.  Reducing the Number of Service Function Paths
 
-   In this use case, hierarchical service function chaining is used to
+   In this case, hierarchical service function chaining is used to
    simplify service function chaining management by reducing the number
    of Service Function Paths.
 
@@ -710,7 +710,7 @@ A.1.  Reducing the Number of Service Function Paths
    There are five security functions deployed in the Security Domain.
    The Security Domain operator wants to enforce the five different
    security policies, and the Optimization Domain operator wants to
-   apply different optimization (either cache or video optimization to
+   apply different optimizations (either cache or video optimization) to
    each of these two types of traffic.  If we use flat SFC (normal
    branching), 10 SFPs are needed in each domain.  In contrast, if we
    use hierarchical SFC, only 5 SFPs in Security Domain and 2 SFPs in
@@ -725,9 +725,9 @@ A.1.  Reducing the Number of Service Function Paths
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 13]
+Dolson, et al.            Expires April 4, 2016                [Page 13]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
               . . . . . . . . . . . .   . . . . . . . . . . . . .
@@ -781,9 +781,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 14]
+Dolson, et al.            Expires April 4, 2016                [Page 14]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
         . . . . . . . . . . . . . . .    . . . . . . . . . . . . . . .
@@ -819,9 +819,8 @@ A.2.  Managing a Distributed Data-Center Network
    DC.  This could be because:
 
    o  Some service functions are deployed as dedicated hardware
-      appliances, and there is a desire to avoid the capital and
-      operation expenses (CAPEX and OPEX respectively) of deploying such
-      service functions in all data centers.
+      appliances, and there is a desire to lower the cost (both CAPEX
+      and OPEX) of deploying such service functions in all data centers.
 
    o  Consider the case when service functions are being trialed,
       introduced or otherwise handle a relatively small amount of
@@ -837,9 +836,10 @@ A.2.  Managing a Distributed Data-Center Network
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 15]
+
+Dolson, et al.            Expires April 4, 2016                [Page 15]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
                    +-----------+
@@ -893,9 +893,9 @@ Internet-Draft   Hierarchical Service Function Chaining   September 2015
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 16]
+Dolson, et al.            Expires April 4, 2016                [Page 16]
 
-Internet-Draft   Hierarchical Service Function Chaining   September 2015
+Internet-Draft   Hierarchical Service Function Chaining     October 2015
 
 
 Authors' Addresses
@@ -949,4 +949,4 @@ Authors' Addresses
 
 
 
-Dolson, et al.           Expires March 28, 2016                [Page 17]
+Dolson, et al.            Expires April 4, 2016                [Page 17]
