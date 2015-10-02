@@ -168,8 +168,8 @@
         recognizing that some Service Functions (SFs) require bidirectional 
         traffic for transport-layer sessions (e.g., NATs, firewalls). We assume  
         that some paths need to be selected on the basis of application-specific 
-        data visible to the network, with 5-tuple stickiness to specific Service
-        Function instances.
+        data visible to the network, with transport-layer coordinate (typically, 
+        5-tuple) stickiness to specific Service Function instances.
       </t>
       <t>
         Note: in this document, the notion of the "path" of a packet is the
@@ -271,7 +271,7 @@
           the sub-domain are to be traversed. At the egress of each sub-domain, 
           packets are returned to the top-level paths. Contrast this with an 
           approach requiring the top-level classifier to select paths to specify 
-          all of the SFs in each sub-domains.
+          all of the SFs in each sub-domain.
         </t>
         <t>
           It should be assumed that some service functions in the network 
@@ -436,31 +436,33 @@
         <section title="Flow-Stateful IBN">
           <t>
             An IBN can be flow-aware, returning packets to the correct
-            higher-level SF path on the basis of 5-tuple of packets exiting the
+            higher-level SF path on the basis of the transport-layer 
+            coordinates (typically, a 5-tuple) of packets exiting the 
             lower-level SF paths.
           </t>
           <t>
             When packets are received by the IBN on a higher-level path, the
-            encapsulated packets are parsed for IP and transport-layer (TCP or
-            UDP) coordinates. State is created, indexed by the 5-tuple of
-            {source-IP, destination-IP, source-port, destination-port and
-            transport protocol}. The state contains critical fields of the
-            encapsulating SFC header (or perhaps the entire header).
+            encapsulated packets are parsed for IP and transport-layer (TCP, 
+            UDP...) coordinates. State is created, indexed by these coordinates
+            (a 5-tuple of {source-IP, destination-IP, source-port, 
+            destination-port and transport protocol} in a typical case). The 
+            state contains critical fields of the encapsulating SFC header 
+            (or perhaps the entire header).
           </t>
           <t>
             The simplest approach has the packets return to the same IBN at the
             end of the chain that classified the packet at the start of the
-            chain. This is because the required 5-tuple state is rapidly
-            changing and most efficiently kept locally. If the packet is 
-            returned to a different IBN for egress, 5-tuple state must be
-            synchronized between the IBNs.
+            chain. This is because the required transport-coordinates state 
+            is rapidly changing and most efficiently kept locally. If the packet is 
+            returned to a different IBN for egress, transport-coordinates state
+            must be synchronized between the IBNs.
           </t>
           <t>
             When a packet returns to the IBN at the end of a chain, the SFC
             header is removed, the packet is parsed for IP and transport-layer
-            coordinates, and state is retrieved by the 5-tuple of the packet.
-            The state contains the information required to forward the packet
-            within the higher-level service chain.
+            coordinates, and state is retrieved from them. The state contains 
+            the information required to forward the packet within the 
+            higher-level service chain.
           </t>
           <t>
             State cannot be created by packets arriving from the lower-level 
@@ -469,12 +471,13 @@
           </t>
           <t>
             This stateful approach is limited to use with SFs that retain the 
-            5-tuple of the packet. This approach cannot be used with SFs that
-            modify the 5-tuple (e.g., as done by a NAT) or otherwise create
-            packets for new 5-tuples other than those received (e.g., as an HTTP
-            cache might do to retrieve content on behalf of the original flow).
-            In both cases, the fundamental problem is the inability to forward
-            packets when state cannot be found for the packet 5-tuples.
+            transport coordinates of the packet. This approach cannot be used 
+            with SFs that modify those coordinates (e.g., as done by a NAT) or 
+            otherwise create packets for new coordinates other than those 
+            received (e.g., as an HTTP cache might do to retrieve content on 
+            behalf of the original flow). In both cases, the fundamental 
+            problem is the inability to forward packets when state cannot be
+            found for the packet transport-layer coordinates.
           </t>
           <t>
             In the stateful approach, there are issues caused by the state, such 
@@ -490,8 +493,8 @@
           </t>
           <t>
             If an SFC domain handles multiple network regions (e.g., multiple 
-            private networks), the 5-tuple may be augmented with a 6th 
-            parameter, perhaps using some metadata to identify the network 
+            private networks), the coordinates may be augmented with additional
+            parameters, perhaps using some metadata to identify the network 
             region.
           </t>
           <t>
@@ -523,10 +526,9 @@
           </t>
           <t>
             It is conceivable that the MD-type 1 Mandatory Context Header fields 
-            of
-            <xref target="I-D.ietf-sfc-nsh">NSH</xref> are not all relevant to
-            the lower-level domain. In this case, one of the metadata slots of
-            the Mandatory Context Header could be repurposed within the 
+            of <xref target="I-D.ietf-sfc-nsh">NSH</xref> are not all relevant 
+            to the lower-level domain. In this case, one of the metadata slots
+            of the Mandatory Context Header could be repurposed within the 
             lower-level domain, and restored when leaving.
           </t>
           <t>
@@ -751,7 +753,7 @@
 
       <section title="Reducing the Number of Service Function Paths">
         <t>
-          In this use case, hierarchical service function chaining is used to 
+          In this case, hierarchical service function chaining is used to 
           simplify service function chaining management by reducing the number 
           of Service Function Paths.
         </t>
@@ -767,7 +769,7 @@
           There are five security functions deployed in the Security Domain. The
           Security Domain operator wants to enforce the five different security
           policies, and the Optimization Domain operator wants to apply
-          different optimization (either cache or video optimization to each of 
+          different optimizations (either cache or video optimization) to each of 
           these two types of traffic. If we use flat SFC (normal branching), 10 
           SFPs are needed in each domain. In contrast, if we use hierarchical 
           SFC, only 5 SFPs in Security Domain and 2 SFPs in Optimization 
@@ -858,9 +860,8 @@
           <list style="symbols">
             <t>
               Some service functions are deployed as dedicated hardware 
-              appliances, and there is a desire to avoid the capital and 
-              operation expenses (CAPEX and OPEX respectively) of deploying such 
-              service functions in all data centers.
+              appliances, and there is a desire to lower the cost (both CAPEX
+              and OPEX) of deploying such service functions in all data centers.
             </t>
             <t>
               Consider the case when service functions are being trialed,
