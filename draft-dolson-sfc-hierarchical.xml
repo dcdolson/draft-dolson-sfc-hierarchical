@@ -414,21 +414,22 @@
           paths. 
         </t>
         <t>
-          When packets enter the sub-domain, the Path Identifier and Path Index 
-          are re-marked according to the path selected by the classifier.
+          When packets enter the sub-domain, the Service Path Identifier (SPI)
+          and Service Index (SI) are re-marked according to the path selected by
+          the classifier.
         </t>
         <t>
           After exiting a path in the sub-domain, packets can be restored to an 
-          upper-level SF path by these methods:
+          original upper-level SF path by these methods:
         <list style="numbers">
           <t>
-            Stateful per flow,
+            Saving SPI and SI in transport-layer flow state,
           </t>
           <t>
-            Pushing path identifier into metadata,
+            Pushing SPI and SI into metadata,
           </t>
           <t>
-            Using unique lower-level paths per upper-level path.
+            Using unique lower-level paths per upper-level path coordinates.
           </t>
         </list>
         </t>
@@ -507,8 +508,8 @@
 
         <section title="Encoding Upper-Level Paths in Metadata">
           <t>
-            An IBN can push the upper-level service path identifier (SPI) and
-            service index (SI) (or encoding thereof) into a metadata field of
+            An IBN can push the upper-level Service Path Identifier (SPI) and
+            Service Index (SI) (or encoding thereof) into a metadata field of
             the lower-level encapsulation (e.g., placing upper-level path
             information into a metadata field of NSH). When packets exit the
             lower-level path, the upper-level SPI and SI can be restored from
@@ -542,10 +543,10 @@
         <section title="Using Unique Paths per Upper-Level Path">
           <t>
             In this approach, paths within the sub-domain are constrained so 
-            that a path identifier (of the sub-domain) unambiguously indicates 
-            the egress path (of the upper domain). This allows the original path 
+            that a SPI (of the sub-domain) unambiguously indicates the egress
+            SPI and SI (of the upper domain). This allows the original path 
             information to be restored at sub-domain egress from a look-up table 
-            using the sub-domain path identifier.
+            using the sub-domain SPI.
           </t>
           <t>
             Whenever the upper-level domain provisions a path via the 
@@ -556,8 +557,8 @@
             A down-side of this approach is that the number of paths in the 
             lower-level domain is multiplied by the number of paths in the 
             higher-level domain that traverse the lower-level domain.
-            I.e., a sub-path must be created for each combination of upper Path 
-            identifier and lower path.
+            I.e., a sub-path must be created for each combination of upper
+            SPI/SI and lower chain.
           </t>
         </section>
 
@@ -565,7 +566,7 @@
       
       <section title="Gluing Levels Together">
         <t>
-          The path identifier or metadata on a packet received by the IBN may be
+          The SPI or metadata on a packet received by the IBN may be
           used as input to reclassification and path selection within the
           lower-level domain.
         </t>
@@ -578,7 +579,7 @@
           communicated by some organizational registry.
         </t>
         <t>
-          Another approach is to use well-known labels for path identifiers or 
+          Another approach is to use well-known labels for chain identifiers or 
           metadata, as an indirection to the actual identifiers. The actual 
           identifiers can be assigned by control-plane systems. For example, a 
           sub-domain classifier could have a policy, "if pathID=classA then 
