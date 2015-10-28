@@ -167,7 +167,8 @@
         We expect asymmetrical routing is inherent in the network, while 
         recognizing that some Service Functions (SFs) require bidirectional 
         traffic for transport-layer sessions (e.g., NATs, firewalls). We assume  
-        that some paths need to be selected on the basis of application-specific 
+        that some Service Function Paths (SFPs) need to be selected on the
+        basis of application-specific 
         data visible to the network, with transport-layer coordinate (typically, 
         5-tuple) stickiness to specific Service Function instances.
       </t>
@@ -181,7 +182,7 @@
         Difficult problems are often made easier by decomposing them in a 
         hierarchical (nested) manner. So instead of considering an omniscient 
         SFC Control Plane that can manage (create, withdraw, supervise, etc.) 
-        complete paths from one end of the network to the other, we decompose 
+        complete SFPs from one end of the network to the other, we decompose 
         the network into smaller sub-domains. Each sub-domain may support a 
         subset of the network applications or a subset of the users. The 
         criteria for determining decomposition into SFC-enabled sub-domains are 
@@ -749,7 +750,7 @@
         The advantage of hierarchical service function chaining compared with
         normal or flat service function chaining is that it can reduce the
         management complexity significantly. This section discusses examples
-        that show the advantage of hierarchical service function chaining. 
+        that show those advantages.
       </t>
 
       <section title="Reducing the Number of Service Function Paths">
@@ -761,14 +762,14 @@
 
         <t>
           As shown in <xref target="fig_example_flat"/>,
-          there are two domains each with different concerns: a Security Domain 
+          there are two domains, each with different concerns: a Security Domain 
           that selects Service Functions based on network conditions and an 
           Optimization Domain that selects Service Functions based on traffic 
           protocol.
         </t>
         <t>
-          There are five security functions deployed in the Security Domain. The
-          Security Domain operator wants to enforce the five different security
+          In this example there are five security functions deployed in the Security Domain.
+          The Security Domain operator wants to enforce the five different security
           policies, and the Optimization Domain operator wants to apply
           different optimizations (either cache or video optimization) to each of 
           these two types of traffic. If we use flat SFC (normal branching), 10 
@@ -865,7 +866,7 @@
               and OPEX) of deploying such service functions in all data centers.
             </t>
             <t>
-              Consider the case when service functions are being trialed,
+              Some service functions are being trialed,
               introduced or otherwise handle a relatively small amount of 
               traffic. It may be cheaper to manage these service functions in a 
               single central data center and steer packets to the central data 
@@ -920,7 +921,7 @@
         </t>
         <t>
           Conversely, if using hierarchical SFC, each data center can be managed independently
-          and the management complexity could be reduced significantly. Service Function Paths between 
+          to significantly reduce management complexity. Service Function Paths between 
           data centers can represent abstract notions without regard to details within data centers.
           Independent controllers can be used for the top level (getting packets to pass the correct
           data centers) and local levels (getting packets to specific SF instances).
