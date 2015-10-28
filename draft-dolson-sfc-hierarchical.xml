@@ -39,7 +39,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-03" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-04" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -204,7 +204,7 @@
       </t>
       <t>
         The "domains" discussed in this document are assumed to be under control 
-        of a single organization, such that here is a strong trust relationship 
+        of a single organization, such that there is a strong trust relationship 
         between the domains. The intention of creating multiple domains is to 
         improve the ability to operate a network. It is outside of the scope of 
         the document to consider domains operated by different organizations.
@@ -284,7 +284,7 @@
           network is not relevant here.)
         </t>
         <figure anchor="fig_hierarchical_top"
-                title="Network-wide view of Top Level of Hierarchy">
+                title="Network-wide view of top level of hierarchy">
           <artwork><![CDATA[
                  +------------+
                  |Sub-domain#1|
@@ -330,7 +330,7 @@
           (IBN). It is the purpose of the IBN to remove packets from the SFC
           encapsulation, apply Classification rules, and direct the packets to
           the selected local service function paths terminating at an egress 
-          IBN. The egress SFC Domain Gateway finally restores packets to the
+          IBN. The egress IBN finally restores packets to the
           original SFC transport and hands them off to SFFs.
         </t>
         <t>
@@ -480,13 +480,13 @@
             found for the packet transport-layer coordinates.
           </t>
           <t>
-            In the stateful approach, there are issues caused by the state, such 
+            In the stateful approach, there are issues caused by having state, such 
             as how long the state should be maintained (it MUST time out 
             eventually), as well as whether the state needs to be replicated to 
             other devices to create a highly available network.
           </t>
           <t>
-            It is valid to consider the state disposable after failure, since it
+            It is valid to consider the state to be disposable after failure, since it
             can be re-created by each new packet arriving from the higher-level
             domain. For example, if an IBN loses all flow state, the state is
             re-created by an end-point retransmitting a TCP packet.
@@ -785,7 +785,7 @@
           in the Optimization Domain.
         </t>
         <figure anchor="fig_example_flat"
-                title="Flat SFC (Normal Branching)">
+                title="Flat SFC (normal branching)">
           <artwork><![CDATA[
            . . . . . . . . . . . .   . . . . . . . . . . . . .
            . Security Domain     .   .  Optimization Domain  .
@@ -821,7 +821,7 @@
         </figure>
 
         <figure anchor="fig_example_hsfc"
-                title="Simplified Path Management with Hierarchical SFC">
+                title="Simplified path management with Hierarchical SFC">
           <artwork><![CDATA[
      . . . . . . . . . . . . . . .    . . . . . . . . . . . . . . .
      .     Security Domain       .    .   Optimization Domain     .
@@ -875,7 +875,7 @@
         </t>
 
         <figure anchor="fig_example_hsfc_inter_dc"
-                title="Simplify Inter-DC SFC Management">
+                title="Simplify inter-DC SFC management">
           <artwork><![CDATA[
                 +-----------+
                 |Central DC |
