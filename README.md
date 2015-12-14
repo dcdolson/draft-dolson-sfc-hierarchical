@@ -5,7 +5,7 @@ This repository is a collaborative work-space for authors
 contributing to the IETF draft.
 
 Latest published version:
-https://tools.ietf.org/html/draft-dolson-sfc-hierarchical-02
+https://tools.ietf.org/html/draft-dolson-sfc-hierarchical-04
 
 Only work on the .xml file. The .txt file is a rendering of the .xml
 for convenience.
