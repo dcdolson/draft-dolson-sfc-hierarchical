@@ -5,14 +5,14 @@
 Service Function Chaining                                      D. Dolson
 Internet-Draft                                                  Sandvine
 Intended status: Informational                                  S. Homma
-Expires: June 16, 2016                                               NTT
+Expires: June 3, 2016                                                NTT
                                                                 D. Lopez
                                                           Telefonica I+D
                                                             M. Boucadair
                                                             Orange Group
                                                                   D. Liu
                                                            Alibaba Group
-                                                       December 14, 2015
+                                                                Dec 2015
 
 
                  Hierarchical Service Function Chaining
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 16, 2016.
+   This Internet-Draft will expire on June 3, 2016.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Dolson, et al.            Expires June 16, 2016                 [Page 1]
+Dolson, et al.            Expires June 3, 2016                  [Page 1]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -80,40 +80,41 @@ Table of Contents
        3.1.1.  Flow-Stateful IBN . . . . . . . . . . . . . . . . . .   7
        3.1.2.  Encoding Upper-Level Paths in Metadata  . . . . . . .   9
        3.1.3.  Using Unique Paths per Upper-Level Path . . . . . . .   9
-     3.2.  Gluing Levels Together  . . . . . . . . . . . . . . . . .  10
-   4.  Sub-domain Classifier . . . . . . . . . . . . . . . . . . . .  10
-   5.  Control Plane Elements  . . . . . . . . . . . . . . . . . . .  11
-   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  11
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Appendix A.  Examples of Hierarchical Service Function Chaining .  13
-     A.1.  Reducing the Number of Service Function Paths . . . . . .  13
-     A.2.  Managing a Distributed Data-Center Network  . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+       3.1.4.  Nesting Upper-Level NSH within Lower-Level NSH  . . .  10
+     3.2.  Gluing Levels Together  . . . . . . . . . . . . . . . . .  11
+   4.  Sub-domain Classifier . . . . . . . . . . . . . . . . . . . .  11
+   5.  Control Plane Elements  . . . . . . . . . . . . . . . . . . .  12
+   6.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  12
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  14
+   Appendix A.  Examples of Hierarchical Service Function Chaining .  14
+     A.1.  Reducing the Number of Service Function Paths . . . . . .  14
+     A.2.  Managing a Distributed Data-Center Network  . . . . . . .  16
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
 
    Service Function Chaining (SFC) is a technique for prescribing
    differentiated traffic forwarding policies within the SFC domain.
    SFC is described in detail in the SFC architecture document
-   [I-D.ietf-sfc-architecture], and is not repeated here.
+   [RFC7665], and is not repeated here.
 
    In this document we consider the difficult problem of implementing
    SFC across a large, geographically dispersed network comprised of
    millions of hosts and thousands of network forwarding elements,
    involving multiple operational teams (with varying functional
-   responsibilities).  We expect asymmetrical routing is inherent in the
 
 
 
-Dolson, et al.            Expires June 16, 2016                 [Page 2]
+Dolson, et al.            Expires June 3, 2016                  [Page 2]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
+   responsibilities).  We expect asymmetrical routing is inherent in the
    network, while recognizing that some Service Functions (SFs) require
    bidirectional traffic for transport-layer sessions (e.g., NATs,
    firewalls).  We assume that some Service Function Paths (SFPs) need
@@ -164,10 +165,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-
-Dolson, et al.            Expires June 16, 2016                 [Page 3]
+Dolson, et al.            Expires June 3, 2016                  [Page 3]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
 2.  Hierarchical Service Function Chaining (hSFC)
@@ -221,9 +221,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-Dolson, et al.            Expires June 16, 2016                 [Page 4]
+Dolson, et al.            Expires June 3, 2016                  [Page 4]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
    with an approach requiring the top-level classifier to select paths
@@ -277,9 +277,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-Dolson, et al.            Expires June 16, 2016                 [Page 5]
+Dolson, et al.            Expires June 3, 2016                  [Page 5]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
    the packets to the selected local service function paths terminating
@@ -333,9 +333,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-Dolson, et al.            Expires June 16, 2016                 [Page 6]
+Dolson, et al.            Expires June 3, 2016                  [Page 6]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
 3.  Internal Boundary Node (IBN)
@@ -374,6 +374,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
    3.  Using unique lower-level paths per upper-level path coordinates.
 
+   4.  Nesting NSH headers, encapsulating the higher-level NSH headers
+       within the lower-level NSH headers.
+
 3.1.1.  Flow-Stateful IBN
 
    An IBN can be flow-aware, returning packets to the correct higher-
@@ -383,17 +386,16 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
    When packets are received by the IBN on a higher-level path, the
    encapsulated packets are parsed for IP and transport-layer (TCP,
    UDP...) coordinates.  State is created, indexed by these coordinates
+
+
+
+Dolson, et al.            Expires June 3, 2016                  [Page 7]
+
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
+
+
    (a 5-tuple of {source-IP, destination-IP, source-port, destination-
    port and transport protocol} in a typical case).  The state contains
-
-
-
-
-Dolson, et al.            Expires June 16, 2016                 [Page 7]
-
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
-
-
    critical fields of the encapsulating SFC header (or perhaps the
    entire header).
 
@@ -440,15 +442,16 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
    In this stateful approach, it is not necessary for the sub-domain's
    control-plane to modify paths when higher-level paths are changed.
+
+
+
+Dolson, et al.            Expires June 3, 2016                  [Page 8]
+
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
+
+
    The complexity of the higher-level domain does not cause complexity
    in the lower-level domain.
-
-
-
-Dolson, et al.            Expires June 16, 2016                 [Page 8]
-
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
-
 
 3.1.2.  Encoding Upper-Level Paths in Metadata
 
@@ -498,12 +501,65 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-
-
-
-Dolson, et al.            Expires June 16, 2016                 [Page 9]
+Dolson, et al.            Expires June 3, 2016                  [Page 9]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
+
+
+3.1.4.  Nesting Upper-Level NSH within Lower-Level NSH
+
+   In this approach, when packets arrive at the IBN in the top-level
+   domain, the classifier in the IBN determines the path for the lower-
+   level domain and pushes the new NSH header in front of the original
+   NSH header.
+
+   As shown in figure Figure 3 the Lower-NSH Header used to forward
+   packets in the lower-level domain precedes the Upper-NSH Header from
+   the top-level domain.
+
+                           +------------------+
+                           | Overlay Header   |
+                           +------------------+
+                           | Lower-NSH Header |
+                           +------------------+
+                           | Upper-NSH Header |
+                           +------------------+
+                           | Original Packet  |
+                           +------------------+
+
+
+                 Figure 3: Encapsulation of NSH within NSH
+
+   The traffic with the above stack of two-layer-NSH header is to be
+   forwarded according to the Lower-NSH header in the lower-level SFC
+   domain.  The Upper-NSH header is preserved in the packets but not
+   used for forwarding.  At the last SFF of the Service Function Chain
+   of the lower-level domain (which resides in the IBN), the Lower-NSH
+   header is removed from the packet, the Service Index of the Upper-NSH
+   is decremented and then the packet is forwarded by the IBN to an SFF
+   of the upper-level domain, which will be forwarded according to the
+   Upper-NSH header.
+
+   With such encapsulation, Upper-NSH information is carried along the
+   extent of the lower-level chain without modification.
+
+   This approach does not require state in the IBN or configuration to
+   encode fields in meta-data.  However, it does require SFs in the
+   lower-level domain to be able to parse multiple layers of NSH.  If
+   the SF injects packets, it must also be able to deal with adding
+   multiple layers of headers to injected packets.
+
+   This approach requires a new Next Protocol value to be allocated for
+   NSH.
+
+
+
+
+
+
+Dolson, et al.            Expires June 3, 2016                 [Page 10]
+
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
 3.2.  Gluing Levels Together
@@ -557,9 +613,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-Dolson, et al.            Expires June 16, 2016                [Page 10]
+Dolson, et al.            Expires June 3, 2016                 [Page 11]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
 5.  Control Plane Elements
@@ -602,21 +658,25 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
    [I-D.homma-sfc-forwarding-methods-analysis] as a means to improve
    scalability of service chaining in large networks.
 
+   The concept of nested NSH headers was introduced in
+   [I-D.ao-sfc-for-dc-interconnect] as a means of creating hierarchical
+   SFC in a data center.
+
    The authors would like to thank the following individuals for taking
    the time to read and provide valuable feedback:
 
       Ron Parker
 
+
+
+Dolson, et al.            Expires June 3, 2016                 [Page 12]
+
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
+
+
       Christian Jacquenet
 
       Jie Cao
-
-
-
-Dolson, et al.            Expires June 16, 2016                [Page 11]
-
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
-
 
 7.  IANA Considerations
 
@@ -655,29 +715,33 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
               DOI 10.17487/RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
+   [RFC7665]  Halpern, J., Ed. and C. Pignataro, Ed., "Service Function
+              Chaining (SFC) Architecture", RFC 7665,
+              DOI 10.17487/RFC7665, October 2015,
+              <http://www.rfc-editor.org/info/rfc7665>.
+
+
+
+
+
+
+Dolson, et al.            Expires June 3, 2016                 [Page 13]
+
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
+
+
 9.2.  Informative References
+
+   [I-D.ao-sfc-for-dc-interconnect]
+              Ao, T. and W. Bo, "Hierarchical SFC for DC
+              Interconnection", draft-ao-sfc-for-dc-interconnect-01
+              (work in progress), October 2015.
 
    [I-D.homma-sfc-forwarding-methods-analysis]
               Homma, S., Kengo, K., Lopez, D., Stiemerling, M., and D.
               Dolson, "Analysis on Forwarding Methods for Service
               Chaining", draft-homma-sfc-forwarding-methods-analysis-01
               (work in progress), January 2015.
-
-
-
-
-
-
-
-Dolson, et al.            Expires June 16, 2016                [Page 12]
-
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
-
-
-   [I-D.ietf-sfc-architecture]
-              Halpern, J. and C. Pignataro, "Service Function Chaining
-              (SFC) Architecture", draft-ietf-sfc-architecture-07 (work
-              in progress), March 2015.
 
    [I-D.ietf-sfc-dc-use-cases]
               Surendra, S., Tufail, M., Majee, S., Captari, C., and S.
@@ -687,7 +751,7 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
    [I-D.ietf-sfc-nsh]
               Quinn, P. and U. Elzur, "Network Service Header", draft-
-              ietf-sfc-nsh-00 (work in progress), March 2015.
+              ietf-sfc-nsh-02 (work in progress), January 2016.
 
 Appendix A.  Examples of Hierarchical Service Function Chaining
 
@@ -702,7 +766,7 @@ A.1.  Reducing the Number of Service Function Paths
    simplify service function chaining management by reducing the number
    of Service Function Paths.
 
-   As shown in Figure 3, there are two domains, each with different
+   As shown in Figure 4, there are two domains, each with different
    concerns: a Security Domain that selects Service Functions based on
    network conditions and an Optimization Domain that selects Service
    Functions based on traffic protocol.
@@ -714,22 +778,21 @@ A.1.  Reducing the Number of Service Function Paths
    video optimization) to each of these two types of traffic.  If we use
    flat SFC (normal branching), 10 SFPs are needed in each domain.  In
    contrast, if we use hierarchical SFC, only 5 SFPs in Security Domain
+
+
+
+Dolson, et al.            Expires June 3, 2016                 [Page 14]
+
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
+
+
    and 2 SFPs in Optimization Domain will be required, as shown in
-   Figure 4.
+   Figure 5.
 
    In the flat model, the number of SFPs is the product of the number of
    functions in all of the domains.  In the hSFC model, the number of
    SFPs is the sum of the number of functions.  For example, adding a
    "bypass" path in the Optimization Domain would cause the flat model
-
-
-
-
-Dolson, et al.            Expires June 16, 2016                [Page 13]
-
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
-
-
    to require 15 paths (5 more), but cause the hSFC model to require one
    more path in the Optimization Domain.
 
@@ -763,7 +826,7 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
    6:IPS+VideoOpt, 7:IDS+Cache, 8:IDS+VideoOpt, 9:TrafficMonitor+Cache,
    10:TrafficMonitor+VideoOpt
 
-                   Figure 3: Flat SFC (normal branching)
+                   Figure 4: Flat SFC (normal branching)
 
 
 
@@ -774,16 +837,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-
-
-
-
-
-
-
-Dolson, et al.            Expires June 16, 2016                [Page 14]
+Dolson, et al.            Expires June 3, 2016                 [Page 15]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
         . . . . . . . . . . . . . . .    . . . . . . . . . . . . . . .
@@ -803,12 +859,12 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
         .        [ Monitor ]        .
         . . . . . . . . . . . . . . .
 
-        Figure 4: Simplified path management with Hierarchical SFC
+        Figure 5: Simplified path management with Hierarchical SFC
 
 A.2.  Managing a Distributed Data-Center Network
 
    Hierarchical service function chaining can be used to simplify inter-
-   data-center SFC management.  In the example of Figure 5, shown below,
+   data-center SFC management.  In the example of Figure 6, shown below,
    there is a central data center (Central DC) and multiple local data
    centers (Local DC#1, #2, #3) that are deployed in a geographically
    distributed manner.  All of the data centers are under a single
@@ -837,9 +893,9 @@ A.2.  Managing a Distributed Data-Center Network
 
 
 
-Dolson, et al.            Expires June 16, 2016                [Page 15]
+Dolson, et al.            Expires June 3, 2016                 [Page 16]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
                    +-----------+
@@ -865,7 +921,7 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
                       +-----+
 
 
-                Figure 5: Simplify inter-DC SFC management
+                Figure 6: Simplify inter-DC SFC management
 
    For large data center operators, one local DC may have tens of
    thousands of servers and hundred of thousands of virtual machines.
@@ -893,9 +949,9 @@ Internet-Draft   Hierarchical Service Function Chaining    December 2015
 
 
 
-Dolson, et al.            Expires June 16, 2016                [Page 16]
+Dolson, et al.            Expires June 3, 2016                 [Page 17]
 
-Internet-Draft   Hierarchical Service Function Chaining    December 2015
+Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
 Authors' Addresses
@@ -949,4 +1005,4 @@ Authors' Addresses
 
 
 
-Dolson, et al.            Expires June 16, 2016                [Page 17]
+Dolson, et al.            Expires June 3, 2016                 [Page 18]

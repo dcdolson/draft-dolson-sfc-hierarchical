@@ -8,11 +8,12 @@
 <!ENTITY I-D.draft-homma-sfc-forwarding-methods-analysis SYSTEM 
 "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-homma-sfc-forwarding-methods-analysis-01.xml">
 <!ENTITY I-D.draft-ietf-sfc-nsh SYSTEM 
-"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-nsh-00.xml">
-<!ENTITY I-D.draft-ietf-sfc-architecture SYSTEM 
-"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-architecture-07.xml">
+"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-nsh-02.xml">
+<!ENTITY RFC7665 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7665.xml">
 <!ENTITY I-D.draft-ietf-sfc-dc-use-cases SYSTEM 
 "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-dc-use-cases-02.xml">
+<!ENTITY I-D.draft-ao-sfc-for-dc-interconnect SYSTEM 
+"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ao-sfc-for-dc-interconnect-01.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -154,7 +155,7 @@
         Service Function Chaining (SFC) is a technique for prescribing 
         differentiated traffic forwarding policies within the SFC domain.
         SFC is described in detail in the
-        <xref target="I-D.ietf-sfc-architecture">
+        <xref target="RFC7665">
          SFC architecture document
         </xref>,
         and is not repeated here.
@@ -432,6 +433,10 @@
           <t>
             Using unique lower-level paths per upper-level path coordinates.
           </t>
+          <t>
+            Nesting NSH headers, encapsulating the higher-level NSH headers
+            within the lower-level NSH headers.
+          </t>
         </list>
         </t>
 
@@ -563,6 +568,61 @@
           </t>
         </section>
 
+        <section title="Nesting Upper-Level NSH within Lower-Level NSH">
+		  <t>
+		    In this approach, when packets arrive at the IBN in the top-level
+		    domain, the classifier in the IBN determines the path for the
+		    lower-level domain and pushes the new NSH header in front of the
+		    original NSH header. 
+		  </t>
+		  <t>
+		    As shown in figure <xref target="fig_NSH_in_NSH"/>
+			the Lower-NSH Header used to forward packets in the lower-level
+			domain precedes the Upper-NSH Header from the top-level domain.
+		  </t>
+          <figure anchor="fig_NSH_in_NSH"
+                  title="Encapsulation of NSH within NSH">
+            <artwork align="center"><![CDATA[
++------------------+
+| Overlay Header   |
++------------------+
+| Lower-NSH Header |
++------------------+
+| Upper-NSH Header |
++------------------+
+| Original Packet  |
++------------------+
+]]>
+			</artwork>
+		  </figure>
+		  <t>
+		    The traffic with the above stack of two-layer-NSH header is to be
+		    forwarded according to the Lower-NSH header in the lower-level SFC
+		    domain. The Upper-NSH header is preserved in the packets but
+		    not used for forwarding. At the last SFF of the Service Function 
+		    Chain of the lower-level domain (which resides in the IBN),
+		    the Lower-NSH header is removed from the packet, the Service Index
+		    of the Upper-NSH is decremented and then the packet
+		    is forwarded by the IBN to an SFF of the upper-level domain,
+		    which will be forwarded according to the Upper-NSH header.
+		  </t>
+		  <t>
+		    With such encapsulation, Upper-NSH information is carried along the
+		    extent of the lower-level chain without modification.
+		  </t>
+          <t>
+            This approach does not require state in the IBN or configuration
+            to encode fields in meta-data. However, it does require SFs in
+            the lower-level domain to be able to parse multiple layers of NSH.
+            If the SF injects packets, it must also be able to deal with adding 
+            multiple layers of headers to injected packets.
+          </t>
+          <t>
+            This approach requires a new Next Protocol value to be allocated
+            for NSH.
+          </t>
+        </section>
+
       </section>
       
       <section title="Gluing Levels Together">
@@ -674,6 +734,11 @@
       as a means to improve scalability of service chaining in large networks. 
       </t>
       <t>
+        The concept of nested NSH headers was introduced in
+        <xref target="I-D.ao-sfc-for-dc-interconnect"/>
+        as a means of creating hierarchical SFC in a data center.
+      </t>
+      <t>
         The authors would like to thank the following individuals for taking the
         time to read and provide valuable feedback:
       </t>
@@ -729,6 +794,7 @@
     <references title="Normative References">
       &RFC2119;
 
+      &RFC7665;
 
     </references>
 
@@ -738,9 +804,9 @@
 
       &I-D.draft-ietf-sfc-nsh;
 
-      &I-D.draft-ietf-sfc-architecture;
-
       &I-D.draft-ietf-sfc-dc-use-cases;
+
+      &I-D.draft-ao-sfc-for-dc-interconnect;
 
     </references>
 
