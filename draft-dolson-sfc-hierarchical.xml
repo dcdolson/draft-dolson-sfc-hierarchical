@@ -123,6 +123,23 @@
       </address>
     </author>
 
+	<author fullname="Ting Ao" initials="T." surname="Ao"> 
+      <organization>ZTE Corporation</organization> 
+      <address> 
+        <postal> 
+          <street>No.889,Bibo Rd.,Zhangjiang Hi-tech Park</street> 
+          <!-- Reorder these if your country does things differently --> 
+          <city>Shanghai </city> 
+          <region></region> 
+          <code>201203 </code> 
+          <country>China </country> 
+        </postal> 
+        <phone>+86-21-688976442</phone> 
+        <email>ao.ting@zte.com.cn </email> 
+        <!-- uri and facsimile elements may also be added --> 
+      </address> 
+    </author> 
+
 
     <date month="Dec" year="2015" />
 
@@ -409,7 +426,8 @@
         domain.
       </t>
 
-      <section title="IBN Path Configuration">
+      <section title="IBN Path Configuration"
+               anchor="section_strategies">
         <t>
           An operator of a lower-level SF Domain may be aware of which 
           high-level paths transit their domain, or they may wish to accept any
@@ -601,8 +619,7 @@
 		    domain. The Upper-NSH header is preserved in the packets but
 		    not used for forwarding. At the last SFF of the Service Function 
 		    Chain of the lower-level domain (which resides in the IBN),
-		    the Lower-NSH header is removed from the packet, the Service Index
-		    of the Upper-NSH is decremented and then the packet
+		    the Lower-NSH header is removed from the packet, and then the packet
 		    is forwarded by the IBN to an SFF of the upper-level domain,
 		    which will be forwarded according to the Upper-NSH header.
 		  </t>
@@ -647,7 +664,20 @@
           chain packet to path 1234"; the higher-level controller would be 
           expected to configure the concrete higher-level pathID for classA.
         </t>
+      </section>
 
+      <section title="Decrementing Service Index">
+        <t>
+          Because the IBN acts as a Service Function to the higher-level domain,
+          it must decrement the Service Index in the NSH headers of the
+          higher-level path.
+        </t>
+        <t>
+          A good strategy seems to be to do this when the packet is first received
+          by the IBN, before applying any of the strategies of
+          <xref target="section_strategies"/>, immediately prior to
+          classification.
+        </t>
       </section>
     </section>
 
