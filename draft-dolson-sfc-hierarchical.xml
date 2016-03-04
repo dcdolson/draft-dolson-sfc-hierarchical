@@ -611,7 +611,7 @@
 | Original Packet  |
 +------------------+
 ]]>
-			</artwork>
+            </artwork>
 		  </figure>
 		  <t>
 		    The traffic with the above stack of two-layer-NSH header is to be
@@ -628,11 +628,14 @@
 		    extent of the lower-level chain without modification.
 		  </t>
           <t>
-            This approach does not require state in the IBN or configuration
-            to encode fields in meta-data. However, it does require SFs in
+            A benefit of this approach is that it does not require state in 
+            the IBN or configuration to encode fields in meta-data.
+          </t>
+          <t>
+            However, the down-side is it does require SFs in
             the lower-level domain to be able to parse multiple layers of NSH.
             If the SF injects packets, it must also be able to deal with adding 
-            multiple layers of headers to injected packets.
+            appropriate multiple layers of headers to injected packets.
           </t>
           <t>
             This approach requires a new Next Protocol value to be allocated

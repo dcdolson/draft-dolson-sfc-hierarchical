@@ -587,10 +587,12 @@ Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
    With such encapsulation, Upper-NSH information is carried along the
    extent of the lower-level chain without modification.
 
-   This approach does not require state in the IBN or configuration to
-   encode fields in meta-data.  However, it does require SFs in the
-   lower-level domain to be able to parse multiple layers of NSH.  If
-   the SF injects packets, it must also be able to deal with adding
+   A benefit of this approach is that it does not require state in the
+   IBN or configuration to encode fields in meta-data.
+
+   However, the down-side is it does require SFs in the lower-level
+   domain to be able to parse multiple layers of NSH.  If the SF injects
+   packets, it must also be able to deal with adding appropriate
    multiple layers of headers to injected packets.
 
    This approach requires a new Next Protocol value to be allocated for
@@ -608,8 +610,6 @@ Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
    One approach is to use well-known identifier values in metadata,
    communicated by some organizational registry.
 
-   Another approach is to use well-known labels for chain identifiers or
-   metadata, as an indirection to the actual identifiers.  The actual
 
 
 
@@ -618,6 +618,8 @@ Dolson, et al.            Expires June 3, 2016                 [Page 11]
 Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
 
 
+   Another approach is to use well-known labels for chain identifiers or
+   metadata, as an indirection to the actual identifiers.  The actual
    identifiers can be assigned by control-plane systems.  For example, a
    sub-domain classifier could have a policy, "if pathID=classA then
    chain packet to path 1234"; the higher-level controller would be
@@ -661,8 +663,6 @@ Internet-Draft   Hierarchical Service Function Chaining         Dec 2015
    be received by the same classifier or a coordinated cluster of
    classifiers.  There are both stateful and stateless approaches to
    ensuring bidirectional symmetry.
-
-
 
 
 
