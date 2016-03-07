@@ -40,7 +40,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-04" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-05" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -141,7 +141,7 @@
     </author> 
 
 
-    <date month="Dec" year="2015" />
+    <date month="March" year="2016" />
 
     <!-- Meta-data Declarations -->
 
