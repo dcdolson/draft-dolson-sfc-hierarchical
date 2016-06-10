@@ -141,7 +141,7 @@
     </author> 
 
 
-    <date month="March" year="2016" />
+    <date month="May" day="20" year="2016" />
 
     <!-- Meta-data Declarations -->
 
@@ -371,13 +371,16 @@
                 title="Sub-domain within a higher-level domain">
           <artwork><![CDATA[
   +----+    +-----+  +----------------------+   +-----+
-  |    |SC#1| SFF |  |       IBN 1          |   | SFF |
-->|    |================*                *===============>
-  |    |    +-----+  |  # (in DC 1)      #  |   +-----+
-  | CF |             |  V                #  |
-  |    |             |+---+            +---+|   Top domain
-  |    |    * * * * *||CF | * * * * * *|SFF|| * * * * *
-  |    |    *        |+---+            +-+-+|         *
+  |    |    | SFF |  |   IBN 1  (in DC 1)   |   | SFF |
+  |    |SC#1|     |  |  +----------------+  |   |     |
+->|    |===============>|      SFF       |================>
+  |    |    +-----+  |  +----------------+  |   +-----+
+  | CF |             |   |              ^   |
+  |    |             |   v              |   |
+  |    |             |+--------------------+|   Top domain
+  |    |             ||CF, fwd/rev mapping ||
+  |    |    * * * * *||  and "glue"        || * * * * *
+  |    |    *        |+--------------------+|         *
   +----+    *        | | |              | | |    Sub  *
             *        +-o-o--------------o-o-+   domain*
             *     SC#2 | |SC#1          ^ ^       #1  *
@@ -404,6 +407,95 @@
         </t>
         
       </section>
+
+        <section title="Lower Levels with Other Forwarding Techniques"
+	         anchor="section_other_forwarding">
+ 	  <t>
+	    The hierarchical approach can be used to convert packets in an
+	    NSH domain to a lower-level domain using a different forwarding technique.
+	  </t>
+          <t>
+	    An IBN can remove packets from NSH encapsulation, and insert the 
+            inner packet into a path using a different service chaining protocol to traverse SFs in the 
+            lower-level domain. In other words, an IBN can convert forwarding process 
+            with NSH to other forwarding techniques (e.g., 5-tuple-based routing with OpenFlow). 
+            Other considered forwarding techniques for providing service chaining are 
+            described in <xref target="I-D.homma-sfc-forwarding-methods-analysis">
+            draft-homma-sfc-forwarding-methods-analysis-05</xref>.
+          </t>
+          
+          <t>
+            In this approach, the IBN classifier is required to have 
+            an NSH conversion table for applying packets to appropriate lower-level paths 
+            and returning packets to the correct higher-level paths.
+          </t>
+          
+          <t>
+            In addition, IBN might be required to convert metadata contained in NSH to the 
+            format appropriate to the packet in the lower-level path. For example, some existing SFs 
+            identify subscriber based on information of network topology, such as VID, and 
+            IBN would be required to create VLAN to packets from metadata if subscriber 
+            identifier is conveyed as metadata in higher-level domains.
+          </t>
+          
+          <t>
+            This approach enables network operators to divide their networks into NSH  
+            and non-NSH domains, as shown in figure <xref target="fig_dividing_chain_domains"/>, 
+            and can be expected to facilitate service chaining in networks in which NSH 
+            aware and unaware SFs coexist. Some examples of such situations are described 
+            below. 
+          
+          <list style="symbols">
+            <t>In a period of transition from the legacy SFs to the new SFs enabled NSH,</t>
+            <t>Supporting multi-tenancy and</t>
+            <t>Supporting service chains provided by third parties.</t>
+          </list>
+          </t>
+          
+          <figure anchor="fig_dividing_chain_domains"
+                  title="Dividing NSH enabled and un-enabled domains">
+            <artwork align="center"><![CDATA[
+    * * * * * * * * * * * * * * * * * *
+  *   NSH enabled domain               *
+  *       +-------+       +-------+    *
+  *       | SF#1  |       | SF#5  |    *
+  *       +-o---o-+       +-o---o-+    *
+  *         ^   |           ^   |      *
+  *       +-|---|-+       +-|---|-+    *
+  *       | |SFF| |       | |SFF| |    *
+  *       +-|---|-+       +-|---|-+    *
+  *         .   |           |   .      *
+  * +--+   /    |           |    \     *
+ -->|CF|--'     |           |     '-------> 
+  * +--+        v           |          *
+  *         +---o-----------o---+      *
+   .*.*.*.*.|  / |   IBN   | \  |*.*.*. 
+  .         +-o--o---------o--o-+      .
+  .           |  |         ^  ^        .
+  .           |  +-+     +-+  |        .
+  .       +---+    v     |    +---+    .
+  .       |      +-o-----o-+      |    .
+  .       |      |  SF#2   |      |    .
+  .       |      +---------+      |    .
+  .       +--+                 +--+    .
+  .          |   +---------+   |       .
+  .          v   |         v   |       .
+  .        +-o---o-+     +-o---o-+     .
+  .        | SF#3  |     | SF#4  |     .
+  .        +-------+     +-------+     .
+  .   NSH un-enabled domain            .
+   . . . . . . . . . . . . . . . . . . 
+]]>
+            </artwork>
+              <postamble>
+                SF#1 and SF#5 are NSH-aware SFs, and SF#2, SF#3 and SF#4 are 
+                NSH-unaware SFs. In NSH-unaware domain, packets are conveyed 
+                as a format supported by SFs which are deployed there.
+              </postamble>
+            
+        </figure>
+      </section>
+
     </section>
 
     <section title="Internal Boundary Node (IBN)">
@@ -528,6 +620,12 @@
             The complexity of the higher-level domain does not cause complexity
             in the lower-level domain.
           </t>
+	  <t>
+	    Since it doesn't depend on NSH in the lower domain,
+	    this flow-stateful approach can be applied to translation methods
+	    of converting NSH to other forwarding techniques.
+	    (Refer to <xref target="section_other_forwarding"/>.)
+	  </t>
         </section>
 
         <section title="Encoding Upper-Level Paths in Metadata">
@@ -584,7 +682,15 @@
             I.e., a sub-path must be created for each combination of upper
             SPI/SI and lower chain.
           </t>
-        </section>
+	  <t>
+	    This approach may be good for translating NSH in the upper
+	    domain to a different forwarding technique in the lower level.
+	    (Refer to <xref target="section_other_forwarding"/>.)
+	    A single path in the upper level may be branched to multiple
+	    paths in the lower level such any lower-level path is only
+	    used by one upper-level path. This allows unambiguous restoration
+	    to the upper-level path.
+	  </t>        </section>
 
         <section title="Nesting Upper-Level NSH within Lower-Level NSH">
 		  <t>
