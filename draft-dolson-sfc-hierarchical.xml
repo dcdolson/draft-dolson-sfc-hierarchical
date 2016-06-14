@@ -6,14 +6,16 @@
 
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY I-D.draft-homma-sfc-forwarding-methods-analysis SYSTEM 
-"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-homma-sfc-forwarding-methods-analysis-01.xml">
+"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-homma-sfc-forwarding-methods-analysis-05.xml">
 <!ENTITY I-D.draft-ietf-sfc-nsh SYSTEM 
-"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-nsh-02.xml">
+"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-nsh-05.xml">
 <!ENTITY RFC7665 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7665.xml">
 <!ENTITY I-D.draft-ietf-sfc-dc-use-cases SYSTEM 
 "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-dc-use-cases-02.xml">
 <!ENTITY I-D.draft-ao-sfc-for-dc-interconnect SYSTEM 
 "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ao-sfc-for-dc-interconnect-01.xml">
+<!ENTITY I-D.draft-ietf-sfc-control-plane SYSTEM 
+"http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-control-plane-06.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -40,7 +42,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-05" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-06" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -98,7 +100,7 @@
     </author>
 
     <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
-      <organization>Orange Group</organization>
+      <organization>Orange</organization>
       <address>
         <postal>
           <street></street>
@@ -141,7 +143,7 @@
     </author> 
 
 
-    <date month="March" year="2016" />
+    <date month="June" year="2016" />
 
     <!-- Meta-data Declarations -->
 
@@ -170,7 +172,7 @@
     <section title="Introduction">
       <t>
         Service Function Chaining (SFC) is a technique for prescribing 
-        differentiated traffic forwarding policies within the SFC domain.
+        differentiated traffic forwarding policies within the SFC-enabled domain.
         SFC is described in detail in the
         <xref target="RFC7665">
          SFC architecture document
@@ -188,7 +190,7 @@
         that some Service Function Paths (SFPs) need to be selected on the
         basis of application-specific 
         data visible to the network, with transport-layer coordinate (typically, 
-        5-tuple) stickiness to specific Service Function instances.
+        5-tuple) stickiness to specific SF instances.
       </t>
       <t>
         Note: in this document, the notion of the "path" of a packet is the
@@ -208,16 +210,16 @@
       </t>
       <t>
         Note that decomposing a network into multiple SFC-enabled domains should 
-        permit end-to-end visibility of Service Functions and Service Function 
-        Paths. Decomposition should also be implemented with special care to 
-        ease monitoring and troubleshooting of the network as a whole.
+        permit end-to-end visibility of SFs and SFPs. 
+        Decomposition should also be implemented with special care to 
+        ease monitoring and troubleshooting of the network and services as a whole.
       </t>
       <t>
         An example of simplifying a network by using multiple SF domains is
         further discussed in <xref target="I-D.ietf-sfc-dc-use-cases"/>.
       </t>
       <t>
-        We assume the SF technology uses 
+        We assume the SFC-aware nodes use 
         <xref target="I-D.ietf-sfc-nsh">NSH</xref> or a similar labeling 
         mechanism.
       </t>
@@ -233,7 +235,7 @@
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
         "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
         document are to be interpreted as described in <xref
-        target="RFC2119">RFC 2119</xref>.</t>
+        target="RFC2119"/>.</t>
       </section>
     </section>
 
@@ -247,10 +249,10 @@
       <section title="Top Level">
         <t>
           Considering the example in <xref target="fig_hierarchical_top"/>, a 
-          top-level network domain includes SFC components distributed over a 
+          top-level network domain includes SFC data plane components distributed over a 
           wide area, including:
           <list style="symbols">
-            <t>classifiers (CFs),</t>
+            <t>Classifiers (CFs),</t>
             <t>Service Function Forwarders (SFFs) and</t>
             <t>Sub-domains.</t>
           </list>
@@ -259,19 +261,21 @@
           SFC components.
         </t>
         <t>
-          Top-level service function paths carry packets from classifiers 
+          Top-level SFPs carry packets from classifiers 
           through a series of SFFs and sub-domains, with the operations within
           sub-domains being opaque to the higher levels.
         </t>
         <t>
           We expect the system to include a top-level control-plane having
-          responsibility for configuring forwarding and classification.
+          responsibility for configuring forwarding and classification 
+          (see <xref target="I-D.ietf-sfc-control-plane"/>).
           The top-level Service Chaining control-plane manages end-to-end 
           service chains and associated service function paths from network edge
           points to sub-domains and configuring top-level classifiers at a
           coarse level (e.g., based on source or destination host) to forward
-          traffic along paths that will transit appropriate sub-domains. The
-          figure shows one possible service chain passing from edge, through two
+          traffic along paths that will transit appropriate sub-domains. 
+          <xref target="fig_hierarchical_top"/> shows one possible service chain 
+          passing from edge, through two
           sub-domains, to network egress. The top-level control plane does NOT
           configure classification or forwarding within the sub-domains.
         </t>
@@ -293,13 +297,13 @@
           all of the SFs in each sub-domain.
         </t>
         <t>
-          It should be assumed that some service functions in the network 
+          It should be assumed that some SFs in the network 
           require bidirectional symmetry of paths (see more in 
           <xref target="section_classifier"/>). Therefore the classifiers at the 
           top level must be configured with policies ensuring server-to-client
-          packets take the reverse path of client-to-server packet through
-          sub-domains. (Recall the "path" denotes the series of service 
-          functions; the precise physical network path within the underlay 
+          packets take the reverse path of client-to-server packets through
+          sub-domains. (Recall the "path" denotes the series of 
+          SFs; the precise physical network path within the underlay 
           network is not relevant here.)
         </t>
         <figure anchor="fig_hierarchical_top"
@@ -339,16 +343,15 @@
       <section title="Lower Levels">
         <t>
           Each of the sub-domains in <xref target="fig_hierarchical_top"/> is an 
-          SFC domain.
+          SFC-enabled domain.
         </t>
         <t>
           Unlike the top level, however, data packets entering the sub-domain 
-          are already encapsulated within SFC transport.
+          are already encapsulated within SFC transport. 
           <xref target="fig_hierarchical_lower"/> shows a sub-domain interfaced
           with a higher-level domain by means of an Internal Boundary Node 
-          (IBN). It is the purpose of the IBN to remove packets from the SFC
-          encapsulation, apply Classification rules, and direct the packets to
-          the selected local service function paths terminating at an egress 
+          (IBN). It is the purpose of the IBN to apply classification rules and 
+          direct the packets to the selected local SFPs terminating at an egress 
           IBN. The egress IBN finally restores packets to the
           original SFC transport and hands them off to SFFs.
         </t>
@@ -356,11 +359,11 @@
           Each sub-domain intersects a subset of the total paths that are 
           possible in the higher-level domain. An IBN is concerned with
           higher-level paths, but only those traversing the sub-domain. A
-          top-level controller may configure the IBN as an SF (the IBN plays the
+          top-level control element may configure the IBN as an SF (i.e., the IBN plays the
           SF role in the top-level domain).
         </t>
         <t>
-          We expect each sub-domain to have a control-plane that can operate 
+          Each sub-domain is likely to have a control-plane that can operate 
           independently of the top-level control-plane. The sub-domain 
           control-plane configures the classification and forwarding rules in 
           the sub-domain. The classification rules reside in the IBN, where 
@@ -371,13 +374,16 @@
                 title="Sub-domain within a higher-level domain">
           <artwork><![CDATA[
   +----+    +-----+  +----------------------+   +-----+
-  |    |SC#1| SFF |  |       IBN 1          |   | SFF |
-->|    |================*                *===============>
-  |    |    +-----+  |  # (in DC 1)      #  |   +-----+
-  | CF |             |  V                #  |
-  |    |             |+---+            +---+|   Top domain
-  |    |    * * * * *||CF | * * * * * *|SFF|| * * * * *
-  |    |    *        |+---+            +-+-+|         *
+  |    |    | SFF |  |   IBN 1  (in DC 1)   |   | SFF |
+  |    |SC#1|     |  |  +----------------+  |   |     |
+->|    |===============>|      SFF       |================>
+  |    |    +-----+  |  +----------------+  |   +-----+
+  | CF |             |   |              ^   |
+  |    |             |   v              |   |
+  |    |             |+--------------------+|   Top domain
+  |    |             ||CF, fwd/rev mapping ||
+  |    |    * * * * *||  and "glue"        || * * * * *
+  |    |    *        |+--------------------+|         *
   +----+    *        | | |              | | |    Sub  *
             *        +-o-o--------------o-o-+   domain*
             *     SC#2 | |SC#1          ^ ^       #1  *
@@ -409,18 +415,18 @@
     <section title="Internal Boundary Node (IBN)">
       <t>
         A network element termed "Internal Boundary Node" (IBN) bridges packets 
-        between domains. It looks like an SF to the higher level, and looks like 
+        between domains. It behaves as an SF to the higher level, and looks like 
         a classifier and end-of-chain to the lower level.
       </t>
       <t>
         To achieve the benefits of hierarchy, the IBN should be applying more
         granular traffic classification rules at the lower level than the
-        traffic passed to it. This means that the number of SF Paths within the
-        lower level is greater than the number of SF Paths arriving to the
+        traffic passed to it. This means that the number of SFPs within the
+        lower level is greater than the number of SFPs arriving to the
         IBN.
       </t>
       <t>
-        The IBN is also the termination of lower-level SF paths. This is because
+        The IBN is also the termination of lower-level SFPs. This is because
         the packets exiting lower-level SF paths must be returned to the
         higher-level SF paths and forwarded to the next hop in the higher-level
         domain.
@@ -429,7 +435,7 @@
       <section title="IBN Path Configuration"
                anchor="section_strategies">
         <t>
-          An operator of a lower-level SF Domain may be aware of which 
+          An operator of a lower-level domain may be aware of which 
           high-level paths transit their domain, or they may wish to accept any
           paths. 
         </t>
@@ -440,7 +446,7 @@
         </t>
         <t>
           After exiting a path in the sub-domain, packets can be restored to an 
-          original upper-level SF path by these methods:
+          original upper-level SFP by these methods:
         <list style="numbers">
           <t>
             Saving SPI and SI in transport-layer flow state,
@@ -455,20 +461,24 @@
             Nesting NSH headers, encapsulating the higher-level NSH headers
             within the lower-level NSH headers.
           </t>
+          
+          <t>
+            Converting forwarding with NSH to other forwarding techniques.
+          </t>
         </list>
         </t>
 
         <section title="Flow-Stateful IBN">
           <t>
             An IBN can be flow-aware, returning packets to the correct
-            higher-level SF path on the basis of the transport-layer 
+            higher-level SFP on the basis of the transport-layer 
             coordinates (typically, a 5-tuple) of packets exiting the 
-            lower-level SF paths.
+            lower-level SFPs.
           </t>
           <t>
             When packets are received by the IBN on a higher-level path, the
             encapsulated packets are parsed for IP and transport-layer (TCP, 
-            UDP...) coordinates. State is created, indexed by these coordinates
+            UDP, etc.) coordinates. State is created, indexed by these coordinates
             (a 5-tuple of {source-IP, destination-IP, source-port, 
             destination-port and transport protocol} in a typical case). The 
             state contains critical fields of the encapsulating SFC header 
@@ -497,7 +507,7 @@
           <t>
             This stateful approach is limited to use with SFs that retain the 
             transport coordinates of the packet. This approach cannot be used 
-            with SFs that modify those coordinates (e.g., as done by a NAT) or 
+            with SFs that modify those coordinates (e.g., NATs) or 
             otherwise create packets for new coordinates other than those 
             received (e.g., as an HTTP cache might do to retrieve content on 
             behalf of the original flow). In both cases, the fundamental 
@@ -558,7 +568,7 @@
           </t>
           <t>
             In this metadata approach, it is not necessary for the sub-domain's 
-            controller to modify paths when higher-level paths are changed.
+            control element to modify paths when higher-level paths are changed.
             The complexity of the higher-level domain does not cause complexity
             in the lower-level domain.
           </t>
@@ -617,8 +627,8 @@
 		    The traffic with the above stack of two-layer-NSH header is to be
 		    forwarded according to the Lower-NSH header in the lower-level SFC
 		    domain. The Upper-NSH header is preserved in the packets but
-		    not used for forwarding. At the last SFF of the Service Function 
-		    Chain of the lower-level domain (which resides in the IBN),
+		    not used for forwarding. At the last SFF of the 
+		    chain of the lower-level domain (which resides in the IBN),
 		    the Lower-NSH header is removed from the packet, and then the packet
 		    is forwarded by the IBN to an SFF of the upper-level domain,
 		    which will be forwarded according to the Upper-NSH header.
@@ -637,12 +647,7 @@
             If the SF injects packets, it must also be able to deal with adding 
             appropriate multiple layers of headers to injected packets.
           </t>
-          <t>
-            This approach requires a new Next Protocol value to be allocated
-            for NSH.
-          </t>
         </section>
-
       </section>
       
       <section title="Gluing Levels Together">
@@ -720,8 +725,7 @@
 
     <section title="Control Plane Elements">
       <t>
-        Controllers have been mentioned in this document without much
-        explanation. Although control protocols have not yet been standardized, 
+        Although control protocols have not yet been standardized, 
         from the point of view of hierarchical service function chaining we have 
         these expectations:
         <list style="symbols">
@@ -759,11 +763,112 @@
       </t>
 
     </section>
+    
+    <section title="Extension for Adopting to NSH-unaware Service Functions">
+      <t>
+        Hierarchical approach would be used for dividing networks into NSH-aware 
+        and NSH-unaware domains by converting forwarding process with NSH to 
+        other forwarding techniques (e.g., 5-tuple-based routing with OpenFlow), 
+        as shown in <xref target="fig_dividing_chain_domains"/>.
+      </t>
+      <figure anchor="fig_dividing_chain_domains"
+                  title="Dividing NSH enabled and un-enabled domains">
+            <artwork align="center"><![CDATA[
+    * * * * * * * * * * * * * * * * * *
+  *   NSH enabled domain               *
+  *       +-------+       +-------+    *
+  *       | SF#1  |       | SF#5  |    *
+  *       +-o---o-+       +-o---o-+    *
+  *         ^   |           ^   |      *
+  *       +-|---|-+       +-|---|-+    *
+  *       | |SFF| |       | |SFF| |    *
+  *       +-|---|-+       +-|---|-+    *
+  *         .   |           |   .      *
+  * +--+   /    |           |    \     *
+ -->|CF|--'     |           |     '-------> 
+  * +--+        v           |          *
+  *         +---o-----------o---+      *
+   .*.*.*.*.|  / |   IBN   | \  |*.*.*. 
+  .         +-o--o---------o--o-+      .
+  .           |  |         ^  ^        .
+  .           |  +-+     +-+  |        .
+  .       +---+    v     |    +---+    .
+  .       |      +-o-----o-+      |    .
+  .       |      |  SF#2   |      |    .
+  .       |      +---------+      |    .
+  .       +--+                 +--+    .
+  .          |   +---------+   |       .
+  .          v   |         v   |       .
+  .        +-o---o-+     +-o---o-+     .
+  .        | SF#3  |     | SF#4  |     .
+  .        +-------+     +-------+     .
+  .   NSH unaware domain               .
+   . . . . . . . . . . . . . . . . . . 
+]]>
+            </artwork>
+              <postamble>
+                SF#1 and SF#5 are NSH-aware and SF#2, SF#3 and SF#4 are 
+                NSH-unaware. In NSH-unaware domain, packets are conveyed 
+                as a format supported by SFs which are deployed there.
+              </postamble>
+        </figure>
+      
+      
+      <section title="Purpose">
+        <t>
+          This approach is expected to facilitate service chaining in networks 
+          in which NSH-aware and unaware SFs coexist.
+          Some examples of such situations are described below; 
+          <list style="symbols">
+            <t>In a period of transition from legacy SFs to NSH-aware SFs and</t>
+            <t>Supporting multi-tenancy.</t>
+          </list>
+        </t>
+                  
+      </section>
+       
+      <section title="Requirements for IBN">
+        <t>
+          In this usage, an IBN classifier is required to have an NSH
+          conversion table for applying packets to appropriate lower-level
+          paths and returning packets to the correct higher-level paths.
+          For example, the following methods would be 
+          used for saving/restoring upper-level path information:
+          
+          <list style="symbols">
+            <t>Saving SPI and SI in transport-layer flow state (refer to Section 3.1.1.) and</t>
+            <t> Using unique lower-level paths per upper-level NSH coordinates 
+               (refer to Section 3.1.3.).</t>
+          </list>
+        </t>
+        
+        <t>
+          Especially, the use of unique paths approach would be good for translating 
+          NSH to a different forwarding technique in the lower level. A single 
+          path in the upper level may be branched to multiple paths in the lower level 
+          such any lower-level path is only used by one upper-level path. This allows 
+          unambiguous restoration to the upper-level path.
+        </t>
+
+        <t>
+          In addition, IBN might be required to convert metadata contained in
+          NSH to the format appropriate to the packet in the lower-level path.
+          For example, some legacy SFs identify subscriber based on
+          information of network topology, such as VID, and IBN would be
+          required to create VLAN to packets from metadata if subscriber
+          identifier is conveyed as metadata in higher-level domains.
+        </t>
+        
+        <t>
+          Other fundamental functions required as IBN (e.g., maintaining metadata of upper 
+          level or decrementing Service Index) are same as normal usage.
+        </t>
+      </section>
+    </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The concept of Hierarchical Service Path Domains was introduced in
-      <xref target="I-D.homma-sfc-forwarding-methods-analysis">
-      draft-homma-sfc-forwarding-methods-analysis-01</xref>
+      <xref target="I-D.homma-sfc-forwarding-methods-analysis"/>
       as a means to improve scalability of service chaining in large networks. 
       </t>
       <t>
@@ -817,6 +922,11 @@
         All of the systems and protocols must be secure from modification by 
         untrusted agents.
       </t>
+      <t>
+        Security considerations related to the control plane are discussed in 
+        <xref target="I-D.ietf-sfc-control-plane"/>.
+      </t>
+      
     </section>
   </middle>
 
@@ -829,13 +939,15 @@
 
       &RFC7665;
 
+      &I-D.draft-ietf-sfc-nsh;
+
+      &I-D.draft-ietf-sfc-control-plane;
+
     </references>
 
     <references title="Informative References">
 
       &I-D.draft-homma-sfc-forwarding-methods-analysis;
-
-      &I-D.draft-ietf-sfc-nsh;
 
       &I-D.draft-ietf-sfc-dc-use-cases;
 
