@@ -8,7 +8,7 @@ Expires: September 2, 2016                                           NTT
                                                                 D. Lopez
                                                           Telefonica I+D
                                                             M. Boucadair
-                                                            Orange Group
+                                                                  Orange
                                                                   D. Liu
                                                            Alibaba Group
                                                                    T. Ao
@@ -17,7 +17,7 @@ Expires: September 2, 2016                                           NTT
 
 
                  Hierarchical Service Function Chaining
-                    draft-dolson-sfc-hierarchical-05
+                    draft-dolson-sfc-hierarchical-06
 
 Abstract
 
@@ -91,8 +91,7 @@ Table of Contents
    5.  Control Plane Elements  . . . . . . . . . . . . . . . . . . .  13
    6.  Extension for Adopting to NSH-unaware Service Functions . . .  13
      6.1.  Purpose . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     6.2.  Forwarding techniques without NSH . . . . . . . . . . . .  15
-     6.3.  Requirements for IBN  . . . . . . . . . . . . . . . . . .  15
+     6.2.  Requirements for IBN  . . . . . . . . . . . . . . . . . .  15
    7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  15
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
    9.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
@@ -101,8 +100,9 @@ Table of Contents
      10.2.  Informative References . . . . . . . . . . . . . . . . .  17
    Appendix A.  Examples of Hierarchical Service Function Chaining .  17
      A.1.  Reducing the Number of Service Function Paths . . . . . .  17
-     A.2.  Managing a Distributed Data-Center Network  . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+     A.2.  Managing a Distributed Data-Center Network  . . . . . . .  19
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+
 
 
 
@@ -710,7 +710,7 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
    Hierarchical approach would be used for dividing networks into NSH-
    aware and NSH-unaware domains by converting forwarding process with
-   NSH to other forwarding thecniques (e.g., 5-tuple-based routing with
+   NSH to other forwarding techniques (e.g., 5-tuple-based routing with
    OpenFlow), as shown in Figure 4.
 
 
@@ -757,26 +757,26 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
                   .        +-o---o-+     +-o---o-+     .
                   .        | SF#3  |     | SF#4  |     .
                   .        +-------+     +-------+     .
-                  .   NSH un-enabled domain            .
+                  .   NSH unaware domain               .
                    . . . . . . . . . . . . . . . . . .
 
 
-   SF#1 and SF#5 are NSH-aware SFs, and SF#2, SF#3 and SF#4 are NSH-
-   unaware SFs.  In NSH-unaware domain, packets are conveyed as a format
-   supported by SFs which are deployed there.
+   SF#1 and SF#5 are NSH-aware and SF#2, SF#3 and SF#4 are NSH-unaware.
+   In NSH-unaware domain, packets are conveyed as a format supported by
+   SFs which are deployed there.
 
            Figure 4: Dividing NSH enabled and un-enabled domains
 
 6.1.  Purpose
 
-   This approach can be expected to facilitate service chaining in
-   networks in which NSH aware and unaware SFs coexist.  Some examples
-   of such situations are described below;
+   This approach is expected to facilitate service chaining in networks
+   in which NSH-aware and unaware SFs coexist.  Some examples of such
+   situations are described below;
 
-   o  In a period of transition from the legacy SFs to the new SFs
-      enabled NSH,
+   o  In a period of transition from legacy SFs to NSH-aware SFs and
 
-   o  Supporting multi-tenancy and
+   o  Supporting multi-tenancy.
+
 
 
 
@@ -785,30 +785,21 @@ Dolson, et al.          Expires September 2, 2016              [Page 14]
 Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
 
-   o  Supporting service chains provided by third parties.
-
-6.2.  Forwarding techniques without NSH
-
-   There are some forwarding techniques without NSH for providing
-   service chaining, and some of them are described in draft-homma-sfc-
-   forwarding-methods-analysis-05
-   [I-D.homma-sfc-forwarding-methods-analysis].
-
-6.3.  Requirements for IBN
+6.2.  Requirements for IBN
 
    In this usage, an IBN classifier is required to have an NSH
    conversion table for applying packets to appropriate lower-level
-   paths and returning packets to the correct higher-level paths.  The
-   following methods, described in section 3.1., would be used for
-   saving/restoring upper-level path information;
+   paths and returning packets to the correct higher-level paths.  For
+   example, the following methods would be used for saving/restoring
+   upper-level path information:
 
-   o  Saving SPI and SI in transport-layer flow state (Refer to
+   o  Saving SPI and SI in transport-layer flow state (refer to
       Section 3.1.1.) and
 
    o  Using unique lower-level paths per upper-level NSH coordinates
-      (Refer to Section 3.1.3.).
+      (refer to Section 3.1.3.).
 
-   Especially, the using unique paths approach would be good for
+   Especially, the use of unique paths approach would be good for
    translating NSH to a different forwarding technique in the lower
    level.  A single path in the upper level may be branched to multiple
    paths in the lower level such any lower-level path is only used by
@@ -817,13 +808,13 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
    In addition, IBN might be required to convert metadata contained in
    NSH to the format appropriate to the packet in the lower-level path.
-   For example, some existing SFs identify subscriber based on
-   information of network topology, such as VID, and IBN would be
-   required to create VLAN to packets from metadata if subscriber
-   identifier is conveyed as metadata in higher-level domains.
+   For example, some legacy SFs identify subscriber based on information
+   of network topology, such as VID, and IBN would be required to create
+   VLAN to packets from metadata if subscriber identifier is conveyed as
+   metadata in higher-level domains.
 
-   Other fandamental functions required as IBN (e.g., Maintaining
-   Metadata of Upper Level or Decrementing Service Index) are same as
+   Other fundamental functions required as IBN (e.g., maintaining
+   metadata of upper level or decrementing Service Index) are same as
    normal usage.
 
 7.  Acknowledgements
@@ -833,14 +824,6 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
    [I-D.homma-sfc-forwarding-methods-analysis] as a means to improve
    scalability of service chaining in large networks.
 
-
-
-
-Dolson, et al.          Expires September 2, 2016              [Page 15]
-
-Internet-Draft   Hierarchical Service Function Chaining       March 2016
-
-
    The concept of nested NSH headers was introduced in
    [I-D.ao-sfc-for-dc-interconnect] as a means of creating hierarchical
    SFC in a data center.
@@ -849,6 +832,14 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
    the time to read and provide valuable feedback:
 
       Ron Parker
+
+
+
+
+Dolson, et al.          Expires September 2, 2016              [Page 15]
+
+Internet-Draft   Hierarchical Service Function Chaining       March 2016
+
 
       Christian Jacquenet
 
@@ -886,6 +877,15 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
 10.1.  Normative References
 
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <http://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC7665]  Halpern, J., Ed. and C. Pignataro, Ed., "Service Function
+              Chaining (SFC) Architecture", RFC 7665,
+              DOI 10.17487/RFC7665, October 2015,
+              <http://www.rfc-editor.org/info/rfc7665>.
 
 
 
@@ -896,16 +896,6 @@ Dolson, et al.          Expires September 2, 2016              [Page 16]
 
 Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <http://www.rfc-editor.org/info/rfc2119>.
-
-   [RFC7665]  Halpern, J., Ed. and C. Pignataro, Ed., "Service Function
-              Chaining (SFC) Architecture", RFC 7665,
-              DOI 10.17487/RFC7665, October 2015,
-              <http://www.rfc-editor.org/info/rfc7665>.
 
 10.2.  Informative References
 
@@ -945,14 +935,6 @@ A.1.  Reducing the Number of Service Function Paths
 
    As shown in Figure 5, there are two domains, each with different
    concerns: a Security Domain that selects Service Functions based on
-
-
-
-Dolson, et al.          Expires September 2, 2016              [Page 17]
-
-Internet-Draft   Hierarchical Service Function Chaining       March 2016
-
-
    network conditions and an Optimization Domain that selects Service
    Functions based on traffic protocol.
 
@@ -963,6 +945,14 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
    video optimization) to each of these two types of traffic.  If we use
    flat SFC (normal branching), 10 SFPs are needed in each domain.  In
    contrast, if we use hierarchical SFC, only 5 SFPs in Security Domain
+
+
+
+Dolson, et al.          Expires September 2, 2016              [Page 17]
+
+Internet-Draft   Hierarchical Service Function Chaining       March 2016
+
+
    and 2 SFPs in Optimization Domain will be required, as shown in
    Figure 6.
 
@@ -972,42 +962,6 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
    "bypass" path in the Optimization Domain would cause the flat model
    to require 15 paths (5 more), but cause the hSFC model to require one
    more path in the Optimization Domain.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Dolson, et al.          Expires September 2, 2016              [Page 18]
-
-Internet-Draft   Hierarchical Service Function Chaining       March 2016
-
 
               . . . . . . . . . . . .   . . . . . . . . . . . . .
               . Security Domain     .   .  Optimization Domain  .
@@ -1050,17 +1004,7 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
 
 
-
-
-
-
-
-
-
-
-
-
-Dolson, et al.          Expires September 2, 2016              [Page 19]
+Dolson, et al.          Expires September 2, 2016              [Page 18]
 
 Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
@@ -1116,7 +1060,7 @@ A.2.  Managing a Distributed Data-Center Network
 
 
 
-Dolson, et al.          Expires September 2, 2016              [Page 20]
+Dolson, et al.          Expires September 2, 2016              [Page 19]
 
 Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
@@ -1172,7 +1116,7 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
 
 
-Dolson, et al.          Expires September 2, 2016              [Page 21]
+Dolson, et al.          Expires September 2, 2016              [Page 20]
 
 Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
@@ -1228,7 +1172,7 @@ Authors' Addresses
 
 
 
-Dolson, et al.          Expires September 2, 2016              [Page 22]
+Dolson, et al.          Expires September 2, 2016              [Page 21]
 
 Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
@@ -1284,5 +1228,5 @@ Internet-Draft   Hierarchical Service Function Chaining       March 2016
 
 
 
-Dolson, et al.          Expires September 2, 2016              [Page 23]
+Dolson, et al.          Expires September 2, 2016              [Page 22]
 
