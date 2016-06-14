@@ -40,7 +40,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-dolson-sfc-hierarchical-05" ipr="trust200902">
+<rfc category="info" docName="draft-dolson-sfc-hierarchical-06" ipr="trust200902">
 
   <!-- ***** FRONT MATTER ***** -->
 
@@ -98,7 +98,7 @@
     </author>
 
     <author fullname="Mohamed Boucadair" initials="M." surname="Boucadair">
-      <organization>Orange Group</organization>
+      <organization>Orange</organization>
       <address>
         <postal>
           <street></street>
@@ -770,7 +770,7 @@
       <t>
         Hierarchical approach would be used for dividing networks into NSH-aware 
         and NSH-unaware domains by converting forwarding process with NSH to 
-        other forwarding thecniques (e.g., 5-tuple-based routing with OpenFlow), 
+        other forwarding techniques (e.g., 5-tuple-based routing with OpenFlow), 
         as shown in <xref target="fig_dividing_chain_domains"/>.
       </t>
       <figure anchor="fig_dividing_chain_domains"
@@ -804,13 +804,13 @@
   .        +-o---o-+     +-o---o-+     .
   .        | SF#3  |     | SF#4  |     .
   .        +-------+     +-------+     .
-  .   NSH un-enabled domain            .
+  .   NSH unaware domain               .
    . . . . . . . . . . . . . . . . . . 
 ]]>
             </artwork>
               <postamble>
-                SF#1 and SF#5 are NSH-aware SFs, and SF#2, SF#3 and SF#4 are 
-                NSH-unaware SFs. In NSH-unaware domain, packets are conveyed 
+                SF#1 and SF#5 are NSH-aware and SF#2, SF#3 and SF#4 are 
+                NSH-unaware. In NSH-unaware domain, packets are conveyed 
                 as a format supported by SFs which are deployed there.
               </postamble>
         </figure>
@@ -818,25 +818,15 @@
       
       <section title="Purpose">
         <t>
-          This approach can be expected to facilitate service chaining in networks 
-          in which NSH aware and unaware SFs coexist.
+          This approach is expected to facilitate service chaining in networks 
+          in which NSH-aware and unaware SFs coexist.
           Some examples of such situations are described below; 
           <list style="symbols">
-            <t>In a period of transition from the legacy SFs to the new SFs enabled NSH,</t>
-            <t>Supporting multi-tenancy and</t>
-            <t>Supporting service chains provided by third parties.</t>
+            <t>In a period of transition from legacy SFs to NSH-aware SFs and</t>
+            <t>Supporting multi-tenancy.</t>
           </list>
         </t>
                   
-      </section>
-
-      <section title="Forwarding techniques without NSH">
-        <t>
-          There are some forwarding techniques without NSH for providing service chaining, 
-          and some of them are described in 
-          <xref target="I-D.homma-sfc-forwarding-methods-analysis">
-          draft-homma-sfc-forwarding-methods-analysis-05</xref>.
-        </t>
       </section>
        
       <section title="Requirements for IBN">
@@ -844,18 +834,18 @@
           In this usage, an IBN classifier is required to have an NSH
           conversion table for applying packets to appropriate lower-level
           paths and returning packets to the correct higher-level paths.
-          The following methods, described in section 3.1., would be 
-          used for saving/restoring upper-level path information;
+          For example, the following methods would be 
+          used for saving/restoring upper-level path information:
           
           <list style="symbols">
-            <t>Saving SPI and SI in transport-layer flow state (Refer to Section 3.1.1.) and</t>
+            <t>Saving SPI and SI in transport-layer flow state (refer to Section 3.1.1.) and</t>
             <t> Using unique lower-level paths per upper-level NSH coordinates 
-               (Refer to Section 3.1.3.).</t>
+               (refer to Section 3.1.3.).</t>
           </list>
         </t>
         
         <t>
-          Especially, the using unique paths approach would be good for translating 
+          Especially, the use of unique paths approach would be good for translating 
           NSH to a different forwarding technique in the lower level. A single 
           path in the upper level may be branched to multiple paths in the lower level 
           such any lower-level path is only used by one upper-level path. This allows 
@@ -865,15 +855,15 @@
         <t>
           In addition, IBN might be required to convert metadata contained in
           NSH to the format appropriate to the packet in the lower-level path.
-          For example, some existing SFs identify subscriber based on
+          For example, some legacy SFs identify subscriber based on
           information of network topology, such as VID, and IBN would be
           required to create VLAN to packets from metadata if subscriber
           identifier is conveyed as metadata in higher-level domains.
         </t>
         
         <t>
-          Other fandamental functions required as IBN (e.g., Maintaining Metadata of Upper 
-          Level or Decrementing Service Index) are same as normal usage.
+          Other fundamental functions required as IBN (e.g., maintaining metadata of upper 
+          level or decrementing Service Index) are same as normal usage.
         </t>
       </section>
     </section>
