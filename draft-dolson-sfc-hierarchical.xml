@@ -754,18 +754,18 @@
 
     </section>
     
-    <section title="Extension for Adopting to NSH-unaware Service Functions">
+    <section title="Extension for Adopting to NSH-Unaware Service Functions">
       <t>
-        Hierarchical approach would be used for dividing networks into NSH-aware 
-        and NSH-unaware domains by converting forwarding process with NSH to 
+        The hierarchical approach can be used for dividing networks into NSH-aware 
+        and NSH-unaware domains by converting NSH encapsulation to 
         other forwarding techniques (e.g., 5-tuple-based routing with OpenFlow), 
         as shown in <xref target="fig_dividing_chain_domains"/>.
       </t>
       <figure anchor="fig_dividing_chain_domains"
-                  title="Dividing NSH enabled and un-enabled domains">
+                  title="Dividing NSH-aware and NSH-unaware domains">
             <artwork align="center"><![CDATA[
     * * * * * * * * * * * * * * * * * *
-  *   NSH enabled domain               *
+  *   NSH-aware domain                 *
   *       +-------+       +-------+    *
   *       | SF#1  |       | SF#5  |    *
   *       +-o---o-+       +-o---o-+    *
@@ -792,14 +792,14 @@
   .        +-o---o-+     +-o---o-+     .
   .        | SF#3  |     | SF#4  |     .
   .        +-------+     +-------+     .
-  .   NSH unaware domain               .
+  .   NSH-unaware domain               .
    . . . . . . . . . . . . . . . . . . 
 ]]>
             </artwork>
               <postamble>
                 SF#1 and SF#5 are NSH-aware and SF#2, SF#3 and SF#4 are 
-                NSH-unaware. In NSH-unaware domain, packets are conveyed 
-                as a format supported by SFs which are deployed there.
+                NSH-unaware. In the NSH-unaware domain, packets are conveyed 
+                in a format supported by SFs which are deployed there.
               </postamble>
         </figure>
       
@@ -807,8 +807,8 @@
       <section title="Purpose">
         <t>
           This approach is expected to facilitate service chaining in networks 
-          in which NSH-aware and unaware SFs coexist.
-          Some examples of such situations are described below:
+          in which NSH-aware and NSH-unaware SFs coexist.
+          Some examples of such situations are:
           <list style="symbols">
             <t>In a period of transition from legacy SFs to NSH-aware SFs and</t>
             <t>Supporting multi-tenancy.</t>
@@ -837,12 +837,12 @@
           Especially, the use of unique paths approach would be good for translating 
           NSH to a different forwarding technique in the lower level. A single 
           path in the upper level may be branched to multiple paths in the lower level 
-          such any lower-level path is only used by one upper-level path. This allows 
+          such that any lower-level path is only used by one upper-level path. This allows 
           unambiguous restoration to the upper-level path.
         </t>
 
         <t>
-          In addition, IBN might be required to convert metadata contained in
+          In addition, an IBN might be required to convert metadata contained in
           NSH to the format appropriate to the packet in the lower-level path.
           For example, some legacy SFs identify subscriber based on
           information of network topology, such as VID, and IBN would be
