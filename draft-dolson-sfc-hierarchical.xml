@@ -4,7 +4,6 @@
      There has to be one entity for each item to be referenced. 
      An alternate method (rfc include) is described in the references. -->
 
-<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY I-D.draft-homma-sfc-forwarding-methods-analysis SYSTEM 
 "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-homma-sfc-forwarding-methods-analysis-05.xml">
 <!ENTITY I-D.draft-ietf-sfc-nsh SYSTEM 
@@ -48,7 +47,7 @@
 
   <front>
 
-    <title>Hierarchical Service Function Chaining</title>
+    <title>Hierarchical Service Function Chaining (hSFC)</title>
 
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
@@ -162,7 +161,7 @@
       </t>
       <t>
         The goals of hSFC are to make a large-scale network easier to reason 
-        about, simpler to control and to support independent functional groups 
+        about, simpler to control and to able support independent functional groups 
         within large operators.
       </t>
     </abstract>
@@ -172,7 +171,7 @@
     <section title="Introduction">
       <t>
         Service Function Chaining (SFC) is a technique for prescribing 
-        differentiated traffic forwarding policies within the SFC-enabled domain.
+        differentiated traffic forwarding policies within an SFC-enabled domain.
         SFC is described in detail in the
         <xref target="RFC7665">
          SFC architecture document
@@ -195,8 +194,8 @@
       <t>
         Note: in this document, the notion of the "path" of a packet is the
         series of SF instances traversed by a packet. The means of delivering 
-        packets between SFs (the forwarding mechanisms of the underlay network)
-        is not relevant to the current discussion.
+        packets between SFs (the forwarding mechanisms enforced in the 
+	underlying network) is not relevant to the discussion.
       </t>
       <t>
         Difficult problems are often made easier by decomposing them in a 
@@ -230,13 +229,6 @@
         improve the ability to operate a network. It is outside of the scope of 
         the document to consider domains operated by different organizations.
       </t>
-
-      <section title="Requirements Language">
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-        document are to be interpreted as described in <xref
-        target="RFC2119"/>.</t>
-      </section>
     </section>
 
     <section title="Hierarchical Service Function Chaining (hSFC)">
@@ -248,7 +240,7 @@
       
       <section title="Top Level">
         <t>
-          Considering the example in <xref target="fig_hierarchical_top"/>, a 
+          Considering the example depicted in <xref target="fig_hierarchical_top"/>, a 
           top-level network domain includes SFC data plane components distributed over a 
           wide area, including:
           <list style="symbols">
@@ -258,7 +250,7 @@
           </list>
           For the sake of clarity, components of the underlay network are not 
           shown; an underlay network is assumed to provide connectivity between 
-          SFC components.
+          SFC data plane components.
         </t>
         <t>
           Top-level SFPs carry packets from classifiers 
@@ -276,7 +268,7 @@
           traffic along paths that will transit appropriate sub-domains. 
           <xref target="fig_hierarchical_top"/> shows one possible service chain 
           passing from edge, through two
-          sub-domains, to network egress. The top-level control plane does NOT
+          sub-domains, to network egress. The top-level control plane does not
           configure classification or forwarding within the sub-domains.
         </t>
         <t>
@@ -297,14 +289,12 @@
           all of the SFs in each sub-domain.
         </t>
         <t>
-          It should be assumed that some SFs in the network 
+          It should be assumed that some SFs 
           require bidirectional symmetry of paths (see more in 
           <xref target="section_classifier"/>). Therefore the classifiers at the 
-          top level must be configured with policies ensuring server-to-client
-          packets take the reverse path of client-to-server packets through
-          sub-domains. (Recall the "path" denotes the series of 
-          SFs; the precise physical network path within the underlay 
-          network is not relevant here.)
+          top level must be configured with policies ensuring outgoing
+          packets take the reverse path of incoming packets through
+          sub-domains.
         </t>
         <figure anchor="fig_hierarchical_top"
                 title="Network-wide view of top level of hierarchy">
@@ -346,19 +336,19 @@
           SFC-enabled domain.
         </t>
         <t>
-          Unlike the top level, however, data packets entering the sub-domain 
-          are already encapsulated within SFC transport. 
+          Unlike the top level, data packets entering the sub-domain 
+          are already SFC-encapsulated. 
           <xref target="fig_hierarchical_lower"/> shows a sub-domain interfaced
           with a higher-level domain by means of an Internal Boundary Node 
           (IBN). It is the purpose of the IBN to apply classification rules and 
           direct the packets to the selected local SFPs terminating at an egress 
           IBN. The egress IBN finally restores packets to the
-          original SFC transport and hands them off to SFFs.
+          original SFC shim and hands them off to SFFs.
         </t>
         <t>
           Each sub-domain intersects a subset of the total paths that are 
           possible in the higher-level domain. An IBN is concerned with
-          higher-level paths, but only those traversing the sub-domain. A
+          higher-level paths, but only those traversing its sub-domain. A
           top-level control element may configure the IBN as an SF (i.e., the IBN plays the
           SF role in the top-level domain).
         </t>
@@ -367,8 +357,8 @@
           independently of the top-level control-plane. The sub-domain 
           control-plane configures the classification and forwarding rules in 
           the sub-domain. The classification rules reside in the IBN, where 
-          packets are moved from SFC encapsulation of the top-level domain to 
-          and from SFC encapsulation of the lower-level domain.
+          SFC encapsulation of the top-level domain is converted to/from 
+          SFC encapsulation of the lower-level domain.
         </t>
         <figure anchor="fig_hierarchical_lower"
                 title="Sub-domain within a higher-level domain">
@@ -468,7 +458,7 @@
         </list>
         </t>
 
-        <section title="Flow-Stateful IBN">
+        <section title="Flow-Stateful IBN" anchor="section_flow_stateful">
           <t>
             An IBN can be flow-aware, returning packets to the correct
             higher-level SFP on the basis of the transport-layer 
@@ -479,9 +469,9 @@
             When packets are received by the IBN on a higher-level path, the
             encapsulated packets are parsed for IP and transport-layer (TCP, 
             UDP, etc.) coordinates. State is created, indexed by these coordinates
-            (a 5-tuple of {source-IP, destination-IP, source-port, 
-            destination-port and transport protocol} in a typical case). The 
-            state contains critical fields of the encapsulating SFC header 
+            ({source-IP, destination-IP, source-port, 
+            destination-port and transport protocol} typically). The 
+            state contains at least critical fields of the encapsulating SFC header 
             (or perhaps the entire header).
           </t>
           <t>
@@ -501,7 +491,7 @@
           </t>
           <t>
             State cannot be created by packets arriving from the lower-level 
-            chain; when state cannot be found for such packets, they MUST be 
+            chain; when state cannot be found for such packets, they must be 
             dropped.
           </t>
           <t>
@@ -516,7 +506,7 @@
           </t>
           <t>
             In the stateful approach, there are issues caused by having state, such 
-            as how long the state should be maintained (it MUST time out 
+            as how long the state should be maintained (it must time out 
             eventually), as well as whether the state needs to be replicated to 
             other devices to create a highly available network.
           </t>
@@ -574,7 +564,7 @@
           </t>
         </section>
 
-        <section title="Using Unique Paths per Upper-Level Path">
+        <section title="Using Unique Paths per Upper-Level Path" anchor="section_unique_paths">
           <t>
             In this approach, paths within the sub-domain are constrained so 
             that a SPI (of the sub-domain) unambiguously indicates the egress
@@ -604,7 +594,7 @@
 		    original NSH header. 
 		  </t>
 		  <t>
-		    As shown in figure <xref target="fig_NSH_in_NSH"/>
+		    As shown in <xref target="fig_NSH_in_NSH"/>
 			the Lower-NSH Header used to forward packets in the lower-level
 			domain precedes the Upper-NSH Header from the top-level domain.
 		  </t>
@@ -818,7 +808,7 @@
         <t>
           This approach is expected to facilitate service chaining in networks 
           in which NSH-aware and unaware SFs coexist.
-          Some examples of such situations are described below; 
+          Some examples of such situations are described below:
           <list style="symbols">
             <t>In a period of transition from legacy SFs to NSH-aware SFs and</t>
             <t>Supporting multi-tenancy.</t>
@@ -836,9 +826,10 @@
           used for saving/restoring upper-level path information:
           
           <list style="symbols">
-            <t>Saving SPI and SI in transport-layer flow state (refer to Section 3.1.1.) and</t>
+            <t>Saving SPI and SI in transport-layer flow state
+	       (refer to <xref target="section_flow_stateful"/>) and</t>
             <t> Using unique lower-level paths per upper-level NSH coordinates 
-               (refer to Section 3.1.3.).</t>
+               (refer to <xref target="section_unique_paths"/>).</t>
           </list>
         </t>
         
@@ -877,8 +868,8 @@
         as a means of creating hierarchical SFC in a data center.
       </t>
       <t>
-        The authors would like to thank the following individuals for taking the
-        time to read and provide valuable feedback:
+        The authors would like to thank the following individuals for
+        providing valuable feedback:
       </t>
       <t>
         <list style="hanging">
@@ -935,8 +926,6 @@
   <back>
 
     <references title="Normative References">
-      &RFC2119;
-
       &RFC7665;
 
       &I-D.draft-ietf-sfc-nsh;
