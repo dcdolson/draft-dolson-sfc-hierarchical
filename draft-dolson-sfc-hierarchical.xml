@@ -445,15 +445,11 @@
             Pushing SPI and SI into metadata,
           </t>
           <t>
-            Using unique lower-level paths per upper-level path coordinates.
+            Using unique lower-level paths per upper-level path coordinates,
           </t>
           <t>
             Nesting NSH headers, encapsulating the higher-level NSH headers
             within the lower-level NSH headers.
-          </t>
-          
-          <t>
-            Converting forwarding with NSH to other forwarding techniques.
           </t>
         </list>
         </t>
@@ -527,6 +523,12 @@
             control-plane to modify paths when higher-level paths are changed.
             The complexity of the higher-level domain does not cause complexity
             in the lower-level domain.
+          </t>
+          <t>
+            Since it doesn't depend on NSH in the lower domain,
+            this flow-stateful approach can be applied to translation methods
+            of converting NSH to other forwarding techniques.
+            (Refer to <xref target="section_other_forwarding"/>.)
           </t>
         </section>
 
@@ -754,7 +756,8 @@
 
     </section>
     
-    <section title="Extension for Adopting to NSH-Unaware Service Functions">
+    <section title="Extension for Adopting to NSH-Unaware Service Functions"
+             anchor="section_other_forwarding">
       <t>
         The hierarchical approach can be used for dividing networks into NSH-aware 
         and NSH-unaware domains by converting NSH encapsulation to 
