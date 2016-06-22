@@ -449,7 +449,10 @@
           </t>
           <t>
             Nesting NSH headers, encapsulating the higher-level NSH headers
-            within the lower-level NSH headers.
+            within the lower-level NSH headers,
+          </t>
+          <t>
+            Saving upper-level by a flow ID and placing an hSFC flow ID into metadata,
           </t>
         </list>
         </t>
@@ -638,6 +641,91 @@
             the lower-level domain to be able to parse multiple layers of NSH.
             If the SF injects packets, it must also be able to deal with adding 
             appropriate multiple layers of headers to injected packets.
+          </t>
+        </section>
+
+        <section title="Stateful / Metadata Hybrid">
+          <t>
+             The basic idea of this approach is for the IBN to save upper domain
+             encapsulation information such that it can be retrieved by a
+             unique identifier, termed an "hSFC Flow ID". An example ID is 
+             shown in <xref target="table_hybrid"/>.
+           </t>
+          <texttable title="Example Mapping of an hSFC Flow ID to Upper-Level Header"
+                     anchor="table_hybrid">
+            <ttcol>hSFC Flow ID</ttcol>
+            <ttcol>SPI</ttcol>
+            <ttcol>SI</ttcol>
+            <ttcol>Context1</ttcol>
+            <ttcol>Context2</ttcol>
+            <ttcol>Context3</ttcol>
+            <ttcol>Context4</ttcol>
+            <c>1</c>
+            <c>45</c>
+            <c>254</c>
+            <c>100</c>
+            <c>2112</c>
+            <c>12345</c>
+            <c>7</c>
+          </texttable>
+          <t>
+             The ID is placed
+             in the metadata in NSH headers of the packet in the lower domain,
+             as shown in <xref target="fig_hybrid"/>.
+             When packets exit the lower domain, the IBN uses the ID to retrieve
+             the appropriate NSH encapsulation for returning the packet to the
+             upper domain.
+          </t>
+          <figure title="Storing hSFC Flow ID in lower-level metadata"
+                  anchor="fig_hybrid">
+            <artwork align="center"><![CDATA[
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Ver|O|C|R|R|R|R|R|R|   Length  |  MD-type=0x1  | Next Protocol |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|          Service Path Identifer               | Service Index |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      hSFC Flow ID                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                Mandatory Context Header                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                Mandatory Context Header                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                Mandatory Context Header                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+]]>
+            </artwork>
+          </figure>
+          <t>
+            Advantages of this approach include:
+            <list style="symbols">
+              <t>Does not require state based on 5-tuple, so it works with
+                 functions that change the IP addresses or ports of a packet
+                 such as NATs,</t>
+              <t>Does not require all domains to have the same metadata scheme,</t>
+              <t>Can be used to restore any upper-domain information, not just
+                 service path,</t>
+              <t>The lower domain only requires a single item of metadata
+                 regardless of the number of items of metadata used in
+                 the upper domain. (For MD-Type 1, this leaves 3 slots for
+                 use in the lower domain.)</t>
+              <t>No special functionality is required of the SF, other than
+                 the usual ability to preserve metadata and to apply
+                 metadata to injected packets.</t>
+            </list>
+          </t>
+          <t>
+            Disadvantages include those of other stateful approaches,
+            including state timeout and replication mentioned in
+            <xref target="section_flow_stateful"/>.
+          </t>
+          <t>
+            There may be a large number of unique NSH encapsulations to be stored,
+            given that the hSFC Flow ID must represent all of the
+            bits in the upper-level encapsulation. This might consume
+            a lot of memory or create out-of-memory situations in which 
+            IDs cannot be created or old IDs are discarded while still
+            in use.
           </t>
         </section>
       </section>
@@ -869,6 +957,9 @@
         The concept of nested NSH headers was introduced in
         <xref target="I-D.ao-sfc-for-dc-interconnect"/>
         as a means of creating hierarchical SFC in a data center.
+      </t>
+      <t>
+        The stateful/metadata hybrid idea was proposed by Victor Vu.
       </t>
       <t>
         The authors would like to thank the following individuals for
