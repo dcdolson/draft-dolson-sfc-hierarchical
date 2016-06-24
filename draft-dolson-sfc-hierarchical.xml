@@ -141,6 +141,21 @@
       </address> 
     </author> 
 
+    <author fullname="Vu Anh Vu" initials="V." surname="Vu">
+      <organization abbrev="SSU ">Soongsil University</organization>
+      <address>
+        <postal>
+          <street>369 Sangdo-ro</street>
+          <city>Seoul</city>
+          <region>Dongjak-gu</region>
+          <code>06978</code>
+          <country>Korea </country>
+        </postal>
+        <email>vuva@dcn.ssu.ac.kr</email>
+      </address>
+    </author>
+
+
 
     <date month="June" year="2016" />
 
@@ -957,9 +972,6 @@
         The concept of nested NSH headers was introduced in
         <xref target="I-D.ao-sfc-for-dc-interconnect"/>
         as a means of creating hierarchical SFC in a data center.
-      </t>
-      <t>
-        The stateful/metadata hybrid idea was proposed by Victor Vu.
       </t>
       <t>
         The authors would like to thank the following individuals for
