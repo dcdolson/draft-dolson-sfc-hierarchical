@@ -5,7 +5,7 @@
 Service Function Chaining                                      D. Dolson
 Internet-Draft                                                  Sandvine
 Intended status: Informational                                  S. Homma
-Expires: December 29, 2016                                           NTT
+Expires: January 27, 2017                                            NTT
                                                                 D. Lopez
                                                           Telefonica I+D
                                                             M. Boucadair
@@ -16,11 +16,11 @@ Expires: December 29, 2016                                           NTT
                                                          ZTE Corporation
                                                                    V. Vu
                                                                      SSU
-                                                           June 27, 2016
+                                                           July 26, 2016
 
 
              Hierarchical Service Function Chaining (hSFC)
-                    draft-dolson-sfc-hierarchical-06
+                     draft-ietf-sfc-hierarchical-00
 
 Abstract
 
@@ -47,15 +47,15 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 29, 2016.
+   This Internet-Draft will expire on January 27, 2017.
 
 
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 1]
+Dolson, et al.          Expires January 27, 2017                [Page 1]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 2]
+Dolson, et al.          Expires January 27, 2017                [Page 2]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 3]
+Dolson, et al.          Expires January 27, 2017                [Page 3]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    outside of the scope of the document to consider domains operated by
@@ -221,9 +221,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 4]
+Dolson, et al.          Expires January 27, 2017                [Page 4]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    Packets are classified at the edge of the network to select the paths
@@ -277,9 +277,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 5]
+Dolson, et al.          Expires January 27, 2017                [Page 5]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    (IBN).  It is the purpose of the IBN to apply classification rules
@@ -333,9 +333,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 6]
+Dolson, et al.          Expires January 27, 2017                [Page 6]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    If desired, the pattern can be applied recursively.  For example,
@@ -389,9 +389,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 7]
+Dolson, et al.          Expires January 27, 2017                [Page 7]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    When packets are received by the IBN on a higher-level path, the
@@ -445,9 +445,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 8]
+Dolson, et al.          Expires January 27, 2017                [Page 8]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    In this stateful approach, it is not necessary for the sub-domain's
@@ -501,9 +501,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016               [Page 9]
+Dolson, et al.          Expires January 27, 2017                [Page 9]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    A down-side of this approach is that the number of paths in the
@@ -557,9 +557,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 10]
+Dolson, et al.          Expires January 27, 2017               [Page 10]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    packets, it must also be able to deal with adding appropriate
@@ -613,9 +613,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 11]
+Dolson, et al.          Expires January 27, 2017               [Page 11]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    o  Does not require all domains to have the same metadata scheme,
@@ -669,9 +669,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 12]
+Dolson, et al.          Expires January 27, 2017               [Page 12]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    A good strategy seems to be to do this when the packet is first
@@ -725,9 +725,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 13]
+Dolson, et al.          Expires January 27, 2017               [Page 13]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    o  Sub-domain control-planes are agnostic about control-planes of
@@ -781,9 +781,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 14]
+Dolson, et al.          Expires January 27, 2017               [Page 14]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
                     * * * * * * * * * * * * * * * * * *
@@ -837,9 +837,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 15]
+Dolson, et al.          Expires January 27, 2017               [Page 15]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
 6.2.  Requirements for IBN
@@ -893,9 +893,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 16]
+Dolson, et al.          Expires January 27, 2017               [Page 16]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
       Jie Cao
@@ -949,9 +949,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 17]
+Dolson, et al.          Expires January 27, 2017               [Page 17]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    [RFC7665]  Halpern, J., Ed. and C. Pignataro, Ed., "Service Function
@@ -1005,9 +1005,9 @@ A.1.  Reducing the Number of Service Function Paths
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 18]
+Dolson, et al.          Expires January 27, 2017               [Page 18]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    flat SFC (normal branching), 10 SFPs are needed in each domain.  In
@@ -1061,9 +1061,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 19]
+Dolson, et al.          Expires January 27, 2017               [Page 19]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
         . . . . . . . . . . . . . . .    . . . . . . . . . . . . . . .
@@ -1117,9 +1117,9 @@ A.2.  Managing a Distributed Data-Center Network
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 20]
+Dolson, et al.          Expires January 27, 2017               [Page 20]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
                    +-----------+
@@ -1173,9 +1173,9 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 21]
+Dolson, et al.          Expires January 27, 2017               [Page 21]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
 Authors' Addresses
@@ -1229,9 +1229,9 @@ Authors' Addresses
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 22]
+Dolson, et al.          Expires January 27, 2017               [Page 22]
 
-Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
+Internet-DraftHierarchical Service Function Chaining (hSFC)    July 2016
 
 
    Ting Ao
@@ -1285,4 +1285,4 @@ Internet-DraftHierarchical Service Function Chaining (hSFC)    June 2016
 
 
 
-Dolson, et al.          Expires December 29, 2016              [Page 23]
+Dolson, et al.          Expires January 27, 2017               [Page 23]
