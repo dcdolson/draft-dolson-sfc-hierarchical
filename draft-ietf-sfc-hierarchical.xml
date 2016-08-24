@@ -266,16 +266,15 @@
         </t>
         <t>
           Top-level SFPs carry packets from classifiers 
-	<!-- REVISIT: Med says "through a set of SFFs" -->
-          through a series of SFFs and sub-domains, with the operations within
+          through a set of SFFs and sub-domains, with the operations within
           sub-domains being opaque to the higher levels.
         </t>
 
         <t>
-          We expect the system to include a top-level control-plane having
+          We expect the system to include a top-level control plane having
           responsibility for configuring forwarding and classification 
           (see <xref target="I-D.ietf-sfc-control-plane"/>).
-          The top-level Service Chaining control-plane manages end-to-end 
+          The top-level Service Chaining control plane manages end-to-end 
           service chains and associated service function paths from network edge
           points to sub-domains and configuring top-level classifiers at a
           coarse level (e.g., based on source or destination host) to forward
@@ -369,16 +368,18 @@
           SF role in the top-level domain).
         </t>
         <t>
-          Each sub-domain is likely to have a control-plane that can operate 
-          independently of the top-level control-plane, managing forwarding
-	  paths within the level of the sub-domain, with the higher-layer SFC
-          forwarding being managed by the upper-level control elements. 
-	  The sub-domain 
-          control-plane configures the classification and forwarding rules in 
-          the sub-domain. The classification rules reside in the IBN, where 
-          SFC encapsulation of the top-level domain is converted to/from 
-          SFC encapsulation of the lower-level domain.
+          Each sub-domain is likely to have a control plane that can operate 
+          independently of the top-level control plane, managing classification,
+          forwarding paths, etc. within the level of the sub-domain, with the
+          details being opaque to the upper-level control elements. 
 	  <xref target="ibn"/> provides more details about the behavior of an IBN.
+        </t>
+        <t>
+	  The sub-domain control plane configures the classification rules in
+          the IBN, where SFC encapsulation of the top-level domain is converted
+          to/from SFC encapsulation of the lower-level domain.
+          The sub-domain control plane also configures the forwarding rules
+          in the SFFs of the sub-domain.
 	</t>
         <figure anchor="fig_hierarchical_lower"
                 title="Sub-domain within a higher-level domain">
@@ -444,6 +445,14 @@ Legend:
         higher-level SF paths and forwarded to the next hop in the higher-level
         domain.
       </t>
+      <t>
+        When different metadata schemes are used at different levels,
+        the IBN has further responsibilities:
+        when packets enter the sub-domain, the IBN translates upper-level
+        metadata into lower-level metadata; and when packets leave the
+        sub-domain at the termination of lower-level SFPs, the IBN
+        translates lower-level metadata into upper-level metadata.
+      </t>
       <t>Appropriately configuring IBNs is key to ensure the consistency of
       the overall SFC operation within a given domain that enables hSFC.</t>
 
@@ -460,7 +469,8 @@ Legend:
           the (sub-domain) classifier.
         </t>
         <t>
-          Packets exiting a path in the sub-domain can be restored to an 
+          At the termination of an SFP in the sub-domain, packets can be
+          restored to an 
           original upper-level SFP by implementing one of these methods:
         <list style="numbers">
           <t>
@@ -556,7 +566,7 @@ Legend:
           </t>
           <t>
             In this stateful approach, it is not necessary for the sub-domain's 
-            control-plane to modify paths when higher-level paths are changed.
+            control plane to modify paths when higher-level paths are changed.
             The complexity of the higher-level domain does not cause complexity
             in the lower-level domain.
           </t>
@@ -676,6 +686,10 @@ Legend:
             the lower-level domain to be able to parse multiple NSH layers. 
             If an SFC-aware SF injects packets, it must also be able to deal with adding 
             appropriate multiple layers of headers to injected packets.
+          </t>
+          <t>
+            By increasing packet overhead, nesting may lead to fragmentation or
+            decreased MTU in some networks.
           </t>
         </section>
 
@@ -817,7 +831,7 @@ Legend:
         packets traverse the same SF instances as the server-to-client packets, but in 
         the opposite sequence. We call this bidirectional symmetry. If 
         bidirectional symmetry is required, it is the responsibility of the 
-        control-plane to be aware of symmetric paths and configure the
+        control plane to be aware of symmetric paths and configure the
         classifier to chain the traffic in a symmetric manner.
       </t>
       <t>
@@ -848,7 +862,7 @@ Legend:
             single domain.
           </t>
           <t>
-            Each control-plane is agnostic about other levels of hierarchy. This 
+            Each control plane is agnostic about other levels of hierarchy. This 
             aspect allows humans to reason about the system within a single 
             domain and allows control-plane algorithms to use only domain-local 
             inputs. Top-level control does not need visibility to sub-domain 
@@ -856,7 +870,7 @@ Legend:
             higher-level policies.
           </t>
           <t>
-            Sub-domain control-planes are agnostic about control-planes of other
+            Sub-domain control planes are agnostic about control planes of other
             sub-domains. This allows both humans and machines to manipulate 
             sub-domain policy without considering policies of other domains.
           </t>
@@ -864,9 +878,9 @@ Legend:
       </t>
       <t>
         Recall that the IBN acts as an SFC-aware SF in the higher-level domain (receiving
-        SF instructions from the higher-level control-plane) and as a classifier
+        SF instructions from the higher-level control plane) and as a classifier
         in the lower-level domain (receiving classification rules from the
-        sub-domain control-plane). In this view, it is the IBN that glues the
+        sub-domain control plane). In this view, it is the IBN that glues the
         layers together.
       </t>
       <t>
@@ -979,17 +993,30 @@ Legend:
           Other fundamental functions required as IBN (e.g., maintaining metadata of upper 
           level or decrementing Service Index) are same as normal usage.
         </t>
-<!-- REVISIT: include this?
-        <t>Supplying conflicting metadata may lead to forwarding failures in
-        some SFC-aware SFs. To prevent such problems, low-level control-plane
-        must translate instructions received from the high-level control with
-        regards to metadata insertion and removal.</t>
-
-        <t>In order to prevent that SFs of low-level SFC-enabled domain to
-        supply (illegitimate) metadata, IBNs may be instructed to control the
-        metadata that are supplied by the low-levels it controls. Such control
-        is the responsibility of the high-level control-plane.</t>
--->
+        <t>
+          It is useful to permit metadata to be transferred between levels
+          of a hierarchy. Metadata from a higher level may be useful within
+          a sub-domain and a sub-domain may augment metadata for consumption
+          in an upper domain. However, allowing uncontrolled metadata between
+          domains may lead to forwarding failures.
+          <list>
+            <t>
+              In order to prevent SFs of low-level SFC-enabled domains from
+              supplying (illegitimate) metadata, IBNs may be instructed
+              to permit specific metadata types to exit the sub-domain.
+              Such control over the metadata in the upper level
+              is the responsibility of the upper-level control
+              plane.
+            </t>
+            <t>
+              To limit unintentional metadata reaching SFs of low-level
+              SFC-enabled sub-domains, IBNs may be instructed to permit
+              specific metadata types into the sub-domain.  Such control of
+              metadata in the low-level domain is the responsibility of the
+              lower-level control plane.
+            </t>
+          </list>
+        </t>
       </section>
     </section>
 
