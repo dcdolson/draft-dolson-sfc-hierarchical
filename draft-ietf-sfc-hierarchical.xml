@@ -453,8 +453,12 @@ Legend:
         sub-domain at the termination of lower-level SFPs, the IBN
         translates lower-level metadata into upper-level metadata.
       </t>
-      <t>Appropriately configuring IBNs is key to ensure the consistency of
-      the overall SFC operation within a given domain that enables hSFC.</t>
+      <t>
+        Appropriately configuring IBNs is key to ensure the consistency of
+        the overall SFC operation within a given domain that enables hSFC.
+        Classification rules (or lack thereof) in the IBN classifier can
+        of course impact higher levels.
+      </t>
 
       <section title="IBN Path Configuration"
                anchor="section_strategies">
