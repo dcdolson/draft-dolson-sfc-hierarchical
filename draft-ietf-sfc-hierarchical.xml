@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-ietf-sfc-hierarchical-01" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-sfc-hierarchical-02" ipr="trust200902">
   <!-- ***** FRONT MATTER ***** -->
 
   <front>
@@ -149,7 +149,7 @@
 
 
 
-    <date month="September" year="2016" />
+    <date month="December" year="2016" />
 
     <!-- Meta-data Declarations -->
 
@@ -163,13 +163,13 @@
     <abstract>
       <t>
         Hierarchical Service Function Chaining (hSFC) is a network architecture
-        allowing an organization to compartmentalize a large-scale network into
+        allowing an organization to decompose a large-scale network into
         multiple domains of administration.
       </t>
       <t>
         The goals of hSFC are to make a large-scale network easier to reason 
-        about, simpler to control and to able support independent functional groups 
-        within large operators.
+        about, simpler to control and to support independent functional groups 
+        within large network operators.
       </t>
     </abstract>
   </front>
@@ -187,11 +187,10 @@
       </t>
       <t>
         This document focuses on the difficult problem of implementing SFC
-        across a large, geographically dispersed network comprised of millions 
-        of hosts and thousands of network forwarding elements, involving 
+        across a large, geographically dispersed network, potentially comprised of millions 
+        of hosts and thousands of network forwarding elements, and which may involve
         multiple operational teams (with varying functional responsibilities). 
-        We expect asymmetrical routing is inherent in the network, while 
-        recognizing that some Service Functions (SFs) require bidirectional 
+        We recognize that some Service Functions (SFs) require bidirectional 
         traffic for transport-layer sessions (e.g., NATs, firewalls). We assume  
         that some Service Function Paths (SFPs) need to be selected on the
         basis of application-specific 
@@ -207,15 +206,17 @@
       </t>
       <t>
         Difficult problems are often made easier by decomposing them in a 
-        hierarchical (nested) manner. So instead of considering an omniscient 
+        hierarchical (nested) manner. So instead of considering a single
         SFC Control Plane (<xref target="I-D.ietf-sfc-control-plane"></xref>)
 	that can manage (create, withdraw, supervise, etc.) 
         complete SFPs from one end of the network to the other, we decompose 
-        the network into smaller sub-domains. Each sub-domain may support a 
+        the network into smaller domains operated by as many SFC control plane components.
+        Coordination between such components is further discussed in the document.
+        Each sub-domain may support a 
         subset of the network applications or a subset of the users. 
         Decomposing a network into multiple SFC-enabled domains should permit
 	end-to-end visibility of SFs and SFPs.
-	Also, decomposition should be implemented with special care to
+	Also, decomposing should be done with care to
         ease monitoring and troubleshooting of the network and services as a
         whole. 
         The criteria for decomposition a domain into multiple SFC-enabled
@@ -272,19 +273,19 @@
 
         <t>
           We expect the system to include a top-level control plane having
-          responsibility for configuring forwarding and classification 
+          responsibility for configuring forwarding policies and traffic classification rules
           (see <xref target="I-D.ietf-sfc-control-plane"/>).
           The top-level Service Chaining control plane manages end-to-end 
           service chains and associated service function paths from network edge
-          points to sub-domains and configuring top-level classifiers at a
+          points to sub-domains and configures top-level classifiers at a
           coarse level (e.g., based on source or destination host) to forward
-          traffic along paths that will transit appropriate sub-domains. 
+          traffic along paths that will transit across appropriate sub-domains. 
         </t>
         <t>
           <xref target="fig_hierarchical_top"/> shows one possible service chain 
           passing from edge, through two
           sub-domains, to network egress. The top-level control plane does not
-          configure classification or forwarding within the sub-domains.
+          configure traffic classification rules or forwarding policies within the sub-domains.
         </t>
         <t>
           At this network-wide level, the number of SFPs required is a linear 
@@ -297,8 +298,8 @@
         <t>
           Packets are classified at the edge of the network to select the paths 
           by which sub-domains are to be traversed. At the ingress of each 
-          sub-domain, paths are reclassified to select the paths by which SFs in 
-          the sub-domain are to be traversed. At the egress of each sub-domain, 
+          sub-domain, packets are reclassified to paths directing them to the 
+          required SFs of the sub-domain.  At the egress of each sub-domain, 
           packets are returned to the top-level paths. Contrast this with an 
           approach requiring the top-level classifier to select paths to specify 
           all of the SFs in each sub-domain.
@@ -463,9 +464,8 @@ Legend:
       <section title="IBN Path Configuration"
                anchor="section_strategies">
         <t>
-          An operator of a lower-level domain may be aware of which 
-          high-level paths transit their domain, or they may wish to accept any
-          paths. 
+          The lower-level domain may be provisioned with valid high-level
+          paths or may allow any high-level paths.
         </t>
         <t>
           When packets enter the sub-domain, the Service Path Identifier (SPI)
@@ -612,7 +612,7 @@ Legend:
           <t>
             In this metadata approach, it is not necessary for the sub-domain's 
             control element to modify paths when higher-level paths are changed.
-            The complexity of the higher-level domain does not cause complexity
+            The complexity of the higher-level domain does not increase complexity
             in the lower-level domain.
           </t>
         </section>
@@ -627,7 +627,7 @@ Legend:
           </t>
           <t>
             Whenever the upper-level domain provisions a path via the 
-            lower-level domain, the lower-level domain controller must provision 
+            lower-level domain, the lower-level domain control plane must provision 
             corresponding paths to traverse the lower-level domain.
           </t>
           <t>
@@ -668,14 +668,15 @@ Legend:
             </artwork>
 		  </figure>
 		  <t>
-		    The traffic with the above stack of two-layer-NSH header is to be
+		    The traffic with the above stack of two NSH headers is to be
 		    forwarded according to the Lower-NSH header in the lower-level SFC
 		    domain. The Upper-NSH header is preserved in the packets but
 		    not used for forwarding. At the last SFF of the 
 		    chain of the lower-level domain (which resides in the IBN),
 		    the Lower-NSH header is removed from the packet, and then the packet
-		    is forwarded by the IBN to an SFF of the upper-level domain,
-		    which will be forwarded according to the Upper-NSH header.
+		    is forwarded by the IBN to an SFF of the upper-level domain.
+                    The packet will be forwarded in the top-level domain according
+                    to the Upper-NSH header.
 		  </t>
 		  <t>
 		    With such encapsulation, Upper-NSH information is carried along the
@@ -871,7 +872,8 @@ Legend:
             domain and allows control-plane algorithms to use only domain-local 
             inputs. Top-level control does not need visibility to sub-domain 
             policies, nor does sub-domain control need visibility to 
-            higher-level policies.
+            higher-level policies. (Top-level control considers a sub-domain
+            as though it were an SF.)
           </t>
           <t>
             Sub-domain control planes are agnostic about control planes of other
@@ -896,7 +898,7 @@ Legend:
 
     </section>
     
-    <section title="Extension for Adopting to NSH-Unaware Service Functions"
+    <section title="Extension for Adapting to NSH-Unaware Service Functions"
              anchor="section_other_forwarding">
       <t>
         The hierarchical approach can be used for dividing networks into NSH-aware 
