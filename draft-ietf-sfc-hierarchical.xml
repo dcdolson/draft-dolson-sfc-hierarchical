@@ -429,7 +429,7 @@ Legend:
       <t>
         As mentioned in the previous section, a network element termed 
 	"Internal Boundary Node" (IBN) is responsible for bridging packets 
-        between SFC-enabled domains. It behaves as an SF to the higher
+        between higher and lower layers of SFC-enabled domains. It behaves as an SF to the higher
 	level (<xref target="hl"/>), and looks like 
         a classifier and end-of-chain to the lower level (<xref target="ll"/>).
       </t>
