@@ -501,7 +501,7 @@ Legend:
           </t>
           <t>
             When packets are received by the IBN on a higher-level path, the
-            encapsulated packets are parsed for IP and transport-layer (TCP, 
+            classifier parses encapsulated packets for IP and transport-layer (TCP, 
             UDP, etc.) coordinates. State is created, indexed by some or all
 	    transport-coordinates ({source-IP, destination-IP, source-port, 
             destination-port and transport protocol} typically). The 
@@ -511,13 +511,21 @@ Legend:
             altered by an SF of the sub-domain (e.g., source IP address).
           </t>
           <t>
-            One approach is to ensure that packets are returned back to the
+            Note that this state is only accessed by the classifier and
+            terminator functions of the sub-domain. Neither the SFFs nor SFs
+            have knowldge of this state; in fact they may be agnostic about
+            being in a sub-domain.
+          </t>
+          <t>
+            One approach is to ensure that packets are terminated at the
             same IBN at the end of the chain that classified the packet at the
             start of the chain. If the packet is returned to a different egress
             IBN, state must be synchronized between the IBNs.
           </t>
           <t>
-            When a packet returns to the IBN at the end of a chain, the SFC
+            When a packet returns to the IBN at the end of a chain
+            (which is the terminator of the lower-level chain),
+            the SFC
             header is removed, the packet is parsed for IP and transport-layer
             coordinates, and state is retrieved from them. The state contains 
             the information required to forward the packet within the 
