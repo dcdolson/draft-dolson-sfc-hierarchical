@@ -196,13 +196,6 @@
         basis of application-specific 
         data visible to the network, with transport-layer coordinate (typically, 
         5-tuple) stickiness to specific SF instances.
-         <list style="empty">
-          <t>Note: in this document, the notion of the "path" of a packet is
-          the series of SF instances traversed by a packet. The means of
-          delivering packets between SFs (i.e., the forwarding mechanisms
-          enforced in the underlying network) are not relevant to the
-          discussion.</t>
-        </list>
       </t>
       <t>
         Difficult problems are often made easier by decomposing them in a 
