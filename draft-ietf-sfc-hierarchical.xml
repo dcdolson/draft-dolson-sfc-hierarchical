@@ -35,7 +35,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-ietf-sfc-hierarchical-02" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-sfc-hierarchical-03" ipr="trust200902">
   <!-- ***** FRONT MATTER ***** -->
 
   <front>
@@ -149,7 +149,7 @@
 
 
 
-    <date month="January" year="2017" />
+    <date year="2017" />
 
     <!-- Meta-data Declarations -->
 
