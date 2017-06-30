@@ -504,10 +504,12 @@ Legend:
             classifier parses encapsulated packets for IP and transport-layer (TCP, 
             UDP, etc.) coordinates. State is created, indexed by some or all
 	    transport-coordinates ({source-IP, destination-IP, source-port, 
-            destination-port and transport protocol} typically). The 
-            state contains at least critical fields of the encapsulating SFC header;
-            additional information carried in the packet may also be extracted
-            to state creation. Note, that the some fields of a packet may be
+            destination-port and transport protocol} typically).
+            The state contains at minimum the critical fields of the
+            encapsulating SFC header (SPI, SI, MD Type, flags); additional
+            information carried in the packet (metadata, TTL) may also be
+            extracted and saved as state.
+            Note, that the some fields of a packet may be
             altered by an SF of the sub-domain (e.g., source IP address).
           </t>
           <t>
@@ -611,6 +613,11 @@ Legend:
             lower-level domain, and restored when leaving.
           </t>
           <t>
+            If flags or TTL (see <xref target="section_ttl"/>) from the
+            original header also need to be saved, more metadata space will be
+            consumed.
+          </t>
+          <t>
             In this metadata approach, it is not necessary for the sub-domain's 
             control element to modify paths when higher-level paths are changed.
             The complexity of the higher-level domain does not increase complexity
@@ -637,6 +644,16 @@ Legend:
             higher-level domain that traverse the lower-level domain.
             I.e., a sub-path must be created for each combination of upper
             SPI/SI and lower chain.
+          </t>
+          <t>
+            A further down-side of this approach is that it requires upper and
+            lower levels to utilize the same metadata configuration.
+          </t>
+          <t>
+            Furthermore, this approach does not allow any information to be
+            stashed away in state or embedded in metadata. E.g., the TTL
+            modifications by the lower level cannot be hidden from the upper
+            level.
           </t>
         </section>
 
@@ -686,6 +703,8 @@ Legend:
           <t>
             A benefit of this approach is that it does not require state in 
             the IBN or configuration to encode fields in meta-data.
+            All header fields, including flags and TTL are easily restored when
+            the chains of the sub-domain terminate.
           </t>
           <t>
             However, the down-side is it does require SFC-aware SFs in
@@ -758,8 +777,8 @@ Legend:
                  SFs that change the IP addresses or ports of a packet
                  such as NATs.</t>
               <t>Does not require all domains to have the same metadata scheme.</t>
-              <t>Can be used to restore any upper-domain information, not just
-                 service path.</t>
+              <t>Can be used to restore any upper-domain information,
+                 including metadata, flags and TTL, not just service path.</t>
               <t>The lower domain only requires a single item of metadata
                  regardless of the number of items of metadata used in
                  the upper domain. (For MD-Type 1, this leaves 3 slots for
@@ -841,8 +860,15 @@ Legend:
         </t>
         <t>
            The choice affects whether the methods of restoring the paths
-           (<xref target="section_flow_stateful"/> to <xref target="hybrid"/>)
+           in the sub-sections of <xref target="section_strategies"/>
            restore a saved version of TTL or propagate it with the packet.
+           The method of <xref target="section_unique_paths"/> does not permit topology-hiding.
+           The other methods of
+           <xref target="section_flow_stateful"/>,
+           <xref target="enco_meta"/>,
+           <xref target="nest"/>, and
+           <xref target="hybrid"/>
+           have unique methods for restoring saved versions of TTL.
         </t>
       </section>
     </section>
