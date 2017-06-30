@@ -735,7 +735,7 @@ Legend:
             <artwork align="center"><![CDATA[
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|Ver|O|C|R|R|R|R|R|R|   Length  |  MD-type=0x1  | Next Protocol |
+|Ver|O|R|    TTL    |   Length  |R|R|R|R|MD Type| Next Protocol |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |          Service Path Identifer               | Service Index |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -809,7 +809,7 @@ Legend:
         </t>
       </section>
 
-      <section anchor="deSI" title="Decrementing Service Index">
+      <section anchor="section_deSI" title="Decrementing Service Index">
         <t>
           Because the IBN acts as an SFC-aware SF to the higher-level domain,
           it must decrement the Service Index in the NSH headers of the
@@ -818,6 +818,30 @@ Legend:
           by the IBN, before applying any of the strategies of
           <xref target="section_strategies"/>, immediately prior to
           classification.
+        </t>
+      </section>
+
+      <section anchor="section_ttl" title="Managing TTL">
+        <t>
+          The NSH base header contains a TTL field <xref target="I-D.ietf-sfc-nsh"/>.
+          There is a choice:
+          <list>
+            <t>a sub-domain may appear as a pure service function, which should
+               not decrement the TTL from the perspective of the higher-level domain,</t>
+            <t>or all of the TTL changes within the sub-domain may be visible to 
+               the higher-level domain.</t>
+          </list>
+        </t>
+        <t>
+           The network operator should be given control of this behavior, choosing
+           whether to expose the lower-level topology to the higher layer.
+           An implementation may support per-packet policy, allowing some
+           users to perform a layer-transcending trace-route, for example.
+        </t>
+        <t>
+           The choice affects whether the methods of restoring the paths
+           (<xref target="section_flow_stateful"/> to <xref target="hybrid"/>)
+           restore a saved version of TTL or propagate it with the packet.
         </t>
       </section>
     </section>
@@ -1093,8 +1117,8 @@ Legend:
 <!-- REVISIT: why are infinite forwarding loops required to be discussed here? -->
       <section title="Infinite Forwarding Loops">
         <t>Distributing policies among multiple domains may lead to forwarding
-        loops. It is acknowledged that NSH supports the ability to detect
-        loops (<xref target="deSI"/>), but means to ensure the
+        loops. NSH supports the ability to detect loops
+        (<xref target="section_deSI"/> and <xref target="section_ttl"/>), but means to ensure the
         consistency of the policies should be enabled at all levels of a domain.
         Within the context of hSFC, it is the responsibility of the
         Control Elements at all levels to prevent such (unwanted) loops.
