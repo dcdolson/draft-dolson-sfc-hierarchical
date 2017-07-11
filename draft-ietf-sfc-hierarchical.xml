@@ -1144,7 +1144,7 @@ Legend:
        <t>
 	 Security considerations related to the control plane should be discussed 
 	 in the corresponding control specification documents (e.g., <xref target="I-D.ietf-bess-nsh-bgp-control-plane"/>,
-	 <xref target="I-D.wu-pce-traffic-steering-sfc"/>, or <xref target="draft-maglione-sfc-nsh-radius"/>). 
+	 <xref target="I-D.wu-pce-traffic-steering-sfc"/>, or <xref target="I-D.maglione-sfc-nsh-radius"/>). 
        </t>
 	<t>
         Generic security considerations related to the control plane are discussed in
@@ -1183,7 +1183,7 @@ Legend:
 
      &I-D.draft-ietf-sfc-control-plane; 
 	    
-     &I-D.darft-ietf-bess-nsh-bgp-control-plane;
+     &I-D.draft-ietf-bess-nsh-bgp-control-plane;
 	    
       &I-D.draft-wu-pce-traffic-steering-sfc;
 	    
