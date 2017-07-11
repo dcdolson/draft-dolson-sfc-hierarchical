@@ -860,6 +860,10 @@ Legend:
           </list>
         </t>
         <t>
+           Some readers may recognize this as a choice between "pipe" and
+           "uniform" models, respectively <xref target="RFC3443"/>.
+        </t>
+        <t>
            The network operator should be given control of this behavior, choosing
            whether to expose the lower-level topology to the higher layer.
            An implementation may support per-packet policy, allowing some
@@ -1196,6 +1200,8 @@ Legend:
       &I-D.draft-ietf-sfc-dc-use-cases;
 
       &I-D.draft-ao-sfc-for-dc-interconnect;
+
+      <?rfc include="reference.RFC.3443.xml"?>
 
     </references>
 
