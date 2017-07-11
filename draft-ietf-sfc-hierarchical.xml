@@ -1181,11 +1181,11 @@ Legend:
 
      &I-D.draft-ietf-sfc-control-plane; 
 	    
-     &I-D.ietf-bess-nsh-bgp-control-plane;
+     &I-D.darft-ietf-bess-nsh-bgp-control-plane;
 	    
-      &I-D.wu-pce-traffic-steering-sfc;
+      &I-D.draft-wu-pce-traffic-steering-sfc;
 	    
-      &draft-maglione-sfc-nsh-radius;
+      &I-D.draft-maglione-sfc-nsh-radius;
 	    
       &I-D.draft-homma-sfc-forwarding-methods-analysis;
 
