@@ -350,14 +350,17 @@
           SFC-enabled domain.
         </t>
         <t>
-          Unlike the top level, data packets entering the sub-domain 
-          are already SFC-encapsulated. 
-          <xref target="fig_hierarchical_lower"/> shows a sub-domain interfaced
-          with a higher-level domain by means of an Internal Boundary Node 
-          (IBN). It is the purpose of the IBN to apply classification rules and 
-          direct the packets to the selected local SFPs terminating at an egress 
-          IBN. The egress IBN finally restores packets to the
-          original SFC shim and hands them off to SFFs.
+          	
+  <xref target="fig_hierarchical_lower"/> shows a sub-domain interfaced with a higher-level 
+   domain by means of an Internal Boundary Node (IBN). 
+   An IBN acts as an SFC-aware SF in the higher-level
+   domain and as a classifier in the lower-level domain. As such, 
+   data packets entering the sub-domain are already SFC-encapsulated.
+   Also, it is the purpose of the IBN to apply classification rules
+   and direct the packets to the selected local SFPs terminating at an
+   egress IBN. The egress IBN finally restores packets to the original
+   SFC shim and hands them off to SFFs.   
+
         </t>
         <t>
           Each sub-domain intersects a subset of the total paths that are 
@@ -530,9 +533,8 @@ Legend:
             IBN, state must be synchronized between the IBNs.
           </t>
           <t>
-            When a packet returns to the IBN at the end of a chain
-            (which is the terminator of the lower-level chain),
-            the SFC
+            When a packet returns to the IBN at the end of a chain (which is the
+   SFP terminating node of the lower-level chain), the SFC
             header is removed, the packet is parsed for IP and transport-layer
             coordinates, and state is retrieved from them. The state contains 
             the information required to forward the packet within the 
@@ -678,15 +680,15 @@ Legend:
           <figure anchor="fig_NSH_in_NSH"
                   title="Encapsulation of NSH within NSH">
             <artwork align="center"><![CDATA[
-+------------------+
-| Overlay Header   |
-+------------------+
-| Lower-NSH Header |
-+------------------+
-| Upper-NSH Header |
-+------------------+
-| Original Packet  |
-+------------------+
++---------------------------------+
+|  Outer-transport Encapsulation  |
++---------------------------------+
+|        Lower-NSH Header         |
++---------------------------------+
+|        Upper-NSH Header         |
++---------------------------------+
+|          Original Packet        |
++---------------------------------+
 ]]>
             </artwork>
 		  </figure>
