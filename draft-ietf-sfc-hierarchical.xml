@@ -883,9 +883,11 @@ Legend:
     <section title="Sub-domain Classifier" anchor="section_classifier">
       <t>
         Within the sub-domain (referring to <xref target="fig_hierarchical_lower"/>),
-        once the IBN removes higher-level encapsulation from incoming packets,
-        it sends the packets to the classifier, which selects the encapsulation
-        for the packet within the sub-domain.
+        as the classifier receives incoming packets, the high-level
+        encapsulation is treated according to one of the methods described in
+        <xref target="section_strategies"/> to either statefully store,
+        encode, or nest header information.  The classifier then selects the
+        path and metadata for the packet within the sub-domain.
       </t>
       <t>
         One of the goals of the hierarchical approach is to make it easy to 
