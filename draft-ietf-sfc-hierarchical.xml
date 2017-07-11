@@ -9,6 +9,11 @@
 <!ENTITY I-D.draft-ietf-sfc-dc-use-cases SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-dc-use-cases-02.xml">
 <!ENTITY I-D.draft-ao-sfc-for-dc-interconnect SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ao-sfc-for-dc-interconnect-01.xml">
 <!ENTITY I-D.draft-ietf-sfc-control-plane SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-sfc-control-plane-06.xml">
+<!ENTITY I-D.draft-ietf-bess-nsh-bgp-control-plane SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-bess-nsh-bgp-control-plane-00.xml">
+<!ENTITY I-D.draft-wu-pce-traffic-steering-sfc SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-wu-pce-traffic-steering-sfc-12.xml">
+<!ENTITY I-D.draft-maglione-sfc-nsh-radius SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-maglione-sfc-nsh-radius-01.xml">
+
+
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -267,7 +272,7 @@
         <t>
           We expect the system to include a top-level control plane having
           responsibility for configuring forwarding policies and traffic classification rules
-          (see <xref target="I-D.ietf-sfc-control-plane"/>).
+          (see for example, <xref target="I-D.ietf-sfc-control-plane"/>).
           The top-level Service Chaining control plane manages end-to-end 
           service chains and associated service function paths from network edge
           points to sub-domains and configures top-level classifiers at a
@@ -1134,10 +1139,15 @@ Legend:
         untrusted agents.
       </t>
     <section title="Control Plane">
-      <t>
-        Security considerations related to the control plane are discussed in 
-        <xref target="I-D.ietf-sfc-control-plane"/>. These
-        considerations apply for both high-level and low-level domains.
+       <t>
+	 Security considerations related to the control plane should be discussed 
+	 in the corresponding control specification documents (e.g., <xref target="I-D.ietf-bess-nsh-bgp-control-plane"/>,
+	 <xref target="I-D.wu-pce-traffic-steering-sfc"/>, or <xref target="draft-maglione-sfc-nsh-radius"/>). 
+       </t>
+	<t>
+        Generic security considerations related to the control plane are discussed in
+    <xref target="I-D.ietf-sfc-control-plane"/>.  These considerations apply for both
+   high-level and low-level domains.
       </t>
       
     </section>
@@ -1163,12 +1173,20 @@ Legend:
 
       &I-D.draft-ietf-sfc-nsh;
 
-      &I-D.draft-ietf-sfc-control-plane;
+
 
     </references>
 
     <references title="Informative References">
 
+     &I-D.draft-ietf-sfc-control-plane; 
+	    
+     &I-D.ietf-bess-nsh-bgp-control-plane;
+	    
+      &I-D.wu-pce-traffic-steering-sfc;
+	    
+      &draft-maglione-sfc-nsh-radius;
+	    
       &I-D.draft-homma-sfc-forwarding-methods-analysis;
 
       &I-D.draft-ietf-sfc-dc-use-cases;
