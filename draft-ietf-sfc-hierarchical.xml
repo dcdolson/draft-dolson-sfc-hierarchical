@@ -40,7 +40,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-ietf-sfc-hierarchical-04" ipr="trust200902">
+<rfc category="info" docName="draft-ietf-sfc-hierarchical-05" ipr="trust200902">
   <!-- ***** FRONT MATTER ***** -->
 
   <front>
@@ -184,11 +184,8 @@
       <t>
         Service Function Chaining (SFC) is a technique for prescribing 
         differentiated traffic forwarding policies within an SFC-enabled domain.
-        SFC is described in detail in the
-        <xref target="RFC7665">
-         SFC architecture document
-        </xref>,
-        and is not repeated here.
+        The SFC architecture is described in detail in
+        <xref target="RFC7665"/>, and is not repeated here.
       </t>
       <t>
         This document focuses on the difficult problem of implementing SFC
@@ -208,8 +205,11 @@
         SFC Control Plane (<xref target="I-D.ietf-sfc-control-plane"></xref>)
 	that can manage (create, withdraw, supervise, etc.) 
         complete SFPs from one end of the network to the other, we decompose 
-        the network into smaller domains operated by as many SFC control plane components.
+        the network into smaller domains operated by as many SFC control plane
+        components (under the same administrative entity).
         Coordination between such components is further discussed in the document.
+      </t>
+      <t>
         Each sub-domain may support a 
         subset of the network applications or a subset of the users. 
         Decomposing a network into multiple SFC-enabled domains should permit
@@ -233,11 +233,13 @@
         Sample examples are described in <xref target="app1"></xref>.
       </t>
       <t>
-        The "domains" discussed in this document are assumed to be under control 
-        of a single organization, such that there is a strong trust relationship 
+        The "domains" discussed in this document are assumed to be under the
+        control of a single organization (an operator, typically), such that
+        there is a strong trust relationship 
         between the domains. The intention of creating multiple domains is to 
         improve the ability to operate a network. It is outside of the scope of 
-        the document to consider domains operated by different organizations.
+        the document to consider domains operated by different organizations
+        or to dwell on inter-operator considerations.
       </t>
     </section>
 
@@ -259,6 +261,40 @@
             <t>Service Function Forwarders (SFFs) and</t>
             <t>Sub-domains.</t>
           </list>
+        </t>
+        <figure anchor="fig_hierarchical_top"
+                title="Network-wide view of top level of hierarchy">
+          <artwork><![CDATA[
+                 +------------+
+                 |Sub-domain#1|
+                 |  in DC1    | 
+                 +----+-------+
+                      |
+               .---- SFF1 ------.   +--+
+       +--+   /     /  |         \--|CF|
+   --->|CF|--/---->'   |          \ +--+
+       +--+ /  SC#1    |           \
+            |          |            |
+            |          V    .------>|--->
+            |         /    /        |
+            \         |   /        /
+       +--+  \        |  /        /  +--+
+       |CF|---\       | /        /---|CF|
+       +--+    '---- SFF2 ------'    +--+
+                      |
+                 +----+-------+
+                 |Sub-domain#2|
+                 |   in DC2   |
+                 +------------+
+        ]]> </artwork>
+          <postamble>
+            One path is shown from edge classifier to SFF1 to Sub-domain#1 
+            (residing in data-center1) to SFF1 to SFF2 (residing in data-center 
+            2) to Sub-domain#2 to SFF2 to network egress.
+          </postamble>
+       </figure>
+
+       <t>
           For the sake of clarity, components of the underlay network are not 
           shown; an underlay network is assumed to provide connectivity between 
           SFC data plane components.
@@ -273,6 +309,8 @@
           We expect the system to include a top-level control plane having
           responsibility for configuring forwarding policies and traffic classification rules
           (see for example, <xref target="I-D.ietf-sfc-control-plane"/>).
+        </t>
+        <t>
           The top-level Service Chaining control plane manages end-to-end 
           service chains and associated service function paths from network edge
           points to sub-domains and configures top-level classifiers at a
@@ -310,38 +348,6 @@
           packets take the reverse path of incoming packets through
           sub-domains.
         </t>
-        <figure anchor="fig_hierarchical_top"
-                title="Network-wide view of top level of hierarchy">
-          <artwork><![CDATA[
-                 +------------+
-                 |Sub-domain#1|
-                 |  in DC1    | 
-                 +----+-------+
-                      |
-               .---- SFF1 ------.   +--+
-       +--+   /     /  |         \--|CF|
-   --->|CF|--/---->'   |          \ +--+
-       +--+ /  SC#1    |           \
-            |          |            |
-            |          V    .------>|--->
-            |         /    /        |
-            \         |   /        /
-       +--+  \        |  /        /  +--+
-       |CF|---\       | /        /---|CF|
-       +--+    '---- SFF2 ------'    +--+
-                      |
-                 +----+-------+
-                 |Sub-domain#2|
-                 |   in DC2   |
-                 +------------+
-        ]]> </artwork>
-          <postamble>
-            One path is shown from edge classifier to SFF1 to Sub-domain#1 
-            (residing in data-center1) to SFF1 to SFF2 (residing in data-center 
-            2) to Sub-domain#2 to SFF2 to network egress.
-          </postamble>
-       </figure>
-
       </section>
 
       <section anchor="ll" title="Lower Levels">
@@ -384,7 +390,7 @@
           in the SFFs of the sub-domain.
 	</t>
         <figure anchor="fig_hierarchical_lower"
-                title="Sub-domain within a higher-level domain">
+                title="Example of a sub-domain within a higher-level domain">
           <artwork><![CDATA[
   +----+    +-----+  +----------------------+   +-----+
   |    |    | SFF |  |   IBN 1  (in DC 1)   |   | SFF |
@@ -512,7 +518,7 @@ Legend:
             classifier parses encapsulated packets for IP and transport-layer (TCP, 
             UDP, etc.) coordinates. State is created, indexed by some or all
 	    transport-coordinates ({source-IP, destination-IP, source-port, 
-            destination-port and transport protocol} typically).
+            destination-port and transport protocol}, typically).
             The state contains at minimum the critical fields of the
             encapsulating SFC header (SPI, SI, MD Type, flags); additional
             information carried in the packet (metadata, TTL) may also be
@@ -523,7 +529,7 @@ Legend:
           <t>
             Note that this state is only accessed by the classifier and
             terminator functions of the sub-domain. Neither the SFFs nor SFs
-            have knowldge of this state; in fact they may be agnostic about
+            have knowledge of this state; in fact they may be agnostic about
             being in a sub-domain.
           </t>
           <t>
@@ -613,10 +619,10 @@ Legend:
             is used.
           </t>
           <t>
-            It is conceivable that the MD-type 1 Mandatory Context Header fields 
+            It is conceivable that the MD-type 1 Fixed Length Context Header field
             of <xref target="I-D.ietf-sfc-nsh">NSH</xref> are not all relevant 
-            to the lower-level domain. In this case, one of the metadata slots
-            of the Mandatory Context Header could be repurposed within the 
+            to the lower-level domain. In this case, 32 bits of the
+            Fixed Length Context Header could be repurposed within the 
             lower-level domain, and restored when leaving.
           </t>
           <t>
@@ -725,7 +731,7 @@ Legend:
           </t>
         </section>
 
-        <section anchor="hybrid" title="Stateful / Metadata Hybrid">
+        <section anchor="hybrid" title="Stateful/Metadata Hybrid">
           <t>
              The basic idea of this approach is for the IBN to save upper domain
              encapsulation information such that it can be retrieved by a
@@ -764,15 +770,10 @@ Legend:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |Ver|O|R|    TTL    |   Length  |R|R|R|R|MD Type| Next Protocol |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          Service Path Identifer               | Service Index |
+|          Service Path Identifier              | Service Index |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                      hSFC Flow ID                             |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                Mandatory Context Header                       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                Mandatory Context Header                       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                Mandatory Context Header                       |
+|              Zero Padding or other fields                     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ]]>
             </artwork>
@@ -830,9 +831,9 @@ Legend:
           Another approach is to use well-known labels for chain identifiers or 
           metadata, as an indirection to the actual identifiers. The actual 
           identifiers can be assigned by control-plane systems. For example, a 
-          sub-domain classifier could have a policy, "if pathID=classA then 
+          sub-domain classifier could have a policy, "if pathID = classA then 
           chain packet to path 1234"; the higher-level controller would be 
-          expected to configure the concrete higher-level pathID for classA.
+          expected to configure the concrete higher-level 'pathID' for 'classA'.
         </t>
       </section>
 
@@ -854,8 +855,8 @@ Legend:
           There is a choice:
           <list>
             <t>a sub-domain may appear as a pure service function, which should
-               not decrement the TTL from the perspective of the higher-level domain,</t>
-            <t>or all of the TTL changes within the sub-domain may be visible to 
+               not decrement the TTL from the perspective of the higher-level domain, or</t>
+            <t>all of the TTL changes within the sub-domain may be visible to 
                the higher-level domain.</t>
           </list>
         </t>
@@ -871,7 +872,7 @@ Legend:
         </t>
         <t>
            The choice affects whether the methods of restoring the paths
-           in the sub-sections of <xref target="section_strategies"/>
+           in <xref target="section_strategies"/>
            restore a saved version of TTL or propagate it with the packet.
            The method of <xref target="section_unique_paths"/> does not permit topology-hiding.
            The other methods of
@@ -1131,16 +1132,18 @@ Legend:
         protocols used to realize the solution.
       </t>
       <t>
-        The systems described in this document bear responsibility for 
-        forwarding Internet traffic. In some cases the systems are responsible 
-        for maintaining separation of traffic in private networks.
-      </t>
-      <t>
-        This document describes systems within different domains of
-        administration that must have consistent configurations in order to 
-        properly forward traffic and to maintain private network separation.
+        This document describes systems that may be managed by distinct teams
+        of a single administrative entity.
+        Sub-domains must have consistent configurations in order to 
+        properly forward traffic.
         Any protocol designed to distribute the configurations must be secure 
         from tampering.
+        Means to prevent attacks from within a network must be enforced.
+        For example, continuously monitoring the network may allow detecting
+        such misbehaviors.
+        hSFC adheres to the same security considerations of
+        <xref target="I-D.ietf-sfc-nsh"/>.
+        Those considerations must be taken into account.
       </t>
       <t>
         All of the systems and protocols must be secure from modification by 
@@ -1368,7 +1371,7 @@ Legend:
         
         <t>
           For large data center operators, one local DC may have tens of thousands of servers
-          and hundred of thousands of virtual machines. SFC can be used to manage user traffic. 
+          and hundreds of thousands of virtual machines. SFC can be used to manage user traffic. 
           For example, SFC can be used to classify user traffic based on service type, DDoS state etc.
         </t>
 
