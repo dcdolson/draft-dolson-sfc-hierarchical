@@ -108,51 +108,6 @@
       </address>
     </author>
 
-    <author fullname="Dapeng Liu" initials="D." surname="Liu">
-      <organization>Alibaba Group</organization>
-      <address>
-        <postal>
-          <street></street>
-          <city>Beijing</city>
-          <code>100022</code>
-          <country>China</country>
-        </postal>
-        <email> max.ldp@alibaba-inc.com </email>
-      </address>
-    </author>
-
-	<author fullname="Ting Ao" initials="T." surname="Ao"> 
-      <organization>ZTE Corporation</organization> 
-      <address> 
-        <postal> 
-          <street>No.889,Bibo Rd.,Zhangjiang Hi-tech Park</street> 
-          <!-- Reorder these if your country does things differently --> 
-          <city>Shanghai </city> 
-          <region></region> 
-          <code>201203 </code> 
-          <country>China </country> 
-        </postal> 
-        <phone>+86-21-688976442</phone> 
-        <email>ao.ting@zte.com.cn </email> 
-        <!-- uri and facsimile elements may also be added --> 
-      </address> 
-    </author> 
-
-    <author fullname="Vu Anh Vu" initials="V." surname="Vu">
-      <organization>Soongsil University</organization>
-      <address>
-        <postal>
-          <street>369 Sangdo-ro</street>
-          <city>Seoul</city>
-          <region>Dongjak-gu</region>
-          <code>06978</code>
-          <country>Korea </country>
-        </postal>
-        <email>vuva@dcn.ssu.ac.kr</email>
-      </address>
-    </author>
-
-
 
     <date year="2017" />
 
@@ -1097,12 +1052,20 @@ Legend:
       as a means to improve scalability of service chaining in large networks. 
       </t>
       <t>
-        The concept of nested NSH headers was introduced in
+        The concept of nesting NSH headers within lower-level NSH was
+        contributed by Ting Ao. The concept originally appeared in
         <xref target="I-D.ao-sfc-for-dc-interconnect"/>
         as a means of creating hierarchical SFC in a data center.
       </t>
       <t>
-        The authors would like to thank the following individuals for
+        We thank Dapeng Liu for contributing the data-center examples in the
+        appendix.
+      </t>
+      <t>
+        The Stateful/Metadata Hybrid section was contributed by Victor Wu.
+      </t>
+      <t>
+        The authors would also like to thank the following individuals for
         providing valuable feedback:
       </t>
       <t>
