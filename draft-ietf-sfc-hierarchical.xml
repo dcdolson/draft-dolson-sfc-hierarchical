@@ -34,7 +34,7 @@
     <!-- add 'role="editor"' below for the editors if appropriate -->
 
     <author fullname="David Dolson" initials="D." surname="Dolson">
-      <organization></organization>
+      <organization>Sandvine</organization>
 
       <address>
         <postal>
@@ -158,15 +158,14 @@
       responsibilities). We recognize that some stateful Service Functions
       (SFs) require bidirectional traffic for transport-layer sessions (e.g.,
       NATs, firewalls). We assume that some Service Function Paths (SFPs) need
-      to be selected on the basis of application-specific data visible to the
-      network, with transport-layer coordinate (typically, the 5-tuple (source
-      IP address, source port number, destination IP address, destination port
-      number, transport protocol)) stickiness to specific stateful SF
-      instances.</t>
+      to be selected on the basis of transport-layer coordinate (typically, the
+      5-tuple of source IP address, source port number, destination IP address,
+      destination port number, and transport protocol) stickiness to specific
+      stateful SF instances.</t>
 
       <t>Difficult problems are often made easier by decomposing them in a
       hierarchical (nested) manner. So instead of considering a single SFC
-      Control Plane (<xref target="I-D.ietf-sfc-control-plane"></xref>) that
+      Control Plane that
       can manage (create, withdraw, supervise, etc.) complete SFPs from one
       end of the network to the other, we decompose the network into smaller
       domains operated by as many SFC control plane components (under the same
@@ -174,9 +173,8 @@
       discussed in the document.</t>
 
       <t>Each sub-domain may support a subset of the network applications or a
-      subset of the users. Decomposing a network into multiple SFC-enabled
-      domains should permit end-to-end visibility of SFs and SFPs. Also,
-      decomposing should be done with care to ease monitoring and
+      subset of the users. 
+      Decomposing a network should be done with care to ease monitoring and
       troubleshooting of the network and services as a whole. The criteria for
       decomposing a domain into multiple SFC-enabled sub-domains are beyond
       the scope of this document. These criteria are deployment-specific.</t>
@@ -196,6 +194,11 @@
       network. It is outside of the scope of the document to consider domains
       operated by different organizations or to dwell on inter-operator
       considerations.</t>
+
+      <t> We introduce the concept of an Internal Boundary Node (IBN) that acts
+      as a gateway between the levels of the hierarchy. We also discuss options
+      for realizing this function.
+      </t>
     </section>
 
     <section title="Hierarchical Service Function Chaining (hSFC)">
@@ -246,11 +249,11 @@
         DC: Data Center
          ]]></artwork>
 
-          <postamble>One path is shown from edge classifier to SFF1 to
-          Sub-domain#1 (residing in data-center1) to SFF1 to SFF2 (residing in
-          data-center 2) to Sub-domain#2 to SFF2 to network
-          egress.</postamble>
         </figure>
+
+        <t>One path is shown from edge classifier to SFF1 to Sub-domain#1
+        (residing in data-center1) to SFF1 to SFF2 (residing in data-center 2)
+        to Sub-domain#2 to SFF2 to network egress.</t>
 
         <t>For the sake of clarity, components of the underlay network are not
         shown; an underlay network is assumed to provide connectivity between
@@ -262,8 +265,8 @@
 
         <t>We expect the system to include a top-level control plane having
         responsibility for configuring forwarding policies and traffic
-        classification rules (see for example, <xref
-        target="I-D.ietf-sfc-control-plane"></xref>).</t>
+        classification rules.
+        </t>
 
         <t>The top-level Service Chaining control plane manages end-to-end
         service chains and associated service function paths from network edge
@@ -979,9 +982,6 @@ Legend:
         target="I-D.wu-pce-traffic-steering-sfc"></xref>, or <xref
         target="I-D.maglione-sfc-nsh-radius"></xref>).</t>
 
-        <t>Generic security considerations related to the control plane are
-        discussed in <xref target="I-D.ietf-sfc-control-plane"></xref>. These
-        considerations apply for both high-level and low-level domains.</t>
       </section>
 
       <!-- REVISIT: why are infinite forwarding loops required to be discussed here? -->
@@ -1013,8 +1013,6 @@ Legend:
       <?rfc include='reference.I-D.homma-sfc-forwarding-methods-analysis'?>
 
       <?rfc include='reference.I-D.ietf-bess-nsh-bgp-control-plane'?>
-
-      <?rfc include='reference.I-D.ietf-sfc-control-plane'?>
 
       <?rfc include='reference.I-D.ietf-sfc-dc-use-cases'?>
 
