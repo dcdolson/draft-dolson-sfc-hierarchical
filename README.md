@@ -5,7 +5,7 @@ This repository is a collaborative work-space for authors
 contributing to the IETF draft.
 
 Latest published version:
-https://tools.ietf.org/html/draft-ietf-sfc-hierarchical-05
+https://tools.ietf.org/html/draft-ietf-sfc-hierarchical-08
 
 Datatracker page:
 https://datatracker.ietf.org/doc/draft-ietf-sfc-hierarchical/
